@@ -8,8 +8,11 @@ from django.db.models import Q
 from django.contrib import messages
 
 def home(request):
-    
-    return render(request, 'home.html', {})
+    context={
+        "title":"hello world"
+
+    }
+    return render(request, 'home.html',context)
 
 
 
@@ -69,31 +72,31 @@ def featuredDetails(request , id):
 class SearchProduct(ListView):
     template_name= 'search.html'
     model=Product
-
+    messages='No Result Found'
     def get_queryset(self):
         query= self.request.GET.get('q', None)
-        if query is not None:
+        if query:
             search= Q(title__icontains=query) | Q(description__icontains=query) 
             product=Product.objects.filter(search).distinct()
-            if product is not None:
-                return product
-        return Product.objects.filter(featured=True)
-        #return messages.error(self.request, 'No Result Found')
-        
-# def SearchProduct(request):
-#     if request.method == 'POST':
-#         form = SearchForm(request.POST or None)
-#         value= request.POST['q']
+            return product
+        else:
+            return Product.objects.filter(featured=True)
+            
+def searchposts(request):
+    if request.method == 'GET':
+        search= request.GET.get('q')
+        submit= request.GET.get('submit')
+        if search is not None:
+            query= Q(title__icontains=search) | Q(description__icontains=search)
+            products= Product.objects.filter(query).distinct()
 
-#         if form.is_valid():
-#             search= Q(title__icontains=value) | Q(description__icontains=value) 
-#             product=Product.objects.filter(search).distinct()
+            context={'products': products,
+                     'submit': submit}
 
-#             if product:
-#                 return render(request , 'search.html' , {'product':product} , {'value':value})
+            return render(request, 'search.html', context)
 
-#             else:
-#                 messages.error(request, 'No Result Found')
+        else:
+            return render(request, 'search.html')
 
-
-#     return render(request , 'search.html' ,{'form': form})
+    else:
+        return render(request, 'search.html')

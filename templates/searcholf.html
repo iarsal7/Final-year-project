@@ -2,9 +2,19 @@
 
 {% block content %}
 
+
+
+{% if request.GET.q %}
+<div class="row">
+<div class="col-12">
+    <h2>Results for {{ request.GET.q }}</h2>
+</div>
+</div>
+{% endif %}
+
 <div class="row">
 
-{% for product in product %}
+{% for product in products  %}
 <div class="col">
 
 <div class="card" style="width: 18rem;">
@@ -18,7 +28,6 @@
   </div>
 </div>
 </div><!--col end-->
-
 {%endfor%}
 
 </div><!--row end-->

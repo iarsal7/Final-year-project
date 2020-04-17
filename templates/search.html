@@ -2,37 +2,28 @@
 
 {% block content %}
 
-<form method='GET' action='{% url 'search' %}' class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="q" value={{request.GET.q}} >
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-
-
-{% if request.GET.q %}
+{% if submit == 'submit' and request.GET.q != '' %}
+{% if products %}
+<h1>Results for <b>{{ request.GET.q }}</b></h1>
+<br/><br/>
 <div class="row">
-<div class="col-12">
-    <h2>Results for {{ request.GET.q }}</h2>
-</div>
-</div>
-{% endif %}
-
-<div class="row">
-
-{% for product in object_list  %}
-<div class="col">
-
-<div class="card" style="width: 18rem;">
-{% if product.image %}
-  <img class="card-img-top" src="{{ product.image.url}}" alt="Card image cap" width=""auto" height="250px">
-{% endif %}
-  <div class="card-body">
-    <h5 class="card-title">{{product.title}}</h5>
-    <p class="card-text">{{product.description}}</p>
-    <a href="{% url 'productDetails' product.id %}" class="btn btn-primary">View</a>
-  </div>
-</div>
-</div><!--col end-->
+{% for product in products  %}
+    <div class="col">
+        <div class="card" style="width: 18rem;">
+            {% if product.image %}
+              <img class="card-img-top" src="{{ product.image.url}}" alt="Card image cap" width=""auto" height="250px">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{product.title}}</h5>
+                <p class="card-text">{{product.description}}</p>
+                <a href="{% url 'productDetails' product.id %}" class="btn btn-primary">View</a>
+            </div>    
+        </div>
+    </div><!--col end-->
 {%endfor%}
-
 </div><!--row end-->
+{% else %}
+<h1>No search results for this query</h1>
+{% endif %}
+{% endif %}
 {% endblock content %}
