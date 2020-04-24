@@ -3,11 +3,11 @@ from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponseRedirect
 from django.views.generic import ListView
 from .forms import SignUpForm , CustomerForm , SearchForm
-from .models import Product , Cart
+from .models import Product , Cart , Order ,OrderDetail
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from decimal import *
+from decimal import Decimal
 def home(request):
     context={
         "title":"hello world"
@@ -127,3 +127,28 @@ def cartUpdate(request):
     cart_obj=request.user.carts.all()
 
     return render(request , 'cart.html', {'cart':cart_obj})
+
+def checkout(request):
+    if request.method=='POST':
+        order_obj= Order.objects.create(user= request.user)
+        order_obj.shippingtotal=120.00
+        total=0
+        cart_obj=Cart.objects.filter(user=request.user)
+        for cart_total in cart_obj:
+            total+= cart_total.total
+        order_obj.total= total
+        order_obj.save()
+
+        for obj in cart_obj:
+            order_detail= OrderDetail.objects.create(orderid=order_obj ,products=obj.products)
+            order_detail.products=obj.products
+            order_detail.productname= obj.products.title
+            order_detail.quantity=obj.quantity
+            order_detail.total=obj.total
+            order_detail.save()
+
+        cart_obj.delete()
+
+        return redirect(cart)
+    cart_obj=request.user.carts.all()
+    return render(request, 'cart.html' ,{'cart':cart_obj})

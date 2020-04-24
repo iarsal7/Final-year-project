@@ -42,8 +42,7 @@
   </div>
   
   <div class="cart transition is-open">
-    
-    <a href="#" class="btn btn-update">Update cart</a>
+  
     
     
     <div class="table">
@@ -76,6 +75,7 @@
         
         <div class="col col-total col-numeric">               <p> {{ obj.total}}</p>
         </div>
+        {% include 'includes/cartupdate.html' %}  
       </div>
       
       {% endfor %}
@@ -101,7 +101,7 @@
        </div>         
   </div>
     
-    <a href="#" class="btn btn-update">Update cart</a>
+    {% include 'includes/placeorder.html' %}  
   
 </div>
   

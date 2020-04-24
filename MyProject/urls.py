@@ -17,8 +17,8 @@ urlpatterns = [
     path('featured/<int:id>/' , views.featuredDetails , name='featuredDetails'),
     path('search/' , views.searchposts , name='search'),
     path('cart/' , views.cart , name='cart'),
-    path('cart-update', views.cartUpdate , name='cartUpdate'),
-    path('checkout' , views.checkout , name='checkout')
+    path('cart/cart-update', views.cartUpdate , name='cartUpdate'),
+    path('cart/cart-update/checkout' , views.checkout , name='checkout')
    
 
 ]

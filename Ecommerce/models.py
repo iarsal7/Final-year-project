@@ -76,5 +76,12 @@ def pre_save_order_number(sender, instance , *args, **kwargs):
         instance.number= unique_order_id_generator(instance)
 pre_save.connect(pre_save_order_number, sender=Order)
 
-# class OrderDetail():
-#     orderid= models.ForeignKey(Order)
+class OrderDetail(models.Model):
+    orderid= models.ForeignKey(Order, on_delete=models.CASCADE, related_name='orderDetails')
+    products= models.ForeignKey(Product, on_delete=models.CASCADE , related_name='orderDetails')
+    productname=models.CharField(max_length=120)
+    quantity= models.IntegerField(null=True , blank=True)
+    total = models.DecimalField(decimal_places=2 , max_digits=100 ,null=True ,blank=True)
+
+    def __str__(self):
+        return str(self.id)

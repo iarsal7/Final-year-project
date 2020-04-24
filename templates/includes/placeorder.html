@@ -1,0 +1,5 @@
+    <form method="POST" action='{% url 'checkout' %}' class="form-inline">{% csrf_token %}
+      <input type="hidden"  name="product_id" value="{{obj.products.id}}" >
+      <button class="btn btn-success btn-lg p-0" name="submit" type="submit" value="submit">Place Order</button>
+    </div>
+    </form>
