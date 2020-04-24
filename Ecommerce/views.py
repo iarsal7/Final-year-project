@@ -3,18 +3,17 @@ from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponseRedirect
 from django.views.generic import ListView
 from .forms import SignUpForm , CustomerForm , SearchForm
-from .models import Product
+from .models import Product , Cart
 from django.db.models import Q
 from django.contrib import messages
-
+from django.contrib.auth.decorators import login_required
+from decimal import *
 def home(request):
     context={
         "title":"hello world"
 
     }
     return render(request, 'home.html',context)
-
-
 
 def signup(request):
     if request.method == 'POST':
@@ -87,7 +86,7 @@ def searchposts(request):
         search= request.GET.get('q')
         submit= request.GET.get('submit')
         if search is not None:
-            query= Q(title__icontains=search) | Q(description__icontains=search)
+            query= Q(title__icontains=search) | Q(description__icontains=search) | Q(tag__name__icontains=search)
             products= Product.objects.filter(query).distinct()
 
             context={'products': products,
@@ -100,3 +99,31 @@ def searchposts(request):
 
     else:
         return render(request, 'search.html')
+
+@login_required
+def cart(request):
+    cart_obj=request.user.carts.all()
+    
+    if request.method=='POST':
+        cart_obj= Cart.objects.create(user= request.user)
+        product_id= request.POST.get('product_id')
+        quantity= request.POST.get('quantity')
+        product=Product.objects.get(id=product_id)
+        cart_obj.products=product
+        cart_obj.quantity=quantity
+        total=Decimal(cart_obj.quantity) * product.price
+        cart_obj.total= total
+        cart_obj.save()
+        return redirect(cart)
+    return render(request, 'cart.html' ,{'cart':cart_obj})
+
+def cartUpdate(request):
+    if request.method=='POST':
+        product_id= request.POST.get('product_id')
+        product=Product.objects.get(id=product_id)
+        cart=Cart.objects.filter(user=request.user , products=product)
+        cart.delete()
+        
+    cart_obj=request.user.carts.all()
+
+    return render(request , 'cart.html', {'cart':cart_obj})

@@ -10,11 +10,15 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('signup/', views.signup ,name='signup'),
     path('login/', authviews.LoginView.as_view(template_name='login.html'), name='login'),
+    path('logout/', authviews.LogoutView.as_view(), name='logout'),
     path('products/' , views.productList , name='productList' ),
     path('products/<int:id>/', views.productDetails , name='productDetails'),
     path('featured/' , views.featuredList , name='featuredList'),
     path('featured/<int:id>/' , views.featuredDetails , name='featuredDetails'),
-    path('search/' , views.searchposts , name='search')
+    path('search/' , views.searchposts , name='search'),
+    path('cart/' , views.cart , name='cart'),
+    path('cart-update', views.cartUpdate , name='cartUpdate'),
+    path('checkout' , views.checkout , name='checkout')
    
 
 ]
