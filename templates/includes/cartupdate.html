@@ -1,5 +1,5 @@
-    <form method="POST" action='{% url 'cartUpdate' %}' class="form-inline">{% csrf_token %}
-      <input type="hidden"  name="product_id" value="{{obj.products.id}}" >
+    <form method="POST" action='{% url 'cartUpdate' %}' class="form-inline form-update-ajax">{% csrf_token %}
+      <input class="cartproduct" type="hidden"  name="product_id" value="{{obj.products.id}}" >
       <button class="btn btn-link p-0" name="submit" type="submit" value="submit">Remove</button>
     </div>
     </form>

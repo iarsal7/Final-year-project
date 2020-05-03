@@ -1,16 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <form action="{% url 'signup' %}" method="post">
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+  <form action="{% url 'signup' %}" method="post" novalidate>
   {% csrf_token %}
-  {{form.as_p }}
-  {{Cform.as_p}}
-   <input type="submit" name="Create User">
+  {{form|crispy }}
+   <input class="btn btn-success" type="submit" name="Create User">
   </form>
-</body>
-</html>
+
+{% endblock content %}

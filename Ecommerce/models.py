@@ -1,9 +1,14 @@
 from django.db import models
 import random , os
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save , pre_save , m2m_changed
 from django.dispatch import receiver
 from Ecommerce.utils import unique_order_id_generator
+
+class User(AbstractUser):
+    address= models.TextField(blank=True)
+    phone = models.CharField(max_length=11 , blank=True)
+
 
 def upload_image_to(instance , filename): #For Creating New Filename
     new_filename = random.randint(1 , 3456423)
@@ -42,11 +47,7 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
     
-class Customer(models.Model):
-    user= models.OneToOneField(User , on_delete=models.CASCADE)
-    address= models.TextField()
-    phone = models.CharField(max_length=11)
-
+    
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='carts')
     products= models.ForeignKey(Product , on_delete=models.Case, related_name='carts' ,null=True , blank=True)
@@ -56,7 +57,11 @@ class Cart(models.Model):
     def __str__(self):
         return str(self.id)
 
-
+order_choices=(            
+    ('created','Created'),
+    ('shipped','Shipped'),
+    ('refunded','Refunded')
+)
 
 class Order(models.Model):
     number= models.CharField(max_length=100 , blank=True)
@@ -65,7 +70,10 @@ class Order(models.Model):
     time=models.TimeField(auto_now_add=True , auto_now=False)
     shippingtotal= models.DecimalField(decimal_places=2 , max_digits=100 ,null=True ,blank=True)
     total = models.DecimalField(decimal_places=2 , max_digits=100 ,null=True ,blank=True)
+    status= models.CharField(max_length=120 , default='created' , choices=order_choices )
 
+    def user_address(self):
+        return self.user.address
 
     def __str__(self):
         return self.number
