@@ -77,20 +77,20 @@ def featuredDetails(request , id):
 
     return render(request , 'featuredDetails.html' , {'product':product})
 
-class SearchProduct(ListView):
-    template_name= 'search.html'
-    model=Product
-    messages='No Result Found'
-    def get_queryset(self):
-        query= self.request.GET.get('q', None)
-        if query:
-            search= Q(title__icontains=query) | Q(description__icontains=query) 
-            product=Product.objects.filter(search).distinct()
-            return product
-        else:
-            return Product.objects.filter(featured=True)
+# class SearchProduct(ListView):
+#     template_name= 'search.html'
+#     model=Product
+#     messages='No Result Found'
+#     def get_queryset(self):
+#         query= self.request.GET.get('q', None)
+#         if query:
+#             search= Q(title__icontains=query) | Q(description__icontains=query) 
+#             product=Product.objects.filter(search).distinct()
+#             return product
+#         else:
+#             return Product.objects.filter(featured=True)
             
-def searchposts(request):
+def searchproduct(request):
     if request.method == 'GET':
         search= request.GET.get('q')
         submit= request.GET.get('submit')
@@ -112,15 +112,12 @@ def searchposts(request):
 @login_required
 def cart(request):
     cart_obj=request.user.carts.all()
-    print("in cart")
     if request.method=='POST':
         product_id= request.POST.get('product_id')
         quantity= request.POST.get('quantity')
         product=Product.objects.get(id=product_id)
         cart= Cart.objects.filter(user=request.user , products=product).first()
-        print(cart)
         if cart is not None:
-            print(cart.total)
             cart.quantity += int(quantity)
             cart.save()
         else:
@@ -162,9 +159,74 @@ class cartlogin(View):
         else:
             return JsonResponse({'status': 'login failed'})
 
+def checkout(request):
+    cart_obj=Cart.objects.filter(user=request.user)
+    total=0
+    for cart_total in cart_obj:
+        total+= cart_total.total
+    total= int(total)
+    shipping=120
 
-def order(request):
-    if request.method=='POST':
+    gtotal= total + shipping
+
+    user= User.objects.get(username=request.user)
+    print("in checkoutt")
+    context={
+        "cart":cart_obj,
+        "user":user,
+        "total":total,
+        "shipping":shipping,
+        "Gtotal":gtotal
+    }
+    return render(request , 'checkout.html', context)
+
+# def order(request):
+#     if request.method=='POST':
+#         order_obj= Order.objects.create(user= request.user)
+#         shipping=120
+#         order_obj.shippingtotal=shipping
+#         total=0
+#         cart_obj=Cart.objects.filter(user=request.user)
+#         for cart_total in cart_obj:
+#             total+= cart_total.total
+#         total=int(total)+shipping
+#         order_obj.total= total
+#         order_obj.save()
+
+#         for obj in cart_obj:
+#             order_detail= OrderDetail.objects.create(orderid=order_obj ,products=obj.products)
+#             order_detail.products=obj.products
+#             order_detail.productname= obj.products.title
+#             order_detail.quantity=obj.quantity
+#             order_detail.total=obj.total
+#             order_detail.save()
+
+#         cart_obj.delete()
+
+#         return redirect(cart)
+#     cart_obj=request.user.carts.all()
+#     return render(request, 'cart.html' ,{'cart':cart_obj})
+
+class updateUser(View):
+    def  get(self, request):
+        print("in update user")
+        fname = request.GET.get('fname', None)
+        lname=  request.GET.get('lname', None)
+        phone=  request.GET.get('phone', None)
+        email=  request.GET.get('email', None)
+        address=  request.GET.get('address', None)
+
+        user= User.objects.get(username=request.user)
+        user.first_name= fname
+        user.last_name= lname
+        user.phone= phone
+        user.email=email
+        user.address=address
+        user.save()
+        return JsonResponse({'status': 'updated'})
+
+class order(View):
+    def  get(self, request):
         order_obj= Order.objects.create(user= request.user)
         shipping=120
         order_obj.shippingtotal=shipping
@@ -186,27 +248,8 @@ def order(request):
 
         cart_obj.delete()
 
-        return redirect(cart)
-    cart_obj=request.user.carts.all()
-    return render(request, 'cart.html' ,{'cart':cart_obj})
+        return JsonResponse({'status': 'ok'})   
 
-def checkout(request):
-    cart_obj=Cart.objects.filter(user=request.user)
-    total=0
-    for cart_total in cart_obj:
-        total+= cart_total.total
-    total= int(total)
-    shipping=120
+def success(request):
 
-    gtotal= total + shipping
-
-    user= User.objects.get(username=request.user)
-    print("in checkoutt")
-    context={
-        "cart":cart_obj,
-        "user":user,
-        "total":total,
-        "shipping":shipping,
-        "Gtotal":gtotal
-    }
-    return render(request , 'checkout.html', context)
+    return render(request , 'success.html', {})

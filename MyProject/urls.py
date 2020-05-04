@@ -17,14 +17,15 @@ urlpatterns = [
     path('products/<int:id>/', views.productDetails , name='productDetails'),
     path('featured/' , views.featuredList , name='featuredList'),
     path('featured/<int:id>/' , views.featuredDetails , name='featuredDetails'),
-    path('search/' , views.searchposts , name='search'),
+    path('search/' , views.searchproduct , name='search'),
     path('cart/' , views.cart , name='cart'),
     # path('cart/cartupdate', views.cartUpdate , name='cartUpdate'),
     path('cart/checkout' , views.checkout , name='checkout'),
-    # path('api/cart/' ,views.cartApi , name="cartApi"),
+    path('cart/checkout/success' , views.success , name='success'),
     path('ajax/cart/delete/',  views.cartdelete.as_view(), name='cartDelete'),
     path('ajax/cart/login/',  views.cartlogin.as_view(), name='cartLogin'),
-    path('order/' , views.order, name='order'),
+    path('ajax/cart/updateUser/',  views.updateUser.as_view(), name='updateUser'),
+    path('ajax/order/' , views.order.as_view(), name='ajaxOrder'),
     # path('test/', UserCreateView.as_view())
 
 ]

@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="alert alert-success" id="success-alert" style="display:none">
+  <button type="button" class="close" data-dismiss="alert">x</button>
+  <strong>Success! </strong> Product have added to your cart.
+</div>
 
 <div class="row">
 
@@ -31,7 +35,7 @@
    {% else %}
 
     <div class="col-12 col-md-6">
-    
+
      <button class="btn btn-success " data-toggle="modal" data-target="#loginModal">Add to cart</button>
     </div>
 
@@ -39,6 +43,14 @@
 {% endif %}
 
 </div><!--row end-->
+
+
+<div id="overlay">
+	<div class="cv-spinner">
+		<span class="spinner "></span>
+	</div>
+</div>
+
 
 <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -55,20 +67,27 @@
         <div class="d-flex flex-column text-center">
           <form method="POST" id="loginUser" >{% csrf_token %}
             <div class="form-group">
-              <input type="text" class="form-control"  placeholder="Your username..." name="modal-user">
+              <span class="error text-danger" id="formerror"></span>
+              <input type="text" class="form-control"  placeholder="Your username..." name="modal-user" required>
             </div>
             <div class="form-group">
-              <input type="password" class="form-control"  placeholder="Your password..." name="modal-password">
+              <input type="password" class="form-control"  placeholder="Your password..." name="modal-password" required>
             </div>
             <button type="submit" class="btn btn-info btn-block btn-round">Login</button>
           </form>
-          
-         
+        </di>
+      </div>
+    </div>
+
       <div class="modal-footer d-flex justify-content-center">
         <div class="signup-section">Not a member yet? <a href="#a" class="text-info"> Sign Up</a>.</div>
       </div>
   </div>
 </div>
+
+
+
+
 {% endblock content %}
 
 {% block javascript %}
@@ -78,21 +97,42 @@
     $(document).ready(function(){
         var productForm = $(".form-product-ajax") //add to cart
         productForm.submit(function(event){
+        $("#success-alert").hide();
+        $("#overlay").fadeIn(1200);　
         event.preventDefault();
         var thisForm = $(this)
         var action= thisForm.attr("action");
         var method = thisForm.attr("method");
         var formData = thisForm.serialize();
 
-        
+
       $.ajax({
         url: action,
         method: method,
         data: formData,
         success: function(data){
-         
+
+
+        setTimeout(function(){
+				$("#overlay").fadeOut(1200);},500);
+
         var cartcount= $(".cart-count") //cart-count is span field in base.html
         cartcount.text(data.cartCount) //cartCount is jsonResponse in views
+
+        {% comment %} setTimeout(function(){
+        bootbox.alert({
+        message: "Product added to Cart",
+        callback: function() {
+        }
+                      })        },1500); {% endcomment %}
+    setTimeout(function(){
+         $("#success-alert").fadeTo(2000, 500).slideUp(500, function() {
+      $("#success-alert").slideUp(100);
+    }); },2000);
+
+
+
+
         },
 
       error: function(errorData){
@@ -102,10 +142,12 @@
       })
 
         })
+
       })  {% comment %} add to cart ending {% endcomment %}
 
 $("form#loginUser").submit(function(event) {
-  
+
+    $("#overlay").fadeIn(1600);
     event.preventDefault();
     console.log("in modal form")
     var modeluser = $('input[name="modal-user"]').val().trim();
@@ -121,32 +163,32 @@ $("form#loginUser").submit(function(event) {
             dataType: 'json',
             success: function (data) {
               if (data.status=='ok') {
-                   
-              $('form#updateUser').trigger("reset");
-              $('#loginModal').modal('hide');
-              
+                setTimeout(function(){
+				        $("#overlay").fadeOut(1600);
+                $('form#loginUser').trigger("reset");
+                $('#loginModal').modal('hide');
+                  },500);
 
-                }
+              }
 
               else{
 
-                 alert("Username or password incorrect");
-                 $('form#updateUser').trigger("reset");
+                 $('#formerror').text("username or password incorrect");
                  return false;
 
-              }  
               }
-            
-             
+              }
+
+
         });
 
     }
      else {
-        alert("All fields must have a valid value.");
+       $('#formerror').text("username or password incorrect");
         return false;
     }
 
-   
+
 });
 
 

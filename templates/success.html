@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<h1>Order Placed</h1>
+<!-- Modal Success HTML -->
+<div id="successModal" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box">
+					<i class="fas fa-check fa-4x"></i>
+				</div>
+        
+				<h4 class="modal-title">Awesome!</h4>	
+			</div>
+			<div class="modal-body">
+				<p class="text-center">Your order has been placed. <br>Thank You.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-success btn-block" data-dismiss="modal">OK</button>
+			</div>
+		</div>
+	</div>
+</div>     
+
+
+{% endblock content %}
+
+{% block javascript %}
+
+<script>
+    $(document).ready(function(){
+        $("#successModal").modal('show');
+    
+    });
+</script>
+
+{% endblock javascript %}

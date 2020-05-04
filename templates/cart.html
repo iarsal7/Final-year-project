@@ -3,7 +3,7 @@
 
 {% block content %}
     <h1>CART</h1>
-       {% if cart %}
+     {% if cart %}
         <table id="cartTable" class="table table-bordered table-striped">
           <tr>
           <th scope="col">Image</th>
@@ -22,11 +22,10 @@
               <td class="cartPrice cartData" name="age">{{obj.products.price}}</td>
               <td class="cartTotal cartData" name="age">{{obj.total}}</td>
               <td class="text-right"><button class="btn btn-sm btn-danger" onClick="deleteCart({{obj.products.id}})"><i class="fa fa-trash-alt"></i> </button> </td>
-              {% comment %} <td><button class="btn-inline btn-danger form-control" onClick="deleteCart({{obj.products.id}})">DELETE</button></td> {% endcomment %}
-          </tr>
+              </tr>
           {% endfor %}
         </table>
-          {% comment %} {% include 'includes/placeorder.html' %} {% endcomment %}
+         
     <form  action='{% url 'checkout' %}' class="form-inline" id="placeorder">
            <button class="btn-round btn-success form-control ml-auto" type="submit">Checkout</button>
     </form>
@@ -40,11 +39,21 @@
 <script>
 function deleteCart(id) {
 
-  bootbox.confirm('Remove Product ?',function(result){
-
-    if(result){
-
-       $.ajax({
+  bootbox.confirm({
+    message: "Remove Product?",
+    buttons: {
+        confirm: {
+            label: 'Yes',
+            className: 'btn-success'
+        },
+        cancel: {
+            label: 'No',
+            className: 'btn-danger'
+        }
+    },
+    callback: function (result) {
+        if(result){
+          $.ajax({
            url: '{% url "cartDelete" %}',
            data: {
                'id': id,
@@ -70,11 +79,12 @@ function deleteCart(id) {
           }); //ajax end
      
 
-    } //bootbox if
 
-  }); //bootbox ending
-  
-    
+        }
+        
+    }
+  });
+       
 }
 </script>
 {% endblock javascript %}
