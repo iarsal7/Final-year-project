@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 <div class="alert alert-success" id="success-alert" style="display:none">
   <button type="button" class="close" data-dismiss="alert">x</button>
@@ -42,7 +42,46 @@
   </div>
 {% endif %}
 
+
 </div><!--row end-->
+
+
+<div class="row justify-content-between">
+<div class="col-md-4 ml-auto mt-4">
+
+
+<div class="container">
+  <form method="POST" id="ReviewForm" >{% csrf_token %}
+    <div class="form-group">
+    <span class="error text-danger" id="reviewerror"></span>
+      <label for="inputName" class="col-sm-12 col-form-label">Subject</label>
+      <div class="col-sm-1-12">
+        <input type="text" class="form-control" id="inputSubject" name="inputSubject"  placeholder="">
+
+      </div>
+      <div class="form-group">
+        <label for="comment">Comment:</label>
+        <textarea class="form-control col-12" rows="6"  id="inputComment"  name="inputComment"></textarea>
+      </div>
+
+      <label for="inputName" class="col-sm-12 col-form-label">Review</label>
+      <div class="col-sm-1-12">
+        <input type="text" class="form-control" name="inputRating" id="inputRating" placeholder="">
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <div class="offset-sm-2 col-sm-10">
+        <button type="submit" class="btn btn-primary" name="product_id" value="{{product.id}}">Post</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+</div>
+</div>
 
 
 <div id="overlay">
@@ -94,7 +133,9 @@
 
 <script>
 
+
     $(document).ready(function(){
+        let auth = false;
         var productForm = $(".form-product-ajax") //add to cart
         productForm.submit(function(event){
         $("#success-alert").hide();
@@ -143,7 +184,7 @@
 
         })
 
-      })  {% comment %} add to cart ending {% endcomment %}
+       {% comment %} add to cart ending {% endcomment %}
 
 $("form#loginUser").submit(function(event) {
 
@@ -162,6 +203,7 @@ $("form#loginUser").submit(function(event) {
             },
             dataType: 'json',
             success: function (data) {
+              auth= true;
               if (data.status=='ok') {
                 setTimeout(function(){
 				        $("#overlay").fadeOut(1600);
@@ -169,6 +211,7 @@ $("form#loginUser").submit(function(event) {
                 $('#loginModal').modal('hide');
                   },500);
 
+                window.location.href=window.location.href
               }
 
               else{
@@ -192,7 +235,62 @@ $("form#loginUser").submit(function(event) {
 });
 
 
+
+$("form#ReviewForm").submit(function(event) {
+  
+    event.preventDefault();
+    
+    var subject = $('input[name="inputSubject"]').val();
+    var comment = $('textarea[name="inputComment"]').val();
+    var rating = $('input[name="inputRating"]').val();
+    var id =    $('input[name="product_id"]').val();
+    console.log(subject)
+    
+    
+
+     if (subject && comment && rating) {
+        $.ajax({
+            url: '{% url 'ajaxReview'  %}',
+            data: {
+                'subject': subject,
+                'comment': comment,
+                'rating': rating,
+                'id': id,
+            },
+            dataType: 'json',
+
+            success: function (data) {
+           
+      
+              if (data.status=='ok') {
+                $('form#ReviewForm').trigger("reset");
+               
+              }
+
+              else{
+     
+                   }  
+
+              }
+            
+             
+        });
+
+    }
+     else {
+        $('#reviewerror').text("Please fill all fields");
+        return false;
+
+     
+    }
+
+   
+});
+
+
+}) 
+
 </script>
 
 
-{% endblock javascript %}
+{% endblock javascript %}	

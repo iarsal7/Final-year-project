@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category , Product ,Tag, Cart, Order, OrderDetail ,User
+from .models import Category , Product ,Tag, Cart, Order, OrderDetail ,User , Review
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin 
 from .models import User
@@ -19,7 +19,7 @@ admin.site.register(Category)
 admin.site.register(Product)
 admin.site.register(Tag)
 admin.site.register(Cart)
-
+admin.site.register(Review)
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):

@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponseRedirect , JsonResponse
 from django.views.generic import ListView,View,CreateView
 from .forms import  SearchForm ,MyUserCreationForm
-from .models import Product , Cart , Order ,OrderDetail ,User
+from .models import Product , Cart , Order ,OrderDetail ,User,Review
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -253,3 +253,22 @@ class order(View):
 def success(request):
 
     return render(request , 'success.html', {})
+
+
+
+class review(View):
+    def  get(self, request):
+        productid=request.GET.get('id', None) 
+        subject = request.GET.get('subject', None)
+        comment=  request.GET.get('comment', None)
+        rating=  request.GET.get('rating', None)
+        
+        product=Product.objects.get(id= productid)
+        review_obj= Review.objects.create(user=request.user , product=product)
+        review_obj.subject=subject
+        review_obj.comment=comment
+        review_obj.rating= 1
+        review_obj.save()
+         
+        return JsonResponse({'status': 'ok'})
+        

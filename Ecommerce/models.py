@@ -40,6 +40,18 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
+class Review(models.Model):
+    product = models.ForeignKey(Product , on_delete=models.CASCADE , related_name='reviews')
+    user= models.ForeignKey(User , on_delete=models.CASCADE , related_name='reviews')
+    subject= models.CharField(max_length=50)
+    comment= models.CharField(max_length=250)
+    rating= models.IntegerField(null=True , blank=True)
+    date= models.DateField(auto_now_add=True, auto_now=False)
+    time=models.TimeField(auto_now_add=True , auto_now=False)
+
+
+
+
 class Tag(models.Model):
     name= models.CharField(max_length=100)
     product= models.ManyToManyField(Product)
