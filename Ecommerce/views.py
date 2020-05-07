@@ -77,18 +77,6 @@ def featuredDetails(request , id):
 
     return render(request , 'featuredDetails.html' , {'product':product})
 
-# class SearchProduct(ListView):
-#     template_name= 'search.html'
-#     model=Product
-#     messages='No Result Found'
-#     def get_queryset(self):
-#         query= self.request.GET.get('q', None)
-#         if query:
-#             search= Q(title__icontains=query) | Q(description__icontains=query) 
-#             product=Product.objects.filter(search).distinct()
-#             return product
-#         else:
-#             return Product.objects.filter(featured=True)
             
 def searchproduct(request):
     if request.method == 'GET':
@@ -170,7 +158,6 @@ def checkout(request):
     gtotal= total + shipping
 
     user= User.objects.get(username=request.user)
-    print("in checkoutt")
     context={
         "cart":cart_obj,
         "user":user,
@@ -180,32 +167,6 @@ def checkout(request):
     }
     return render(request , 'checkout.html', context)
 
-# def order(request):
-#     if request.method=='POST':
-#         order_obj= Order.objects.create(user= request.user)
-#         shipping=120
-#         order_obj.shippingtotal=shipping
-#         total=0
-#         cart_obj=Cart.objects.filter(user=request.user)
-#         for cart_total in cart_obj:
-#             total+= cart_total.total
-#         total=int(total)+shipping
-#         order_obj.total= total
-#         order_obj.save()
-
-#         for obj in cart_obj:
-#             order_detail= OrderDetail.objects.create(orderid=order_obj ,products=obj.products)
-#             order_detail.products=obj.products
-#             order_detail.productname= obj.products.title
-#             order_detail.quantity=obj.quantity
-#             order_detail.total=obj.total
-#             order_detail.save()
-
-#         cart_obj.delete()
-
-#         return redirect(cart)
-#     cart_obj=request.user.carts.all()
-#     return render(request, 'cart.html' ,{'cart':cart_obj})
 
 class updateUser(View):
     def  get(self, request):
@@ -267,8 +228,11 @@ class review(View):
         review_obj= Review.objects.create(user=request.user , product=product)
         review_obj.subject=subject
         review_obj.comment=comment
-        review_obj.rating= 1
+        review_obj.rating= rating
         review_obj.save()
          
         return JsonResponse({'status': 'ok'})
         
+
+def test(request):
+    return render(request , 'test.html' ,{})

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category , Product ,Tag, Cart, Order, OrderDetail ,User , Review
+from .models import Category , Product ,Tag, Cart, Order, OrderDetail ,User , Review, Variant
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin 
 from .models import User
@@ -16,10 +16,18 @@ class MyUserAdmin(UserAdmin):
 
 admin.site.register(User ,MyUserAdmin)
 admin.site.register(Category)
-admin.site.register(Product)
+
 admin.site.register(Tag)
 admin.site.register(Cart)
-admin.site.register(Review)
+
+
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ['title' ,'description']
+
+
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
@@ -29,3 +37,12 @@ class OrderAdmin(admin.ModelAdmin):
 @admin.register(OrderDetail)
 class OrderDetailAdmin(admin.ModelAdmin):
     list_display = ['orderid' , 'productname','quantity','total']
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ['product' , 'user','subject','comment' ,'rating', 'date' ,'time']
+
+@admin.register(Variant)
+class VariantAdmin(admin.ModelAdmin):
+    list_display = ['variant_key' , 'product_key' , 'product']

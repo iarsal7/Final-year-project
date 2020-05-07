@@ -38,7 +38,16 @@ class Product(models.Model):
     featured=models.BooleanField(default=False)
 
     def __str__(self):
-        return self.title
+        return str(self.id) + " " + self.title
+    
+
+class Variant(models.Model):
+    class Meta:
+        unique_together = (('variant_key', 'product_key'),)
+
+    variant_key = models.IntegerField(null=True , blank=True)
+    product_key = models.IntegerField(null=True , blank=True)
+    product= models.ForeignKey(Product , on_delete=models.CASCADE)
 
 class Review(models.Model):
     product = models.ForeignKey(Product , on_delete=models.CASCADE , related_name='reviews')
@@ -49,8 +58,9 @@ class Review(models.Model):
     date= models.DateField(auto_now_add=True, auto_now=False)
     time=models.TimeField(auto_now_add=True , auto_now=False)
 
-
-
+    def __str__(self):
+        return self
+    
 
 class Tag(models.Model):
     name= models.CharField(max_length=100)

@@ -27,7 +27,7 @@ urlpatterns = [
     path('ajax/cart/updateUser/',  views.updateUser.as_view(), name='updateUser'),
     path('ajax/order/' , views.order.as_view(), name='ajaxOrder'),
     path('ajax/product/review' , views.review.as_view(), name='ajaxReview'),
-    # path('test/', UserCreateView.as_view())
+    path('test/', views.test , name='test'),
 
 ]
 #   +static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
