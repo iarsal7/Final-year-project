@@ -233,6 +233,6 @@ class review(View):
          
         return JsonResponse({'status': 'ok'})
         
-
 def test(request):
+
     return render(request , 'test.html' ,{})
