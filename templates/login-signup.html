@@ -1,0 +1,154 @@
+{% extends 'test.html' %}
+
+{% block content %}
+
+ <!-- Start Bradcaump area -->
+        <div class="ht__bradcaump__area" style="background: rgba(0, 0, 0, 0) url(static/tmart/images/bg/2.jpg) no-repeat scroll center center / cover ;">
+            <div class="ht__bradcaump__wrap">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="bradcaump__inner text-center">
+                                <h2 class="bradcaump-title">login & Register</h2>
+                                <nav class="bradcaump-inner">
+                                  <a class="breadcrumb-item" href="index.html">Home</a>
+                                  <span class="brd-separetor">/</span>
+                                  <span class="breadcrumb-item active">login & Register</span>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Bradcaump area -->
+        <!-- Start Login Register Area -->
+        <div class="htc__login__register bg__white ptb--130">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <ul class="login__register__menu" role="tablist">
+                            <li role="presentation" class="login active"><a href="#login" role="tab" data-toggle="tab">Login</a></li>
+                            <li role="presentation" class="register"><a href="#register" role="tab" data-toggle="tab">Register</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Start Login Register Content -->
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="htc__login__register__wrap">
+                            <!-- Start Single Content -->
+                            <div class="form-group justify-content-end" ><h3 class="error text-danger" style="text-align:center; color: #ff4136; " id="formerror"></h3></div>
+                            <div id="login" role="tabpanel" class="single__tabs__panel tab-pane fade in active">
+                                <form class="login" method="post">
+                                 
+                                    <input type="text" placeholder="User Name*" name="user">
+                                    <input type="password" placeholder="Password*" name="password">
+                                </form>
+                                <div class="tabs__checkbox">
+                                    <input type="checkbox">
+                                    <span> Remember me</span>
+                                    <span class="forget"><a href="#">Forget Pasword?</a></span>
+                                </div>
+                                <div class="htc__login__btn mt--30">
+                                    <button class="btn btn-lg btn-danger btn-dark btn-outline-danger" onClick="loginuser()">LOGIN</button>
+                                    
+                                </div>
+                                
+                                <div class="htc__social__connect">
+                                    <h2>Or Login With</h2>
+                                    <ul class="htc__soaial__list">
+                                        <li><a class="bg--twitter" href="#"><i class="zmdi zmdi-twitter"></i></a></li>
+
+                                        <li><a class="bg--instagram" href="#"><i class="zmdi zmdi-instagram"></i></a></li>
+
+                                        <li><a class="bg--facebook" href="#"><i class="zmdi zmdi-facebook"></i></a></li>
+
+                                        <li><a class="bg--googleplus" href="#"><i class="zmdi zmdi-google-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- End Single Content -->
+                            <!-- Start Single Content -->
+                            <div id="register" role="tabpanel" class="single__tabs__panel tab-pane fade">
+                                <form class="login" method="post">
+                                    <input type="text" placeholder="Name*">
+                                    <input type="email" placeholder="Email*">
+                                    <input type="password" placeholder="Password*">
+                                </form>
+                                <div class="tabs__checkbox">
+                                    <input type="checkbox">
+                                    <span> Remember me</span>
+                                </div>
+                                <div class="htc__login__btn">
+                                    <a href="#">register</a>
+                                </div>
+                                <div class="htc__social__connect">
+                                    <h2>Or Login With</h2>
+                                    <ul class="htc__soaial__list">
+                                        <li><a class="bg--twitter" href="#"><i class="zmdi zmdi-twitter"></i></a></li>
+                                        <li><a class="bg--instagram" href="#"><i class="zmdi zmdi-instagram"></i></a></li>
+                                        <li><a class="bg--facebook" href="#"><i class="zmdi zmdi-facebook"></i></a></li>
+                                        <li><a class="bg--googleplus" href="#"><i class="zmdi zmdi-google-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- End Single Content -->
+                        </div>
+                    </div>
+                </div>
+                <!-- End Login Register Content -->
+            </div>
+        </div>
+        <!-- End Login Register Area -->
+
+
+{% endblock content %}
+
+{% block javascript %}
+<script type="text/javascript">
+
+function loginuser(){
+    debugger;
+    console.log("in modal form")
+    var user = $('input[name="user"]').val();
+    var password = $('input[name="password"]').val();
+
+     if (user && password) {
+        $.ajax({
+            url: '{% url 'ajaxsignin' %}',
+            data: {
+                'username': user,
+                'password': password,
+            },
+            dataType: 'json',
+            success: function (data) {
+              auth= true;
+              if (data.status=='ok') {
+               
+				
+                window.location.href='/test'
+              }
+
+              else{
+
+                 $('#formerror').text("username or password incorrect");
+                 return false;
+
+              }
+              }
+
+
+        });
+
+    }
+
+     else {
+       $('#formerror').text("username or password incorrect");
+        return false;
+    }
+
+}
+
+</script>
+{% endblock javascript %}

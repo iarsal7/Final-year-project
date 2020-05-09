@@ -234,5 +234,37 @@ class review(View):
         return JsonResponse({'status': 'ok'})
         
 def test(request):
+    cart_obj=Cart.objects.filter(user=request.user)
+    total=0
+    for cart_total in cart_obj:
+        total+= cart_total.total
+    total= int(total)
+    shipping=120
 
-    return render(request , 'test.html' ,{})
+    gtotal= total + shipping
+
+    user= User.objects.get(username=request.user)
+    context={
+        "cart":cart_obj,
+        "user":user,
+        "total":total,
+        "shipping":shipping,
+        "Gtotal":gtotal
+    }
+
+    return render(request , 'test.html' ,context)
+
+def loginSignup(request):
+
+    return render(request , 'login-signup.html' ,{})
+
+class loginUser(View):
+    def  get(self, request):
+        username = request.GET.get('username', None)
+        password=  request.GET.get('password', None)
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user) 
+            return JsonResponse({'status': 'ok'})
+        else:
+            return JsonResponse({'status': 'login failed'})

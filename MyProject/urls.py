@@ -27,7 +27,11 @@ urlpatterns = [
     path('ajax/cart/updateUser/',  views.updateUser.as_view(), name='updateUser'),
     path('ajax/order/' , views.order.as_view(), name='ajaxOrder'),
     path('ajax/product/review' , views.review.as_view(), name='ajaxReview'),
-    path('test/' , views.test , name='test')
+    path('ajax/user/signin' , views.loginUser.as_view(), name='ajaxsignin'),
+    path('test/' , views.test , name='test'),
+    path('login-signup' , views.loginSignup , name='login-signup')
+
+    
 
 ]
 #   +static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
