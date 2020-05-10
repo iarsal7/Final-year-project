@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category , Product ,Tag, Cart, Order, OrderDetail ,User , Review, Variant
+from .models import Category , Product ,Tag, Cart, Order, OrderDetail ,User , Review, Variant , ProductImage
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin 
 from .models import User
@@ -20,14 +20,21 @@ admin.site.register(Category)
 admin.site.register(Tag)
 admin.site.register(Cart)
 
-
+class ProductImageAdmin(admin.StackedInline):
+    model = ProductImage
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
+    inlines = [ProductImageAdmin]
     list_display = ['title' ,'description']
+    
+    class Meta:
+       model = Product
 
-
+@admin.register(ProductImage)
+class ProductImageAdmin(admin.ModelAdmin):
+    pass
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):

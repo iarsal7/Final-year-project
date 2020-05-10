@@ -398,11 +398,13 @@ $(document).ready(function()
 
 	function initImage()
 	{
+		
 		var images = $('.image_list li');
 		var selected = $('.image_selected img');
 
 		images.each(function()
 		{
+			
 			var image = $(this);
 			image.on('click', function()
 			{

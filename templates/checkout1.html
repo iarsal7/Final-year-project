@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+{% block content %}
+      <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+        <h2>Checkout form</h2>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 order-md-2 mb-4">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-dark">Shipping and Billing</span>
+            {% comment %} <span class="badge badge-secondary badge-pill">3</span> {% endcomment %}
+          </h4>
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <h6 class="my-0" id="model-name">{{request.user.first_name}} {{request.user.last_name}}</h6>
+                <small class="text" id="model-address">{{user.address}}</small>
+              </div>
+              <button class="btn btn-link" type="submit" data-toggle="modal" data-target="#addressModal"><i class="fas fa-edit"></i></button>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <h6 class="my-0" id="model-phone">{{user.phone}}</h6>
+                <small class="text-muted"></small>
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <h6 class="my-0" id="model-email">{{user.email}}</h6>
+              </div>
+            </li>
+            
+            <li class="list-group-item d-flex justify-content-between bg-light">
+              <div class="text-success">
+                <h6 class="my-0">Order Summary</h6>
+                {% comment %} <small>EXAMPLECODE</small> {% endcomment %}
+              </div>
+              {% comment %} <span class="text-success text-dark">Rs {{total}}</span> {% endcomment %}
+            </li>
+
+            
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Subtotal</span>
+              <strong>Rs {{total}}</strong>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Shipping Fee</span>
+              <strong>Rs {{shipping}}</strong>
+            </li>
+
+            
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total</span>
+              <strong>Rs {{Gtotal}}</strong>
+            </li>
+          </ul>
+
+            <form method="post" id="placeOrder">{% csrf_token %}
+            <div class="input-group-btn">
+            <button class="btn-round btn-success form-control ml-auto" type="submit">Place Order</button>
+            </div>
+            </form>
+        </div>
+        
+        
+<div class="col-md-8 order-md-1">
+          
+   {% if cart %}
+        <table id="cartTable" class="table table-bordered table-striped">
+          <tr>
+          <th scope="col">Image</th>
+            <th scope="col">Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Product Price</th>
+            <th scope="col">Total</th>
+          </tr>
+         
+          {% for obj in cart.all %}
+          <tr id="cart-{{obj.products.id}}">
+              <td><a href=""><img src="{{obj.products.image.url}}" heght="100" width="100"></a></td>
+              <td class="cartName cartData" name="name"> {{obj.products.title}}</td>
+              <td class="cartQuantity cartData" name="address">{{obj.quantity}}</td>
+              <td class="cartPrice cartData" name="age">{{obj.products.price}}</td>
+              <td class="cartTotal cartData" name="age">{{obj.total}}</td>
+              </tr>
+          {% endfor %}
+        </table>
+        {% else %}
+            <h1></h1>
+          {% endif %}
+    </div> 
+
+<div id="overlay">
+	<div class="cv-spinner">
+		<span class="spinner "></span>
+	</div>
+</div>
+          
+    <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Billing Address</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      
+      
+      <div class="col-md-12">
+          {% comment %} <h4 class="mb-3">Billing address</h4> {% endcomment %}
+          <form method="POST" id="updateUser">{% csrf_token %}
+            <div class="row">
+              <div class="col-md-6 mb-3 form-group">
+                <label for="firstName">First name</label>
+                <input type="text" class="form-control" name="model-firstName" placeholder=""  required>
+              </div>
+              <div class="col-md-6 mb-3 form-group">
+                <label for="lastName">Last name</label>
+                <input type="text" class="form-control" name="model-lastName"  placeholder=""  required>
+                
+              </div>
+            </div>
+
+            <div class="mb-3 form-group">
+              <label for="phone">Phone</label>
+              <input type="text" class="form-control" name="model-phone" placeholder="03401234567" required>
+              
+            </div>
+
+            <div class="mb-3 form-group">
+              <label for="email">Email </label>
+              <input type="email" class="form-control" name="model-email" placeholder="you@example.com">
+              
+            </div>
+
+            <div class="mb-3 form-group">
+              <label for="address">Address</label>
+              <input type="text" class="form-control" name="model-address" placeholder="1234 Main St" required>
+              
+            </div>
+
+            
+             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             <button type="submit" class="btn btn-primary">Save changes</button>
+            
+
+          </form>
+          
+	    </div>
+        
+       </div>   {% comment %}modal body div ending {% endcomment %}
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+{% endblock content %}
+
+
+{% block javascript %}
+
+<script>
+
+$("form#updateUser").submit(function(event) {
+  
+    event.preventDefault();
+     $("#overlay").fadeIn(1600);　
+    console.log("in modal form")
+    var fname = $('input[name="model-firstName"]').val().trim();
+    var lname = $('input[name="model-lastName"]').val().trim();
+    var phone = $('input[name="model-phone"]').val().trim();
+    var email = $('input[name="model-email"]').val().trim();
+    var address = $('input[name="model-address"]').val().trim();
+
+     if (fname && lname && phone && email && address) {
+        $.ajax({
+            url: '{% url 'updateUser' %}',
+            data: {
+                'fname': fname,
+                'lname': lname,
+                'phone': phone,
+                'email': email,
+                'address': address,
+            },
+            dataType: 'json',
+
+            success: function (data) {
+           setTimeout(function(){
+				           $("#overlay").fadeOut(1600);},500);
+      
+              if (data.status=='updated') {
+                $('form#updateUser').trigger("reset");
+                $('#addressModal').modal('hide');
+
+                setTimeout(function(){
+                $('#model-address').text(address);
+                $('#model-phone').text(phone);
+                $('#model-email').text(email);
+                var fullname = fname.concat(" ", lname);
+                $('#model-name').text(fullname);
+                    },2000);
+
+              }
+
+              else{
+     
+                   }  
+
+              }
+            
+             
+        });
+
+    }
+     else {
+       
+    }
+
+   
+});
+
+
+$("form#placeOrder").submit(function(event) {
+  
+    event.preventDefault();
+    
+        $.ajax({
+            url: '{% url 'ajaxOrder' %}',
+            data: {
+            
+            },
+            dataType: 'json',
+
+            success: function (data) {
+              if (data.status=='ok') {
+                
+
+                window.location.href='checkout/success'
+
+              }
+
+              else{
+     
+                   }  
+
+              }
+            
+             
+        });
+   
+});
+
+
+</script>
+
+{% endblock javascript %}

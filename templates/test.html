@@ -11,7 +11,8 @@
 <link href="{% static 'one/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css' %}" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="{% static 'one/styles/cart_styles.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'one/styles/cart_responsive.css' %}">
-{% block stylesheet %}{% endblock %}
+{% block stylesheet %}
+{% endblock %}
 </head>
 
 <body>
@@ -118,12 +119,12 @@
 							<div class="cart">
 								<div class="cart_container d-flex flex-row align-items-center justify-content-end">
 									<div class="cart_icon">
-										<img src="{% static 'one/images/cart.png' %}" alt="">
-										<div class="cart_count"><span>10</span></div>
+										<a href="{% url 'cart' %}"><img src="{% static 'one/images/cart.png' %}" alt=""></a>
+										<div class="cart_count"><span class="cart-count">{{request.user.carts.all.count}}</span></div>
 									</div>
 									<div class="cart_content">
-										<div class="cart_text"><a href="#">Cart</a></div>
-										<div class="cart_price">$85</div>
+										<div class="cart_text"><a href="{% url 'cart' %}"">Cart</a></div>
+										{% comment %} <div class="cart_price">$85</div> {% endcomment %}
 									</div>
 								</div>
 							</div>
@@ -183,7 +184,7 @@
 
 							<div class="main_nav_menu ml-auto">
 								<ul class="standard_dropdown main_nav_dropdown">
-									<li><a href="index.html">Home<i class="fas fa-chevron-down"></i></a></li>
+									<li ><a  href="index.html">Home<i class="fas fa-chevron-down"></i></a></li>
 									<li class="hassubs">
 										<a href="#">Super Deals<i class="fas fa-chevron-down"></i></a>
 										<ul>
@@ -201,7 +202,7 @@
 										</ul>
 									</li>
 									<li class="hassubs">
-										<a href="#">Featured Brands<i class="fas fa-chevron-down"></i></a>
+										<a  href="#">Featured Brands<i class="fas fa-chevron-down"></i></a>
 										<ul>
 											<li>
 												<a href="#">Menu Item<i class="fas fa-chevron-down"></i></a>
@@ -229,7 +230,7 @@
 										</ul>
 									</li>
 									<li><a href="blog.html">Blog<i class="fas fa-chevron-down"></i></a></li>
-									<li><a href="contact.html">Contact<i class="fas fa-chevron-down"></i></a></li>
+									<li><a  href="contact.html">Contact<i class="fas fa-chevron-down"></i></a></li>
 								</ul>
 							</div>
 
@@ -338,64 +339,7 @@
 
 	</header>
 
-	<!-- Cart -->
-
-	{% comment %} <div class="cart_section">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-10 offset-lg-1">
-					<div class="cart_container">
-						<div class="cart_title">Shopping Cart</div>
-						<div class="cart_items">
-							<ul class="cart_list">
-                            {% for obj in cart.all %}
-								<li class="cart_item clearfix">
-									<div class="cart_item_image"><img src="{{obj.products.image.url}}"  alt=""></div>
-									<div class="cart_item_info d-flex flex-md-row flex-column justify-content-between">
-										<div class="cart_item_name cart_info_col">
-											<div class="cart_item_title">Name</div>
-											<div class="cart_item_text">{{obj.products.title}}</div>
-										</div>
-										<div class="cart_item_color cart_info_col">
-											<div class="cart_item_title">Color</div>
-											<div class="cart_item_text"><span style="background-color:#999999;"></span>Silver</div>
-										</div>
-										<div class="cart_item_quantity cart_info_col">
-											<div class="cart_item_title">Quantity</div>
-											<div class="cart_item_text">1</div>
-										</div>
-										<div class="cart_item_price cart_info_col">
-											<div class="cart_item_title">Price</div>
-											<div class="cart_item_text">$2000</div>
-										</div>
-										<div class="cart_item_total cart_info_col">
-											<div class="cart_item_title">Total</div>
-											<div class="cart_item_text">$2000</div>
-										</div>
-									</div>
-								</li>
-                                 {% endfor %}
-							</ul>
-                           
-						</div>
-						
-						<!-- Order Total -->
-						<div class="order_total">
-							<div class="order_total_content text-md-right">
-								<div class="order_total_title">Order Total:</div>
-								<div class="order_total_amount">$2000</div>
-							</div>
-						</div>
-
-						<div class="cart_buttons">
-							<button type="button" class="button cart_button_clear">Add to Cart</button>
-							<button type="button" class="button cart_button_checkout">Add to Cart</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div> {% endcomment %}
+	
 {% block content %}
 {% endblock %}
 	<!-- Newsletter -->
@@ -539,6 +483,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script src="{% static 'one/plugins/greensock/ScrollToPlugin.min.js' %}"></script>
 <script src="{% static 'one/plugins/easing/easing.js' %}"></script>
 <script src="{% static 'one/js/cart_custom.js' %}"></script>
+<script src="{% static 'js/bootbox.min.js' %}"></script>
 {% block javascript %}
 {% endblock javascript%}
 </body>

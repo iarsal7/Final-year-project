@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponseRedirect , JsonResponse
 from django.views.generic import ListView,View,CreateView
 from .forms import  SearchForm ,MyUserCreationForm
-from .models import Product , Cart , Order ,OrderDetail ,User,Review
+from .models import Product , Cart , Order ,OrderDetail ,User,Review , ProductImage
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -54,12 +54,13 @@ def productDetails(request , id):
 
     try:
         product = Product.objects.get(id=id)
+        photos = ProductImage.objects.filter(product=product)
       
 
     except Product.DoesNotExist: 
         raise Http404('product not found') 
 
-    return render(request , 'productDetails.html' , {'product':product})
+    return render(request , 'productDetails.html' , {'product':product , 'photos':photos})
 
 def featuredList(request):
 
@@ -100,6 +101,10 @@ def searchproduct(request):
 @login_required
 def cart(request):
     cart_obj=request.user.carts.all()
+    Gtotal=0
+    for cart_total in cart_obj:
+        Gtotal+= cart_total.total
+    
     if request.method=='POST':
         product_id= request.POST.get('product_id')
         quantity= request.POST.get('quantity')
@@ -119,9 +124,14 @@ def cart(request):
             request.session['item_count'] = request.user.carts.all().count() #Counting items for navbar
 
             if request.is_ajax():
-                return JsonResponse({"cartCount":request.user.carts.all().count()})
+                data={
+
+                    "cartCount":request.user.carts.all().count(),
+                    "Gtotal": Gtotal
+                }    
+                return JsonResponse(data)
         
-    return render(request, 'cart.html' ,{'cart':cart_obj})
+    return render(request, 'cart.html' ,{'cart':cart_obj ,'Gtotal':Gtotal})
 
 
 class cartdelete(View):
@@ -130,9 +140,14 @@ class cartdelete(View):
         product=Product.objects.get(id=id1)
         cart=Cart.objects.filter(user=request.user , products=product)
         cart.delete()
+        cart_obj=request.user.carts.all()
+        Gtotal=0
+        for cart_total in cart_obj:
+            Gtotal+= cart_total.total
         data = {
             'deleted': True,
-            "cartCount":request.user.carts.all().count()
+            "cartCount":request.user.carts.all().count(),
+             "Gtotal": Gtotal
         }
         return JsonResponse(data)
 

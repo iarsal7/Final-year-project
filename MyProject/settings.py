@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+USE_THOUSAND_SEPARATOR = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

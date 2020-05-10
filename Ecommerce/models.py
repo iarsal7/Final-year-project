@@ -39,6 +39,13 @@ class Product(models.Model):
 
     def __str__(self):
         return str(self.id) + " " + self.title
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, default=None, on_delete=models.CASCADE, related_name='productimages') 
+    images = models.FileField(upload_to = upload_image_to)
+
+    def __str__(self):
+        return self.product.title
     
 
 class Variant(models.Model):

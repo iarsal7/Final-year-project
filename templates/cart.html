@@ -2,7 +2,122 @@
 
 {% block content %}
 
+<!-- Cart -->
 
+	<div class="cart_section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 offset-lg-1">
+					<div class="cart_container">
+						<div class="cart_title">Shopping Cart</div>
+						<div class="cart_items">
+
+							<table id="cartTable" class="table  table-striped">
+         						 <tr class="table" style="color:#0e8ce4 ;text-align:center">
+         						 <th scope="col" class=" cart_item_text">Image</th>
+         						   <th scope="col" class=" cart_item_text">Name</th>
+         						   <th scope="col" class=" cart_item_text">Quantity</th>
+         						   <th scope="col" class=" cart_item_text">Product Price</th>
+         						   <th scope="col" class=" cart_item_text">Total</th>
+         						   <th scope="col" class=" cart_item_text"></th>
+         						 </tr>
+
+         						 {% for obj in cart.all %}
+         						 <tr id="cart-{{obj.products.id}}"  >
+         						     <td><a href=""><img src="{{obj.products.image.url}}" heght="100" width="100"></a></td>
+         						     <td class="cartName cartData cart_item_text" name="name"> {{obj.products.title}}</td>
+         						     <td style="text-align:center" class="cartQuantity cartData cart_item_text" name="address">{{obj.quantity}}</td>
+									  <td style="text-align:center" class="cartPrice cartData cart_item_text" id="price" name="age">Rs {{obj.products.price|floatformat:"0" }}</td>
+         						     <td class="cartTotal cartData cart_item_text " name="total">{{obj.total|floatformat:"0" }}</td>
+         						     <td class="text-right"><button class="btn btn-sm btn-info" style="background:#0e8ce4" onClick="deleteCart({{obj.products.id}})"><i class="fa fa-trash-alt"></i> </button> </td>
+         						     </tr>
+         						 {% endfor %}
+        					</table>
+
+						</div>
+
+						<!-- Order Total -->
+						<div class="order_total">
+							<div class="order_total_content text-md-right">
+								<div class="order_total_title" style="color:#0e8ce4">Order Total:</div>
+								<div class="order_total_amount" id="gtotal">Rs {{Gtotal|floatformat:"0" }}</div>
+							</div>
+						</div>
+
+						<div class="cart_buttons">
+							{% comment %} <button type="button" class="button cart_button_clear">Add to Cart</button> {% endcomment %}
+							<form action='{% url 'checkout' %}'>	
+							<button type="submit" class="button cart_button_checkout">Checkout</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 {% endblock content %}
+
+{% block javascript %}
+
+<script>
+function deleteCart(id) {
+
+	var sum = 0;
+
+	 var total = document.getElementById('price').innerText;
+	$('.price').each(function() {
+        sum += total;
+    });
+
+  bootbox.confirm({
+    message: "Remove Product?",
+    buttons: {
+        confirm: {
+            label: 'Yes',
+            className: 'btn-info'
+        },
+        cancel: {
+            label: 'No',
+            className: 'btn-danger'
+        }
+    },
+    callback: function (result) {
+        if(result){
+          $.ajax({
+           url: '{% url "cartDelete" %}',
+           data: {
+               'id': id,
+           },
+           dataType: 'json',
+            success: function (data) {
+
+               if (data.deleted) {
+                 $("#cartTable #cart-" + id).remove();
+                 var cartcount= $(".cart-count") //cart-count is span field in base.html
+                 cartcount.text(data.cartCount) //cartCount is jsonResponse in views
+				document.getElementById("gtotal").innerHTML = data.Gtotal;
+
+               }
+
+               if (data.cartCount==0){
+                 var table= $("#cartTable")
+                 table.css("display", "none")
+                 var placeorder = $("#placeorder")
+                 placeorder.css("display", "none")
+               }
+           }
+
+          }); //ajax end
+
+
+
+        }
+
+    }
+  });
+
+}
+</script>
+{% endblock javascript %}
