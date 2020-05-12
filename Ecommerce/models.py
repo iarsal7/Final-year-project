@@ -18,8 +18,7 @@ def upload_image_to(instance , filename): #For Creating New Filename
     return "{name}{ext}".format(name=name , ext=ext)
     
 class Category(models.Model):
-    name = models.CharField(max_length=30, unique=True)
-    description = models.TextField()
+    name = models.CharField(max_length=100, unique=True)
 
     class Meta:
         verbose_name = ('category')
@@ -27,12 +26,20 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+class Subcategory(models.Model):
+    category = models.ForeignKey(Category , on_delete=models.CASCADE, related_name='subcategories')
+    name = models.CharField(max_length=100)
+   
+    def __str__(self):
+        return self.name
+
         
 
 class Product(models.Model):
     title= models.CharField(max_length=120)
     description=models.TextField()
-    category = models.ForeignKey(Category , on_delete= models.CASCADE , related_name='products')
+    category = models.ForeignKey(Subcategory , on_delete= models.CASCADE , related_name='products')
     price=models.DecimalField(decimal_places=2 , max_digits=20)
     image=models.ImageField(upload_to=upload_image_to)
     featured=models.BooleanField(default=False)

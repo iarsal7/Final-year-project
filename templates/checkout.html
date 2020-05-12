@@ -1,12 +1,12 @@
 {% extends 'test.html' %}
 
 {% block content %}
-<div class="py-5 text-center">
+<div class="py-5 text-center container">
         <img class="d-block mx-auto mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
         <h2>Checkout form</h2>
       </div>
-      <div class="container">
-<div class="row">
+<div class="container">
+  <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
             <span class="" style="color:#0e8ce4; font-weight: 500;">Shipping and Billing</span>
@@ -96,16 +96,144 @@
         {% else %}
             <h1></h1>
           {% endif %}
-    </div> 
+    </div>     <!--col -->   
 
-</div> 
-      
+</div> <!--row -->
 
+</div> <!--container -->
+
+<div id="overlay">
+	<div class="cv-spinner">
+		<span class="spinner "></span>
+	</div>
 </div>
+
+<div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Billing Address</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <div class="col-md-12">
+          {% comment %} <h4 class="mb-3">Billing address</h4> {% endcomment %}
+          <form method="POST" id="updateUser">{% csrf_token %}
+            <div class="row">
+              <div class="col-md-6 mb-3 form-group">
+                <label for="firstName">First name</label>
+                <input type="text" class="form-control" name="model-firstName" placeholder=""  required>
+              </div>
+              <div class="col-md-6 mb-3 form-group">
+                <label for="lastName">Last name</label>
+                <input type="text" class="form-control" name="model-lastName"  placeholder=""  required>
+                
+              </div>
+            </div>
+
+            <div class="mb-3 form-group">
+              <label for="phone">Phone</label>
+              <input type="text" class="form-control" name="model-phone" placeholder="03401234567" required>
+              
+            </div>
+
+            <div class="mb-3 form-group">
+              <label for="email">Email </label>
+              <input type="email" class="form-control" name="model-email" placeholder="you@example.com">
+              
+            </div>
+
+            <div class="mb-3 form-group">
+              <label for="address">Address</label>
+              <input type="text" class="form-control" name="model-address" placeholder="1234 Main St" required>
+              
+            </div>
+
+            
+             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             <button type="submit" class="btn btn-primary">Save changes</button>
+            
+
+          </form>
+          
+	    </div>
+        
+       </div>   {% comment %}modal body div ending {% endcomment %}
+      
+    </div>
+  </div>
+</div>
+
+
 {% endblock content %}
 
 {% block javascript %}
 <script>
+
+$("form#updateUser").submit(function(event) {
+  
+    event.preventDefault();
+     $("#overlay").fadeIn(1600);　
+    console.log("in modal form")
+    var fname = $('input[name="model-firstName"]').val();
+    var lname = $('input[name="model-lastName"]').val();
+    var phone = $('input[name="model-phone"]').val();
+    var email = $('input[name="model-email"]').val();
+    var address = $('input[name="model-address"]').val();
+
+     if (fname && lname && phone && email && address) {
+        $.ajax({
+            url: '{% url 'updateUser' %}',
+            data: {
+                'fname': fname,
+                'lname': lname,
+                'phone': phone,
+                'email': email,
+                'address': address,
+            },
+            dataType: 'json',
+
+            success: function (data) {
+           setTimeout(function(){
+				           $("#overlay").fadeOut(1600);},500);
+      
+              if (data.status=='updated') {
+                $('form#updateUser').trigger("reset");
+                $('#addressModal').modal('hide');
+
+                setTimeout(function(){
+                $('#model-address').text(address);
+                $('#model-phone').text(phone);
+                $('#model-email').text(email);
+                var fullname = fname.concat(" ", lname);
+                $('#model-name').text(fullname);
+                    },2000);
+
+              }
+
+              else{
+     
+                   }  
+
+              }
+            
+             
+        });
+
+    }
+     else {
+       
+    }
+
+   
+});
+
+
+
+
+
 $("form#placeOrder").submit(function(event) {
   
     event.preventDefault();

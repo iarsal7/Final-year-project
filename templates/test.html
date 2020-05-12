@@ -11,6 +11,7 @@
 <link href="{% static 'one/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css' %}" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="{% static 'one/styles/cart_styles.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'one/styles/cart_responsive.css' %}">
+<link rel="stylesheet" href="{% static 'css/styles.css' %}?{% now "U" %}">
 {% block stylesheet %}
 {% endblock %}
 </head>
@@ -81,23 +82,23 @@
 						<div class="header_search">
 							<div class="header_search_content">
 								<div class="header_search_form_container">
-									<form action="#" class="header_search_form clearfix">
-										<input type="search" required="required" class="header_search_input" placeholder="Search for products...">
+									<form method="GET" value="{{request.GET.q}}" action='{% url 'search' %}' class="header_search_form clearfix" class="header_search_form clearfix">
+										<input type="search" required="required" class="header_search_input" placeholder="Search for products..." name="q" aria-label="Search"  value="{{request.GET.q}}">
 										<div class="custom_dropdown">
 											<div class="custom_dropdown_list">
 												<span class="custom_dropdown_placeholder clc">All Categories</span>
-												<i class="fas fa-chevron-down"></i>
+												{% comment %} <i class="fas fa-chevron-down"></i> {% endcomment %}
 												<ul class="custom_list clc">
-													<li><a class="clc" href="#">All Categories</a></li>
+													{% comment %} <li><a class="clc" href="#">All Categories</a></li>
 													<li><a class="clc" href="#">Computers</a></li>
 													<li><a class="clc" href="#">Laptops</a></li>
 													<li><a class="clc" href="#">Cameras</a></li>
 													<li><a class="clc" href="#">Hardware</a></li>
-													<li><a class="clc" href="#">Smartphones</a></li>
+													<li><a class="clc" href="#">Smartphones</a></li> {% endcomment %}
 												</ul>
 											</div>
 										</div>
-										<button type="submit" class="header_search_button trans_300" value="Submit"><img src="{% static 'one/images/search.png' %}" alt=""></button>
+										<button class="header_search_button trans_300" name="submit" type="submit" value="submit"><img src="{% static 'one/images/search.png' %}" alt=""></button>
 									</form>
 								</div>
 							</div>

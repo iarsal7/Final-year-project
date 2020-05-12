@@ -11,6 +11,7 @@
 
 {% endblock stylesheet %}
 
+
 {% block content %}
 
 <!-- Single Product -->
@@ -41,7 +42,7 @@
 				<!-- Description -->
 				<div class="col-lg-5 order-3">
 					<div class="product_description">
-						<div class="product_category">Laptops</div>
+						<div class="product_category">'{{product.category.name}}'</div>
 						<div class="product_name">{{product.title}}</div>
 						<div class="rating_r rating_r_4 product_rating"><i></i><i></i><i></i><i></i><i></i></div>
 						<div class="product_text"><p>{{product.description}}</p></div>
@@ -51,12 +52,12 @@
 								<div class="clearfix" style="z-index: 1000;">
 
 									<!-- Product Quantity -->
-									<div class="product_quantity clearfix">
-										<span>Quantity: </span>
-										<input id="quantity_input" type="text" pattern="[0-9]*" name="quantity" value="1">
-										<div class="quantity_buttons">
-											<div id="quantity_inc_button" class="quantity_inc quantity_control"><i class="fas fa-chevron-up"></i></div>
-											<div id="quantity_dec_button" class="quantity_dec quantity_control"><i class="fas fa-chevron-down"></i></div>
+									<div style="background-color: #0e8ce4;" class=" product_quantity clearfix" >
+										<span style="font-size: 18px; font-weight: 400; line-height: 48px; color: #FFFFFF;" >Quantity: </span>
+										<input type="text" style="font-size: 18px; font-weight: 400; line-height: 48px; background-color:#0e8ce4 ; color: #FFFFFF;"  id="quantity_input"  pattern="[0-9]*" name="quantity" value="1">
+										<div class="button quantity_buttons ml-0" style="background-color: 0e8ce4;">
+											<div id="quantity_inc_button" class="quantity_inc quantity_control "><i style="color: #FFFFFF;" class="fas fa-chevron-up"></i></div>
+											<div id="quantity_dec_button" class="quantity_dec quantity_control"> <i style="color: #FFFFFF;" class="fas fa-chevron-down"></i></div>
 										</div>
 									</div>
 
@@ -94,7 +95,6 @@
 	</div>
 
 {% endblock content %}
-
 {% block javascript %}
 <script src="{% static 'one/plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
 <script src="{% static 'one/js/product_custom.js' %}"></script>
@@ -103,18 +103,20 @@
     var productForm = $(".form-product-ajax") //add to cart
 	
 	productForm.submit(function(event){　
-
+		debugger;
 		event.preventDefault();
+		
         var thisForm = $(this)
         var action= thisForm.attr("action");
         var method = thisForm.attr("method");
         var formData = thisForm.serialize();
-
+	
 
       $.ajax({
         url: action,
         method: method,
         data: formData,
+					
         success: function(data){
 
         var cartcount= $(".cart-count") //cart-count is span field in base.html
