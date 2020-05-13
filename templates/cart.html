@@ -4,36 +4,71 @@
 
 <!-- Cart -->
 
-	<div class="cart_section">
-		<div class="container">
+	 <div class="cart_section">
+		<div class="">
 			<div class="row">
 				<div class="col-lg-10 offset-lg-1">
 					<div class="cart_container">
 						<div class="cart_title">Shopping Cart</div>
 						<div class="cart_items">
 
-							<table id="cartTable" class="table  table-striped">
-         						 <tr class="table" style="color:#0e8ce4 ;text-align:center">
-         						 <th scope="col" class=" cart_item_text">Image</th>
-         						   <th scope="col" class=" cart_item_text">Name</th>
-         						   <th scope="col" class=" cart_item_text">Quantity</th>
-         						   <th scope="col" class=" cart_item_text">Product Price</th>
-         						   <th scope="col" class=" cart_item_text">Total</th>
-         						   <th scope="col" class=" cart_item_text"></th>
-         						 </tr>
 
-         						 {% for obj in cart.all %}
-         						 <tr id="cart-{{obj.products.id}}"  >
-         						     <td><a href=""><img src="{{obj.products.image.url}}" heght="100" width="100"></a></td>
-         						     <td class="cartName cartData cart_item_text" name="name"> {{obj.products.title}}</td>
-         						     <td style="text-align:center" class="cartQuantity cartData cart_item_text" name="address">{{obj.quantity}}</td>
-									  <td style="text-align:center" class="cartPrice cartData cart_item_text" id="price" name="age">Rs {{obj.products.price|floatformat:"0" }}</td>
-         						     <td class="cartTotal cartData cart_item_text " name="total">{{obj.total|floatformat:"0" }}</td>
-         						     <td class="text-right"><button class="btn btn-sm btn-info" style="background:#0e8ce4" onClick="deleteCart({{obj.products.id}})"><i class="fa fa-trash-alt"></i> </button> </td>
+<table id="cartTable" class="table  table-striped">
+         						 <tr class="table table-bordered table-striped" style="color:#0e8ce4 ;text-align:center ; font-size:large;">
+         						 <th  scope="col">Image</th>
+         						   <th scope="col" >Name</th>
+         						   <th scope="col" >Quantity</th>
+
+         						   <th scope="col" >Product Price</th>
+         						   <th scope="col" >Total</th>
+         						   {% comment %} <th scope="col"></th> {% endcomment %}
+         						 </tr>
+{% for obj in cart.all %}
+         						 <tr style="font-size: 15px; font-weight: 500;" id="cart-{{obj.products.id}}"  >
+         						     <td class="cartImage cartData" name="image" style="text-align:center ;"><a href="{% url 'productDetails' obj.products.id %}"><img src="{{obj.products.image.url}}" heght="100" width="100"></a></td>
+         						     <td class="cartName cartData" name="name" style="text-align:center" id="product-title" value="{{obj.products.title}}"><a href="{% url 'productDetails' obj.products.id %}"> {{obj.products.title}}</a></td>
+         						     {% comment %} <td style="text-align:center" name="address">{{obj.quantity}}</td> {% endcomment %}
+									 
+									  <td class="cartQuantity cartData" name="quantity" >
+									  
+									
+									  <input type="number" id="{{obj.products.id}}" class="quantity form-control text-center col-md-6 col-12 text-danger" name="cart-quantity" min="1" value="{{obj.quantity}}">
+									  
+									  </td>
+									 	
+									
+									 {% comment %} <td style="text-align:center">
+                    				  
+										<div class="input-group mb-3 col-sm-6 mx-auto"></div>
+									
+											
+											<div>
+												<input type="text" class="form-control text-center text-info" min="1" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+												<span class="icon-stack">
+														<button style="background-color:white; color: black;" class="btn-primary js-btn-plus" type="button"><i style="background-color:white; color: black;" class="fa fa-plus" aria-hidden="true"></i></button>
+												  </span>
+													<br>
+												  <span class="icon-stack">
+													<button style="background-color:white; color: black;" class="btn-primary js-btn-minus" type="button"><i style="background-color:white; color: black;" class="fa fa-minus" aria-hidden="true"></i></button>
+												  </span>
+												
+												</div>
+										  
+										</div>
+		  
+										
+                    				</td> {% endcomment %}
+									 
+									 
+									 
+									 
+									 <td class="cartPrice cartData" style="text-align:center" id="price" name="price">Rs {{obj.products.price|floatformat:"0" }}</td>
+         						     <td class="cartTotal cartData" style="text-align:right" class="align-items-center" id="product-total" name="total"><span> {{obj.total|floatformat:"0" }} </span> <button class="btn btn-sm btn-info ml-1 btn-danger" onClick="deleteCart({{obj.products.id}})"><i class="fa fa-trash-alt"></i> </button> </td>
+         					      {% comment %} <td><button class="btn btn-sm btn-info" style="background:#0e8ce4" onClick="deleteCart({{obj.products.id}})"><i class="fa fa-trash-alt"></i> </button> </td> {% endcomment %}
          						     </tr>
          						 {% endfor %}
         					</table>
-
+							
 						</div>
 
 						<!-- Order Total -->
@@ -45,9 +80,9 @@
 						</div>
 
 						<div class="cart_buttons">
-							{% comment %} <button type="button" class="button cart_button_clear">Add to Cart</button> {% endcomment %}
+							
 							<form action='{% url 'checkout' %}'>	
-							<button type="submit" class="button cart_button_checkout">Checkout</button>
+							<button type="submit" class="btn btn-lg btn-success ml-5 py-2 px-4">Checkout</button>
 							</form>
 						</div>
 					</div>
@@ -55,15 +90,14 @@
 			</div>
 		</div>
 	</div>
-
-
 {% endblock content %}
 
 {% block javascript %}
 
 <script>
 function deleteCart(id) {
-
+	debugger;
+	var test= id
 	var sum = 0;
 
 	 var total = document.getElementById('price').innerText;
@@ -119,5 +153,113 @@ function deleteCart(id) {
   });
 
 }
+
+{% comment %} var sitePlusMinus = function() {
+		$('.js-btn-minus').on('click', function(e){
+			e.preventDefault();
+			
+			if ( $(this).closest('.input-group').find('.form-control').val() >1  ) {
+				$(this).closest('.input-group').find('.form-control').val(parseInt($(this).closest('.input-group').find('.form-control').val()) - 1);
+			} else {
+				$(this).closest('.input-group').find('.form-control').val(parseInt(1));
+			} 
+			
+		});
+		$('.js-btn-plus').on('click', function(e){
+			e.preventDefault();
+			$(this).closest('.input-group').find('.form-control').val(parseInt($(this).closest('.input-group').find('.form-control').val()) + 1);
+		});
+	};
+	sitePlusMinus(); {% endcomment %}
+
+var quantityCart = function(){
+	$( "input[type='number']" ).change(function(e) {
+
+		debugger;
+		var quantity =parseInt(e.target.value);
+		var id = $(this).attr("id");
+		var total = parseInt(($(this).parent().next().text().split(' ')[1]).split(',').join('')) * quantity;
+		$(this).parent().next().next().find('span').text(total)
+
+		//	var title= document.getElementById ( "product-title" ).innerText;
+		var spans = $.find('tr>td>span')
+
+		
+		$.ajax({
+            url: '{% url 'cartUpdate' %}',
+            data: {
+                'quantity': quantity,
+                'id': id,
+            },
+            dataType: 'json',
+            success: function (data) {
+
+              if (data.cart) {
+			
+				{% comment %} updateToCartTable(data.cart); {% endcomment %}
+
+              }
+
+              else{
+
+                 
+
+              }
+              }
+
+
+        });
+
+
+
+	});
+	}
+
+	quantityCart();
+ 
+
+
+ {% comment %} function quantityCart(id){
+
+	debugger;
+		
+		var quantity = $('input[name="cart-quantity"]').val().trim();
+		// var id = $('input[name="product-id"]').val();
+		
+		var quantity= $(".cart-quantity").val();
+		
+		$.ajax({
+            url: '{% url 'cartUpdate' %}',
+            data: {
+                'quantity': quantity,
+                'id': id,
+            },
+            dataType: 'json',
+            success: function (data) {
+				updateToCartTable(data.cart);
+
+              }
+
+
+        });
+
+
+
+	return false;
+	} {% endcomment %}
+
+
+
+
+{% comment %} function updateToCartTable(cart){
+    $("#cartTable #cart-" + cart.id).children(".cartData").each(function() {
+		
+        var attr = $(this).attr("name");
+        if (attr == "total") {
+          $(this).text(cart.total);
+        } 
+      });
+} {% endcomment %}
+
 </script>
 {% endblock javascript %}

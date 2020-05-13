@@ -133,6 +133,34 @@ def cart(request):
         
     return render(request, 'cart.html' ,{'cart':cart_obj ,'Gtotal':Gtotal})
 
+class cartupdate(View):
+    def  get(self, request):
+        id1 = request.GET.get('id', None)
+        quantity= request.GET.get('quantity', None)
+        product=Product.objects.get(id=id1)
+        cart=Cart.objects.get(user=request.user , products=product)
+        cart.quantity=quantity
+        cart.total=Decimal(quantity) * product.price
+        cart.save()
+        total= cart.total
+        cart_obj=request.user.carts.all()
+        Gtotal=0
+        for cart_total in cart_obj:
+            Gtotal+= cart_total.total
+
+        carttable= {'status': 'ok',
+           "Gtotal": Gtotal,
+           'total' : total,
+           'quantity':quantity,
+           'id': id1,
+           'name': product.title
+           
+           }
+        data = {
+            'cart': carttable
+        }
+
+        return JsonResponse(data)
 
 class cartdelete(View):
     def  get(self, request):

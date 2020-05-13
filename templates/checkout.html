@@ -70,26 +70,27 @@
    {% if cart %}
         <div class="">
 
-							<table id="cartTable" class="table table-bordered  table-striped">
-         						 <tr class="table" style="color:#0e8ce4 ;text-align:center">
-         						 <th scope="col" class=" cart_item_text" style="font-weight: 500;">Image</th>
-         						   <th scope="col" class=" cart_item_text" style="font-weight: 500;">Name</th>
-         						   <th scope="col" class=" cart_item_text" style="font-weight: 500;">Quantity</th>
-         						   <th scope="col" class=" cart_item_text"style="font-weight: 500;">Product Price</th>
-         						   <th scope="col" class=" cart_item_text" style="font-weight: 500;">Total</th>
-         						   
+						{% for obj in cart.all %}
+<table id="cartTable" class="table  table-striped">
+         						 <tr class="table table-bordered table-striped" style="color:#0e8ce4 ;text-align:center ; font-weight:500;">
+         						 <th  scope="col">Image</th>
+         						   <th scope="col" >Name</th>
+         						   <th scope="col" >Quantity</th>
+         						   <th scope="col" >Product Price</th>
+         						   <th scope="col" >Total</th>
+         						   {% comment %} <th scope="col"></th> {% endcomment %}
          						 </tr>
 
-         						 {% for obj in cart.all %}
-         						 <tr id="cart-{{obj.products.id}}"  >
-         						     <td><a href=""><img src="{{obj.products.image.url}}" heght="100" width="100"></a></td>
-         						     <td class="cartName cartData cart_item_text" name="name"> {{obj.products.title}}</td>
-         						     <td style="text-align:center" class="cartQuantity cartData cart_item_text" name="address">{{obj.quantity}}</td>
-									  <td style="text-align:center" class="cartPrice cartData cart_item_text" id="price" name="age">Rs {{obj.products.price|floatformat:"0" }}</td>
-         						     <td class="cartTotal cartData cart_item_text " name="total">{{obj.total|floatformat:"0" }}</td>
+         						 <tr style="font-size: 15px; font-weight: 500;" id="cart-{{obj.products.id}}"  >
+         						     <td style="text-align:center"><a href=""><img src="{{obj.products.image.url}}" heght="100" width="100"></a></td>
+         						     <td style="text-align:center" name="name"> {{obj.products.title}}</td>
+         						     <td style="text-align:center" name="address">{{obj.quantity}}</td>
+									       <td style="text-align:center" id="price" name="age">Rs {{obj.products.price|floatformat:"0" }}</td>
+         						     <td style="text-align:right" class="align-items-center" name="total">{{obj.total|floatformat:"0" }}</td>
          						 </tr>
-         						 {% endfor %}
+         						
         					</table>
+							 {% endfor %}
 
 						</div>
 

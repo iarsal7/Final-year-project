@@ -24,6 +24,7 @@ urlpatterns = [
     path('cart/checkout/success' , views.success , name='success'),
     path('ajax/cart/delete/',  views.cartdelete.as_view(), name='cartDelete'),
     path('ajax/cart/login/',  views.cartlogin.as_view(), name='cartLogin'),
+    path('ajax/cart/update/',  views.cartupdate.as_view(), name='cartUpdate'),
     path('ajax/cart/updateUser/',  views.updateUser.as_view(), name='updateUser'),
     path('ajax/order/' , views.order.as_view(), name='ajaxOrder'),
     path('ajax/product/review' , views.review.as_view(), name='ajaxReview'),
