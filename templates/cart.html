@@ -23,7 +23,7 @@
          						   <th scope="col" >Total</th>
          						   {% comment %} <th scope="col"></th> {% endcomment %}
          						 </tr>
-{% for obj in cart.all %}
+								{% for obj in cart.all %}
          						 <tr style="font-size: 15px; font-weight: 500;" id="cart-{{obj.products.id}}"  >
          						     <td class="cartImage cartData" name="image" style="text-align:center ;"><a href="{% url 'productDetails' obj.products.id %}"><img src="{{obj.products.image.url}}" heght="100" width="100"></a></td>
          						     <td class="cartName cartData" name="name" style="text-align:center" id="product-title" value="{{obj.products.title}}"><a href="{% url 'productDetails' obj.products.id %}"> {{obj.products.title}}</a></td>
@@ -35,33 +35,7 @@
 									  <input type="number" id="{{obj.products.id}}" class="quantity form-control text-center col-md-6 col-12 text-danger" name="cart-quantity" min="1" value="{{obj.quantity}}">
 									  
 									  </td>
-									 	
 									
-									 {% comment %} <td style="text-align:center">
-                    				  
-										<div class="input-group mb-3 col-sm-6 mx-auto"></div>
-									
-											
-											<div>
-												<input type="text" class="form-control text-center text-info" min="1" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-												<span class="icon-stack">
-														<button style="background-color:white; color: black;" class="btn-primary js-btn-plus" type="button"><i style="background-color:white; color: black;" class="fa fa-plus" aria-hidden="true"></i></button>
-												  </span>
-													<br>
-												  <span class="icon-stack">
-													<button style="background-color:white; color: black;" class="btn-primary js-btn-minus" type="button"><i style="background-color:white; color: black;" class="fa fa-minus" aria-hidden="true"></i></button>
-												  </span>
-												
-												</div>
-										  
-										</div>
-		  
-										
-                    				</td> {% endcomment %}
-									 
-									 
-									 
-									 
 									 <td class="cartPrice cartData" style="text-align:center" id="price" name="price">Rs {{obj.products.price|floatformat:"0" }}</td>
          						     <td class="cartTotal cartData" style="text-align:right" class="align-items-center" id="product-total" name="total"><span> {{obj.total|floatformat:"0" }} </span> <button class="btn btn-sm btn-info ml-1 btn-danger" onClick="deleteCart({{obj.products.id}})"><i class="fa fa-trash-alt"></i> </button> </td>
          					      {% comment %} <td><button class="btn btn-sm btn-info" style="background:#0e8ce4" onClick="deleteCart({{obj.products.id}})"><i class="fa fa-trash-alt"></i> </button> </td> {% endcomment %}
@@ -90,6 +64,12 @@
 			</div>
 		</div>
 	</div>
+
+	<div id="overlay">
+	<div class="cv-spinner">
+		<span class="spinner "></span>
+	</div>
+</div>
 {% endblock content %}
 
 {% block javascript %}
@@ -154,28 +134,15 @@ function deleteCart(id) {
 
 }
 
-{% comment %} var sitePlusMinus = function() {
-		$('.js-btn-minus').on('click', function(e){
-			e.preventDefault();
-			
-			if ( $(this).closest('.input-group').find('.form-control').val() >1  ) {
-				$(this).closest('.input-group').find('.form-control').val(parseInt($(this).closest('.input-group').find('.form-control').val()) - 1);
-			} else {
-				$(this).closest('.input-group').find('.form-control').val(parseInt(1));
-			} 
-			
-		});
-		$('.js-btn-plus').on('click', function(e){
-			e.preventDefault();
-			$(this).closest('.input-group').find('.form-control').val(parseInt($(this).closest('.input-group').find('.form-control').val()) + 1);
-		});
-	};
-	sitePlusMinus(); {% endcomment %}
 
 var quantityCart = function(){
 	$( "input[type='number']" ).change(function(e) {
+		 $("#overlay").fadeIn(1600);
 
-		debugger;
+
+ 							setTimeout(function(){
+				           $("#overlay").fadeOut(1600);},500);
+					
 		var quantity =parseInt(e.target.value); //find input quantity field
 		var id = $(this).attr("id");  //find id of product
 		var total = parseInt(($(this).parent().next().text().split(' ')[1]).split(',').join('')) * quantity; //find parent of input which is td and find total field using next and multiply with qnty
@@ -212,6 +179,8 @@ var quantityCart = function(){
 			
 				{% comment %} updateToCartTable(data.cart); {% endcomment %}
 
+				
+
               }
 
               else{
@@ -231,37 +200,6 @@ var quantityCart = function(){
 
 	quantityCart();
  
-
-
- {% comment %} function quantityCart(id){
-
-	debugger;
-		
-		var quantity = $('input[name="cart-quantity"]').val().trim();
-		// var id = $('input[name="product-id"]').val();
-		
-		var quantity= $(".cart-quantity").val();
-		
-		$.ajax({
-            url: '{% url 'cartUpdate' %}',
-            data: {
-                'quantity': quantity,
-                'id': id,
-            },
-            dataType: 'json',
-            success: function (data) {
-				updateToCartTable(data.cart);
-
-              }
-
-
-        });
-
-
-
-	return false;
-	} {% endcomment %}
-
 
 
 

@@ -63,7 +63,29 @@ class Variant(models.Model):
     product_key = models.IntegerField(null=True , blank=True)
     product= models.ForeignKey(Product , on_delete=models.CASCADE)
 
+
+class Variation(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE , related_name='variations')
+    name= models.CharField(max_length=50)
+
+    class Meta:
+        unique_together = (('product', 'name'),)
+
+    def __str__(self):
+        return self.name
+    
+    
+
+class ItemVariation(models.Model):
+    variation= models.ForeignKey(Variation , on_delete= models.CASCADE)
+    value= models.CharField(max_length=50)  
+    
+    class Meta:
+        unique_together = (('variation', 'value'),)
+
+
 class Review(models.Model):
+    status=models.BooleanField(default=False)
     product = models.ForeignKey(Product , on_delete=models.CASCADE , related_name='reviews')
     user= models.ForeignKey(User , on_delete=models.CASCADE , related_name='reviews')
     subject= models.CharField(max_length=50)
@@ -72,8 +94,6 @@ class Review(models.Model):
     date= models.DateField(auto_now_add=True, auto_now=False)
     time=models.TimeField(auto_now_add=True , auto_now=False)
 
-    def __str__(self):
-        return self
     
 
 class Tag(models.Model):
@@ -88,6 +108,7 @@ class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='carts')
     products= models.ForeignKey(Product , on_delete=models.Case, related_name='carts' ,null=True , blank=True)
     quantity= models.IntegerField(null=True , blank=True)
+    note= models.TextField(blank=True , null=True)
     total= models.DecimalField(decimal_places=2 , max_digits=100 ,null=True ,blank=True)
 
     def __str__(self):

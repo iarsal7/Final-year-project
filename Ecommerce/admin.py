@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category , Product ,Tag, Cart, Order, OrderDetail ,User , Review, Variant , ProductImage, Subcategory
+from .models import Category , Product ,Tag, Cart, Order, OrderDetail ,User , Review, Variant , ProductImage, Subcategory , Variation , ItemVariation
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin 
 from .models import User
@@ -36,6 +36,25 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
     pass
+    
+class ItemVariationAdmin(admin.StackedInline):
+    model = ItemVariation
+
+
+@admin.register(Variation)
+class VariationAdmin(admin.ModelAdmin):
+    inlines = [ItemVariationAdmin]
+    list_display = ['product' ,'name']
+    
+    class Meta:
+       model = Variation
+
+@admin.register(ItemVariation)
+class ItemVariationAdmin(admin.ModelAdmin):
+    list_display=['variation' , 'value']
+
+
+
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):

@@ -3,15 +3,17 @@ from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponseRedirect , JsonResponse
 from django.views.generic import ListView,View,CreateView
 from .forms import  SearchForm ,MyUserCreationForm
-from .models import Product , Cart , Order ,OrderDetail ,User,Review , ProductImage
+from .models import Product , Cart , Order ,OrderDetail ,User,Review , ProductImage , Review , Variation , ItemVariation
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from decimal import Decimal
 from django.urls import reverse_lazy
+from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def home(request):
-
+    
     products = Product.objects.all()
     
     context={
@@ -51,16 +53,40 @@ def productList(request):
 
 
 def productDetails(request , id):
-
+    
     try:
         product = Product.objects.get(id=id)
         photos = ProductImage.objects.filter(product=product)
-      
+
 
     except Product.DoesNotExist: 
         raise Http404('product not found') 
 
-    return render(request , 'productDetails.html' , {'product':product , 'photos':photos})
+
+    variation = Variation.objects.filter(product=product)
+    size = variation.first()
+    size_variation= ItemVariation.objects.filter(variation= size)
+     
+
+    
+    review_list = Review.objects.filter(product=product , user=request.user , status=True)
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(review_list, 5)
+    
+    try:
+        review = paginator.page(page)
+    except PageNotAnInteger:
+        review = paginator.page(1)
+    except EmptyPage:
+        review= paginator.page(paginator.num_pages)
+
+    context={
+        'product':product , 'photos':photos , 'review':review , 'size':size , 'size_variation':size_variation,
+    
+    }
+
+    return render(request , 'productDetails.html' , context)
 
 def featuredList(request):
 
@@ -107,6 +133,8 @@ def cart(request):
     
     if request.method=='POST':
         product_id= request.POST.get('product_id')
+        size= request.POST.get('size')
+        print(size)
         quantity= request.POST.get('quantity')
         product=Product.objects.get(id=product_id)
         cart= Cart.objects.filter(user=request.user , products=product).first()
@@ -273,7 +301,7 @@ class review(View):
         review_obj.comment=comment
         review_obj.rating= rating
         review_obj.save()
-         
+        messages.success(request, 'Form submission successful')
         return JsonResponse({'status': 'ok'})
         
 def test(request):

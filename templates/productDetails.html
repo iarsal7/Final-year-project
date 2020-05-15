@@ -6,7 +6,8 @@
 <link rel="stylesheet" type="text/css" href="{% static 'one/plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'one/plugins/OwlCarousel2-2.2.1/animate.css' %}">
 {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'one/styles/product_styles.css' %}"> {% endcomment %}
-<link rel="stylesheet" type="text/css" href="{% static 'one/styles/product_responsive' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one/styles/product_responsive.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'review/css/style.css' %}">
 
 
 {% endblock stylesheet %}
@@ -64,18 +65,21 @@
 									<!-- Product Color -->
 									<ul class="product_color">
 										<li>
-											<span>Color: </span>
-											<div class="color_mark_container"><div id="selected_color" class="color_mark"></div></div>
+											<span>Size: </span>
+											<div class="color_mark_container"><div id="selected_color" class="text_mark">Small</div></div>
 											<div class="color_dropdown_button"><i class="fas fa-chevron-down"></i></div>
 
 											<ul class="color_list">
-												<li><div class="color_mark" style="background: #999999;"></div></li>
-												<li><div class="color_mark" style="background: #b19c83;"></div></li>
+												<li><div class="text_mark">Small</div></li>
+												<li><div class="text_mark">Medium</div></li>
+												<li><div class="text_mark">Large</div></li> 
+												{% comment %} {% for size in size_variation.all  %}
 												<li><div class="color_mark" style="background: #000000;"></div></li>
+												{% endfor %} {% endcomment %}
 											</ul>
 										</li>
 									</ul>
-
+															
 								</div>
 
 								<div class="product_price">Rs {{product.price|floatformat:"0" }}</div>
@@ -93,12 +97,157 @@
 			</div>
 		</div>
 	</div>
+	
+<div class="container">
+              <div class="row">
+                <div class="col-12 ">
+                  <nav>
+                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                      <a class="nav-item nav-link" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Description</a>
+                      <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Specification</a>
+                      <a class="nav-item nav-link active" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="false">Review</a>
+                    </div>
+                  </nav>
+                  <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                    <div class="tab-pane fade " id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                     {{product.description}}
+                    </div>
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                      Et et consectetur ipsum labore excepteur est proident excepteur ad velit occaecat qui minim occaecat veniam. Fugiat veniam incididunt anim aliqua enim pariatur veniam sunt est aute sit dolor anim. Velit non irure adipisicing aliqua ullamco irure incididunt irure non esse consectetur nostrud minim non minim occaecat. Amet duis do nisi duis veniam non est eiusmod tempor incididunt tempor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis occaecat ex.
+                    </div>
+                   
+                    <div class="tab-pane fade show active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
+                     
+							<div class="row">
+							
+										<div class="col-md-6">
+											<div class="product-reviews">
+											{% for obj in review  %}
+												<div class="single-review">
+													<div class="review-heading">
+														<div><i class="fa fa-user" aria-hidden="true"></i> {{obj.user.username}}</div>
+														<div style="" class="align-items-end"><i class="fas fa-clock "></i> {{obj.date}} / {{obj.time}}</div>
+														<div style="float:right" class="review-rating pull-right">
+														
+															<i style="color: #f2b600" class="fa{% if obj.rating < 1 %}r{% endif %} fa-star"></i>
+															<i style="color: #f2b600" class="fa{% if obj.rating < 2 %}r{% endif %} fa-star"></i>
+															<i style="color: #f2b600" class="fa{% if obj.rating < 3 %}r{% endif %} fa-star"></i>
+															<i style="color: #f2b600" class="fa{% if obj.rating < 4 %}r{% endif %} fa-star"></i>
+															<i style="color: #f2b600" class="fa{% if obj.rating < 5 %}r{% endif %} fa-star"></i>
+														
+															
+														</div>
+													</div>
+													<div class="review-body">
+													<p> <b>{{obj.subject}}</b></p>
+														<p class="col-12">{{obj.comment}}</p>
+													</div>
+											
+												</div>
+												{% endfor %}
+												{% if review.has_other_pages %}
+  													<ul class="reviews-pages">
+  													  {% if review.has_previous %}
+  													    <li><a href="?page={{ review.previous_page_number }}"><i class="fas fa-backward"></i></a></li>
+  													  {% else %}
+  													    <li class="disabled"><span><i class="fas fa-backward"></i></span></li>
+  													  {% endif %}
+  													  {% for i in review.paginator.page_range %}
+  													    {% if review.number == i %}
+  													      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+  													    {% else %}
+  													      <li><a href="?page={{ i }}">{{ i }}</a></li>
+  													    {% endif %}
+  													  {% endfor %}
+  													  {% if review.has_next %}
+  													    <li><a href="?page={{ review.next_page_number }}"><i class="fas fa-forward"></i></a></li>
+  													  {% else %}
+  													    <li class="disabled"><span><i class="fas fa-forward"></i></span></li>
+  													  {% endif %}
+  													</ul>
+  												{% endif %}
+												{% comment %} <ul class="reviews-pages">
+													<li class="active">1</li>
+													<li><a href="#">2</a></li>
+													<li><a href="#">3</a></li>
+													<li><a href="#"><i class="fa fa-caret-right"></i></a></li>
+												</ul> {% endcomment %}
+											</div>
+										</div>
+										<div class="col-md-6">
+											<h4 class="text-uppercase">Write Your Review</h4>
+											<p><br></p>
+											
+											<form method="POST" id="ReviewForm" class="review-form">{% csrf_token %}
+											
+												<div class="form-group">
+												 <span class="error text-danger" id="reviewerror"></span>
+												 <h4 style="font-weight: 500;" class="text-success" id="reviewsuccess"></h1>
+												
+													<input class="input form-control" type="text" id="inputSubject" name="inputSubject" placeholder="Subject" />
+												</div>
+
+												<div class="form-group">
+													<textarea class="input form-control"  id="inputComment"  name="inputComment" placeholder="Your review"></textarea>
+												</div>
+												<div class="form-group">
+													<div class="input-rating">
+														<strong class="text-uppercase">Your Rating: </strong>
+														<div class="star-rating">
+    													  <input id="star-5" type="radio" name="rating" value="5" />
+    													  <label for="star-5" title="5 stars">
+    													    <i class="active fa fa-star" aria-hidden="true"></i>
+    													  </label>
+    													  <input id="star-4" type="radio" name="rating" value="4" />
+    													  <label for="star-4" title="4 stars">
+    													    <i class="active fa fa-star" aria-hidden="true"></i>
+    													  </label>
+    													  <input id="star-3" type="radio" name="rating" value="3" />
+    													  <label for="star-3" title="3 stars">
+    													    <i class="active fa fa-star" aria-hidden="true"></i>
+    													  </label>
+    													  <input id="star-2" type="radio" name="rating" value="2" />
+    													  <label for="star-2" title="2 stars">
+    													    <i class="active fa fa-star" aria-hidden="true"></i>
+    													  </label>
+    													  <input id="star-1" type="radio" name="rating" value="1" />
+    													  <label for="star-1" title="1 star">
+    													    <i class="active fa fa-star" aria-hidden="true"></i>
+    													  </label>
+    													</div>						
+													</div>
+												</div>
+											{% if request.user.is_authenticated %}
+												<button style="background-color:#0e8ce4"  type="submit" value="submit" class="btn btn-info">Submit Now</button>
+												{% else %}
+												<p>You must be logged in to review</p>
+												{% endif %}
+											</form>
+										</div>
+									</div>
+                    </div>
+                  </div>
+                
+                </div>
+              </div>
+        </div>
+
+
+ 
+
+
+  {% for item in item_variation.all  %}
+<p>{{item.value}}</p>
+{% endfor %}
 
 {% endblock content %}
 {% block javascript %}
 <script src="{% static 'one/plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
 <script src="{% static 'one/js/product_custom.js' %}"></script>
+
 <script>
+	
+    $(document).ready(function(){
 
     var productForm = $(".form-product-ajax") //add to cart
 	
@@ -106,11 +255,13 @@
 		debugger;
 		event.preventDefault();
 		
+		
+
         var thisForm = $(this)
         var action= thisForm.attr("action");
         var method = thisForm.attr("method");
         var formData = thisForm.serialize();
-	
+		var selectedCol = $('#selected_color').text()
 
       $.ajax({
         url: action,
@@ -133,8 +284,68 @@
 
         })
 
+}) 
+
+$("form#ReviewForm").submit(function(event) {
+  
+    event.preventDefault();
+    
+    var subject = $('input[name="inputSubject"]').val();
+    var comment = $('textarea[name="inputComment"]').val();
+    var id =    $('input[name="product_id"]').val();
+	var rating = document.querySelector('input[name="rating"]:checked');
+	if (rating){
+
+
+		rating= parseInt(rating.value);
+	}
+    
+     if (subject && comment && rating) {
+        $.ajax({
+            url: '{% url 'ajaxReview'  %}',
+            data: {
+                'subject': subject,
+                'comment': comment,
+                'rating': rating,
+                'id': id,
+            },
+            dataType: 'json',
+
+            success: function (data) {
+           
+      
+              if (data.status=='ok') {
+                $('form#ReviewForm').trigger("reset");
+               
+			   $('#reviewsuccess').text("Your review has been sent for approval");
+              }
+
+              else{
+     
+                   }  
+
+              }
+            
+             
+        });
+
+    }
+     else {
+		
+        $('#reviewerror').text("Please fill all fields");
+        return false;
+
+     
+    }
+
+   
+});
+
+
+
 
 
 </script>
+
 
 {% endblock javascript %}
