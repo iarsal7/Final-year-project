@@ -84,6 +84,9 @@
 									
 								<input type="hidden" name="size_mark" id="size_mark" value="">
 								<div class="product_price">Rs {{product.price|floatformat:"0" }}</div>
+
+								
+								
 								<div class="button_container">
 									<button type="submit"  name="submit" value="submit" class="button cart_button">Add to Cart</button>
 									
@@ -98,8 +101,71 @@
 			</div>
 		</div>
 	</div>
-	
-<div class="container">
+
+{% if variants %}
+
+<div style="margin-top: -60px;" class="container mb-5">
+				<h2 style="text-align: center;">OTHER VARIANTS</h2>
+            <div class="row blog">
+                <div class="col-md-12">
+                    <div id="blogCarousel" class="carousel slide" data-ride="carousel">
+
+                        <ol class="carousel-indicators">
+                            <li data-target="#blogCarousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#blogCarousel" data-slide-to="1"></li>
+                        </ol>
+
+                        <!-- Carousel items -->
+                        <div class="carousel-inner">
+
+                            <div class="carousel-item active">
+                                <div class="row">
+								 {% for var in variants  %}
+									
+                                    <div class="col-md-3">
+                                        <a href="#">
+                                            <img class="center" src="{{ var.product.image.url}}" alt="Image" style="max-width:100%;">
+											<h4>{{var.product.title}}</h4>
+                                        </a>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <!--.row-->
+                            </div>
+                            <!--.item-->
+
+                            <div class="carousel-item">
+                                <div class="row">
+								 {% for var in variants  %}
+                                    <div class="col-md-3">
+                                        <a href="#">
+                                           <img class="center" src="{{ var.product.image.url}}" alt="Image" style=" max-width:100%;">
+										   <h4>{{var.product.title}}</h4>
+                                        </a>
+                                    </div>
+									 {% endfor %}
+                                </div>
+                                <!--.row-->
+                            </div>
+                            <!--.item-->
+
+                        </div>
+                        <!--.carousel-inner-->
+                    </div>
+                    <!--.Carousel-->
+
+                </div>
+            </div>
+</div>
+
+{% endif %}
+
+
+
+
+
+ 	
+<div class="container mb-5">
               <div class="row">
                 <div class="col-12 ">
                   <nav>
@@ -237,10 +303,7 @@
  
 
 
-  {% for item in item_variation.all  %}
-<p>{{item.value}}</p>
-{% endfor %}
-
+ 
 {% endblock content %}
 {% block javascript %}
 <script src="{% static 'one/plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>

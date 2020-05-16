@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponseRedirect , JsonResponse
 from django.views.generic import ListView,View,CreateView
 from .forms import  SearchForm ,MyUserCreationForm
-from .models import Product , Cart , Order ,OrderDetail ,User,Review , ProductImage , Review , Variation , ItemVariation
+from .models import Product , Cart , Order ,OrderDetail ,User,Review , ProductImage , Review , Variation , ItemVariation , Variant
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -62,12 +62,18 @@ def productDetails(request , id):
     except Product.DoesNotExist: 
         raise Http404('product not found') 
 
+    # Size Variation    
 
     variation = Variation.objects.filter(product=product)
     size = variation.first()
     size_variation= ItemVariation.objects.filter(variation= size)
      
-
+    # Variants
+    variants=[]
+    variant = Variant.objects.filter(product= product).first()
+    if variant is not None:
+        variant_id= variant.variant_key
+        variants= Variant.objects.filter(variant_key= variant_id).exclude(product=product)
     
     review_list = Review.objects.filter(product=product , user=request.user , status=True)
     page = request.GET.get('page', 1)
@@ -83,7 +89,7 @@ def productDetails(request , id):
 
     context={
         'product':product , 'photos':photos , 'review':review , 'size':size , 'size_variation':size_variation,
-    
+            'variants':variants
     }
 
     return render(request , 'productDetails.html' , context)
