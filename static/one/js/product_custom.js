@@ -369,6 +369,7 @@ $(document).ready(function()
 				{
 					var color = colorItem.text();
 					selectedCol.text(color);
+					
 				});
 			});
 		}

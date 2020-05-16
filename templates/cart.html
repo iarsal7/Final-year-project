@@ -24,20 +24,22 @@
          						   {% comment %} <th scope="col"></th> {% endcomment %}
          						 </tr>
 								{% for obj in cart.all %}
-         						 <tr style="font-size: 15px; font-weight: 500;" id="cart-{{obj.products.id}}"  >
+								<input type="hidden" name="size_mark" id="{{obj.note}}" value={{obj.note}}>
+         						 <tr style="font-size: 15px; font-weight: 500;" id="cart-{{obj.products.id}}-{{obj.note}}">
          						     <td class="cartImage cartData" name="image" style="text-align:center ;"><a href="{% url 'productDetails' obj.products.id %}"><img src="{{obj.products.image.url}}" heght="100" width="100"></a></td>
-         						     <td class="cartName cartData" name="name" style="text-align:center" id="product-title" value="{{obj.products.title}}"><a href="{% url 'productDetails' obj.products.id %}"> {{obj.products.title}}</a></td>
+         						     <td class="cartName cartData" name="name" style="text-align:center" id="product-title" value="{{obj.products.title}}"><a href="{% url 'productDetails' obj.products.id %}"> {{obj.products.title}}</a> ({{obj.note}}) </td>
+									  
          						     {% comment %} <td style="text-align:center" name="address">{{obj.quantity}}</td> {% endcomment %}
 									 
-									  <td class="cartQuantity cartData" name="quantity" >
+									  <td style="text-allign:center" class="cartQuantity cartData" name="quantity" >
 									  
 									
-									  <input type="number" id="{{obj.products.id}}" class="quantity form-control text-center col-md-6 col-12 text-danger" name="cart-quantity" min="1" value="{{obj.quantity}}">
+									  <input style="text-allign: center" type="number" id="{{obj.products.id}}" class="quantity form-control text-center col-sm-6 col-12  mx-auto text-danger" name="cart-quantity" min="1" value="{{obj.quantity}}">
 									  
 									  </td>
 									
 									 <td class="cartPrice cartData" style="text-align:center" id="price" name="price">Rs {{obj.products.price|floatformat:"0" }}</td>
-         						     <td class="cartTotal cartData" style="text-align:right" class="align-items-center" id="product-total" name="total"><span> {{obj.total|floatformat:"0" }} </span> <button class="btn btn-sm btn-info ml-1 btn-danger" onClick="deleteCart({{obj.products.id}})"><i class="fa fa-trash-alt"></i> </button> </td>
+         						     <td class="cartTotal cartData" style="text-align:right" class="align-items-center" id="product-total" name="total" ><span> {{obj.total|floatformat:"0" }} </span> <button class="btn btn-sm btn-info ml-1 btn-danger" value="{{obj.note}}" onClick="deleteCart({{obj.products.id}}, {{obj.note}} )"><i class="fa fa-trash-alt"></i> </button> </td>
          					      {% comment %} <td><button class="btn btn-sm btn-info" style="background:#0e8ce4" onClick="deleteCart({{obj.products.id}})"><i class="fa fa-trash-alt"></i> </button> </td> {% endcomment %}
          						     </tr>
          						 {% endfor %}
@@ -75,11 +77,19 @@
 {% block javascript %}
 
 <script>
-function deleteCart(id) {
-	debugger;
-	var test= id
+function deleteCart(id ,e) {
+	let size=""
+	if(e){
+		size= e.id;
+	}
+	
+	let prod_id= id;
 	var sum = 0;
 
+	debugger;
+	//var id = $(this).attr("id"); 
+	//var size = $('input[name="size_mark"]').val();
+	//var size = $('input[name="size_mark"]').val();
 	 var total = document.getElementById('price').innerText;
 	$('.price').each(function() {
         sum += total;
@@ -102,13 +112,15 @@ function deleteCart(id) {
           $.ajax({
            url: '{% url "cartDelete" %}',
            data: {
-               'id': id,
+			   'id': prod_id,
+			   'size': size,
+               
            },
            dataType: 'json',
             success: function (data) {
 
                if (data.deleted) {
-                 $("#cartTable #cart-" + id).remove();
+                 $("#cartTable #cart-"+id + "-" +size ).remove();
                  var cartcount= $(".cart-count") //cart-count is span field in base.html
                  cartcount.text(data.cartCount) //cartCount is jsonResponse in views
 				document.getElementById("gtotal").innerHTML = data.Gtotal;
@@ -142,9 +154,11 @@ var quantityCart = function(){
 
  							setTimeout(function(){
 				           $("#overlay").fadeOut(1600);},500);
-					
+				
+				debugger;
 		var quantity =parseInt(e.target.value); //find input quantity field
 		var id = $(this).attr("id");  //find id of product
+		var size= $(this).parent().parent().attr("id").split('-')[2]
 		var total = parseInt(($(this).parent().next().text().split(' ')[1]).split(',').join('')) * quantity; //find parent of input which is td and find total field using next and multiply with qnty
 		var comma =total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); //add thousand commas in total
 		$(this).parent().next().next().find('span').text(comma) //set new total value in total span field
@@ -171,6 +185,7 @@ var quantityCart = function(){
             data: {
                 'quantity': quantity,
                 'id': id,
+				'size': size,
             },
             dataType: 'json',
             success: function (data) {

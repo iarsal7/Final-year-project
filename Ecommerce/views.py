@@ -133,12 +133,13 @@ def cart(request):
     
     if request.method=='POST':
         product_id= request.POST.get('product_id')
-        size= request.POST.get('size')
-        print(size)
         quantity= request.POST.get('quantity')
+        size= request.POST.get('size_mark')
+        print(size)
         product=Product.objects.get(id=product_id)
-        cart= Cart.objects.filter(user=request.user , products=product).first()
+        cart= Cart.objects.filter(user=request.user , products=product, note=size).first()
         if cart is not None:
+            cart.note=size
             cart.quantity += int(quantity)
             cart.save()
         else:
@@ -147,6 +148,7 @@ def cart(request):
             cart_obj.quantity=quantity
             total=Decimal(cart_obj.quantity) * product.price
             cart_obj.total= total
+            cart_obj.note=size
             cart_obj.save()
 
             request.session['item_count'] = request.user.carts.all().count() #Counting items for navbar
@@ -164,9 +166,13 @@ def cart(request):
 class cartupdate(View):
     def  get(self, request):
         id1 = request.GET.get('id', None)
+        print(id1)
         quantity= request.GET.get('quantity', None)
+        size= request.GET.get('size', None)
+        print("arsal")
+        print(size)
         product=Product.objects.get(id=id1)
-        cart=Cart.objects.get(user=request.user , products=product)
+        cart=Cart.objects.filter(user=request.user , products=product , note=size).first()
         cart.quantity=quantity
         cart.total=Decimal(quantity) * product.price
         cart.save()
@@ -193,8 +199,11 @@ class cartupdate(View):
 class cartdelete(View):
     def  get(self, request):
         id1 = request.GET.get('id', None)
+        size= request.GET.get('size', None)
+        print("arsal")
+        print(size)
         product=Product.objects.get(id=id1)
-        cart=Cart.objects.filter(user=request.user , products=product)
+        cart=Cart.objects.filter(user=request.user , products=product , note=size)
         cart.delete()
         cart_obj=request.user.carts.all()
         Gtotal=0

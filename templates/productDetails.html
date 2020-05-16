@@ -63,25 +63,26 @@
 									</div>
 
 									<!-- Product Color -->
+									{% if size %}
 									<ul class="product_color">
 										<li>
-											<span>Size: </span>
-											<div class="color_mark_container"><div id="selected_color" class="text_mark">Small</div></div>
+											<span>{{size.name}} </span>
+											{% for size in size_variation.all|slice:":1" %}
+											<div class="color_mark_container"><div id="selected_color" class="text_mark">{{size.value}}</div></div>
+											{% endfor %}
 											<div class="color_dropdown_button"><i class="fas fa-chevron-down"></i></div>
-
+											
 											<ul class="color_list">
-												<li><div class="text_mark">Small</div></li>
-												<li><div class="text_mark">Medium</div></li>
-												<li><div class="text_mark">Large</div></li> 
-												{% comment %} {% for size in size_variation.all  %}
-												<li><div class="color_mark" style="background: #000000;"></div></li>
-												{% endfor %} {% endcomment %}
+											{% for size in size_variation.all  %}
+												<li><div class="text_mark">{{size.value}}</div></li> 
+												{% endfor %}
 											</ul>
 										</li>
 									</ul>
-															
+								{% endif %}							
 								</div>
-
+									
+								<input type="hidden" name="size_mark" id="size_mark" value="">
 								<div class="product_price">Rs {{product.price|floatformat:"0" }}</div>
 								<div class="button_container">
 									<button type="submit"  name="submit" value="submit" class="button cart_button">Add to Cart</button>
@@ -254,14 +255,12 @@
 	productForm.submit(function(event){　
 		debugger;
 		event.preventDefault();
-		
-		
 
+		document.getElementById("size_mark").value = $('#selected_color').text();
         var thisForm = $(this)
         var action= thisForm.attr("action");
         var method = thisForm.attr("method");
-        var formData = thisForm.serialize();
-		var selectedCol = $('#selected_color').text()
+       var formData = thisForm.serialize();
 
       $.ajax({
         url: action,

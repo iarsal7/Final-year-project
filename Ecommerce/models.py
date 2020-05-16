@@ -77,7 +77,7 @@ class Variation(models.Model):
     
 
 class ItemVariation(models.Model):
-    variation= models.ForeignKey(Variation , on_delete= models.CASCADE)
+    variation= models.ForeignKey(Variation , on_delete= models.CASCADE ,related_name='itemvariations')
     value= models.CharField(max_length=50)  
     
     class Meta:
