@@ -19,7 +19,6 @@ urlpatterns = [
     path('featured/<int:id>/' , views.featuredDetails , name='featuredDetails'),
     path('search/' , views.searchproduct , name='search'),
     path('cart/' , views.cart , name='cart'),
-    # path('cart/cartupdate', views.cartUpdate , name='cartUpdate'),
     path('cart/checkout' , views.checkout , name='checkout'),
     path('cart/checkout/success' , views.success , name='success'),
     path('ajax/cart/delete/',  views.cartdelete.as_view(), name='cartDelete'),
@@ -30,7 +29,10 @@ urlpatterns = [
     path('ajax/product/review' , views.review.as_view(), name='ajaxReview'),
     path('ajax/user/signin' , views.loginUser.as_view(), name='ajaxsignin'),
     path('test/' , views.test , name='test'),
-    path('login-signup' , views.loginSignup , name='login-signup')
+    path('login-signup' , views.loginSignup , name='login-signup'),
+    path('user/profile' , views.profile ,name='user-profile'),
+    path('order/details/<int:id>' , views.orderdetails ,name='user-detail'),
+
 
     
 

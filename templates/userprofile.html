@@ -1,0 +1,130 @@
+{% extends 'test.html' %}
+{% load static %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="{% static 'one/plugins/OwlCarousel2-2.2.1/owl.carousel.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one/plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one/plugins/OwlCarousel2-2.2.1/animate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one/plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one/styles/shop_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one/styles/shop_responsive.css' %}">
+{% endblock stylesheet %}
+
+{% block content %}
+
+<div class="home">
+		<div class="home_background parallax-window" data-parallax="scroll" data-image-src="{% static 'one/images/shop_background.jpg' %}"></div>
+		<div class="home_overlay"></div>
+		<div class="home_content d-flex flex-column align-items-center justify-content-center">
+			<h2 class="home_title">My Account</h2>
+		</div>
+	</div> 
+
+	<div style="background-color:#F7F7F7" class="shop">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-2">
+					<!-- Shop Sidebar -->
+					<div class="shop_sidebar">
+						<div class="sidebar_section">
+							<div class="sidebar_title">Categories</div>
+							<ul  class="sidebar_categories">
+								<li><a href="#">Computers & Laptops</a></li>
+								<li><a style="color: black;" href="#">Cameras & Photos</a></li>
+								<li><a href="#">Hardware</a></li>
+								<li><a href="#">Smartphones & Tablets</a></li>
+								<li><a href="#">TV & Audio</a></li>
+								<li><a href="#">Gadgets</a></li>
+								<li><a href="#">Car Electronics</a></li>
+								<li><a href="#">Video Games & Consoles</a></li>
+								<li><a href="#">Accessories</a></li>
+							</ul>
+						</div>
+						
+					</div>
+
+				</div>
+
+				
+				<div class="col-sm-10">
+				  <div class="row no-gutters">	
+    				<div class="col-sm-6">
+    			        <div style="min-height: 250px;" class="card">
+    			        	<div class="card-body">
+    			        	  <h5 class="card-title">Personel Profile</h5>
+							  <p class="card-text">{{request.user.get_full_name}}</p>
+							  <p class="card-text">{{request.user.email}}</p>
+							  <p class="card-text">{{request.user.phone}}</p>
+    			        	  <a href="#" class="card-link">Edit</a>
+    			        	</div>
+    			        </div>
+    			    </div>
+    			    <div class="col-sm-6">
+    			        <div style="min-height: 250px;" class="card">
+    			        	<div class="card-body">
+							  <h5 class="card-title">Address</h5>
+							  <p class="card-text">Default Shipping Address</p>
+							  <p class="card-text">{{request.user.get_full_name}}</p>
+    			        	  <p class="card-text">{{request.user.address|linebreaks}}</p>
+    			        	  <a href="#" class="card-link">Edit</a>
+    			        	</div>
+    			        </div>
+    			    </div>
+				  </div>
+				</div>
+
+				<div  class="col-12 order-md-3 justify-content-end mt-5">
+					<div style="min-height: 250px;" class="card">
+    			        	<div style="max-height: 30px;" class="card-body">
+							  <h5 class="card-title">Recent Orders</h5>
+    			        	</div>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">
+							<table class="table">
+								<thead>
+								  <tr>
+									<th scope="col">Order #</th>
+									<th scope="col">Date</th>
+									<th scope="col">Time</th>
+									<th scope="col">Items</th>
+									<th scope="col">Total</th>
+								  </tr>
+								</thead>
+								<tbody>
+									{% for obj in order.all  %}
+								  <tr>
+									<th><a href="{% url 'user-detail' obj.id %}">{{obj.number}}</a></th>
+									<td>{{obj.date}}</td>
+									<td>{{obj.time}}</td>
+									<td>{{obj.orderDetails.all.count}}</td>
+									<td>Rs {{obj.total|floatformat:0}}</td>
+								  </tr>
+								  {% endfor %}
+								</tbody>
+							  </table>
+						  </li>
+						</ul>
+					</div>
+				</div>
+
+			</div> <!--row ended-->
+</div>
+</div>
+
+
+
+{% endblock content %}
+{% block javascript %}
+
+<script src="{% static 'one/plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+<script src="{% static 'one/plugins/Isotope/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'one/plugins/jquery-ui-1.12.1.custom/jquery-ui.js' %}"></script>
+<script src="{% static 'one/plugins/parallax-js-master/parallax.min.js' %}"></script>
+<script src="{% static 'one/js/shop_custom.js' %}"></script>
+
+<script>
+
+
+</script>
+
+{% endblock javascript %}
+

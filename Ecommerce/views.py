@@ -354,3 +354,21 @@ class loginUser(View):
             return JsonResponse({'status': 'ok'})
         else:
             return JsonResponse({'status': 'login failed'})
+
+def profile(request):
+    order= Order.objects.filter(user=request.user).order_by('-date', '-time')
+    
+    return render(request , 'userprofile.html' , { 'order': order })
+
+def orderdetails(request , id):
+
+    orderdetail= OrderDetail.objects.filter(id=id)
+    orderno= orderdetail.first().orderid
+    orderdetail= OrderDetail.objects.filter(orderid=orderno)
+    print(orderno)
+
+    return render(request , 'orderdetails.html', {'orderdetail': orderdetail , 'number':orderno})
+
+def wishlist(requrst):
+
+    return render(request, 'wishlist.html' ,{})
