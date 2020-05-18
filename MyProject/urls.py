@@ -32,6 +32,10 @@ urlpatterns = [
     path('login-signup' , views.loginSignup , name='login-signup'),
     path('user/profile' , views.profile ,name='user-profile'),
     path('order/details/<int:id>' , views.orderdetails ,name='user-detail'),
+    path('ajax/wishlist' , views.updateWishlist.as_view(), name='wishlist-update'),
+    path('ajax/wishlist/product/remove' , views.removeWishlist.as_view(), name='wishlist-remove'),
+    path('wishlist', views.wishlist , name='wishlist'),
+    
 
 
     

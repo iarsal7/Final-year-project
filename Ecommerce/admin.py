@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category , Product ,Tag, Cart, Order, OrderDetail ,User , Review, Variant , ProductImage, Subcategory , Variation , ItemVariation
+from .models import Category , Product ,Tag, Cart, Order, OrderDetail ,User , Review, Variant , ProductImage, Subcategory , Variation , ItemVariation , Wishlist
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin 
 from .models import User
@@ -20,6 +20,8 @@ admin.site.register(Subcategory)
 
 admin.site.register(Tag)
 admin.site.register(Cart)
+admin.site.register(Wishlist)
+
 
 class ProductImageAdmin(admin.StackedInline):
     model = ProductImage

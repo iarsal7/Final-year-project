@@ -381,15 +381,40 @@ $(document).ready(function()
 
 	*/
 
-	function initFavs()
-	{
-		// Handle Favorites
-		var fav = $('.product_fav');
-		fav.on('click', function()
-		{
-			fav.toggleClass('active');
-		});
-	}
+	// function initFavs()
+	// {
+	// 	// Handle Favorites
+	// 	var fav = $('.product_fav');
+	// 	fav.on('click', function()
+	// 	{
+	// 		fav.toggleClass('active');
+	// 		var id =    $('input[name="product_id"]').val();
+
+	// 		$.ajax({
+	// 			url: action,
+	// 			method: method,
+	// 			url: '{% url 'wishlist-update' %}',
+    //         	data: {
+    //         	    'id': id,
+    //         	},
+    //         	dataType: 'json',
+							
+	// 			success: function(data){
+		
+	// 			//var cartcount= $(".cart-count") //cart-count is span field in base.html
+	// 			//cartcount.text(data.cartCount) //cartCount is jsonResponse in views
+		
+	// 			},
+		
+	// 		  error: function(errorData){
+	// 			console.log("error")
+	// 			console.log(errorData)
+	// 		  }
+		
+	// 		  });
+
+	// 	});
+	// }
 
 	/* 
 

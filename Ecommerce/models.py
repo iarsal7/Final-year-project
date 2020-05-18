@@ -150,3 +150,8 @@ class OrderDetail(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+
+class Wishlist(models.Model):
+    products= models.ForeignKey(Product, on_delete=models.CASCADE , related_name='wishlists')
+    user=models.ForeignKey(User, on_delete=models.CASCADE, related_name='wishlists')

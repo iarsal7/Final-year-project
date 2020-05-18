@@ -27,7 +27,7 @@
 								<input type="hidden" name="size_mark" id="{{obj.note}}" value={{obj.note}}>
          						 <tr style="font-size: 15px; font-weight: 500;" id="cart-{{obj.products.id}}-{{obj.note}}">
          						     <td class="cartImage cartData" name="image" style="text-align:center ;"><a href="{% url 'productDetails' obj.products.id %}"><img src="{{obj.products.image.url}}" heght="100" width="100"></a></td>
-         						     <td class="cartName cartData" name="name" style="text-align:center" id="product-title" value="{{obj.products.title}}"><a href="{% url 'productDetails' obj.products.id %}"> {{obj.products.title}}</a> ({{obj.note}}) </td>
+         						     <td class="cartName cartData" name="name" style="text-align:center" id="product-title" value="{{obj.products.title}}"><a href="{% url 'productDetails' obj.products.id %}"> {{obj.products.title}}</a> {% if obj.note %}({{obj.note}}){% endif %} </td>
 									  
          						     {% comment %} <td style="text-align:center" name="address">{{obj.quantity}}</td> {% endcomment %}
 									 

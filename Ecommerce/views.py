@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponseRedirect , JsonResponse
 from django.views.generic import ListView,View,CreateView
 from .forms import  SearchForm ,MyUserCreationForm
-from .models import Product , Cart , Order ,OrderDetail ,User,Review , ProductImage , Review , Variation , ItemVariation , Variant
+from .models import Product , Cart , Order ,OrderDetail ,User,Review , ProductImage , Review , Variation , ItemVariation , Variant, Wishlist
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -62,6 +62,10 @@ def productDetails(request , id):
     except Product.DoesNotExist: 
         raise Http404('product not found') 
 
+
+    #wishlist
+    wishlist= Wishlist.objects.filter(products=product , user=request.user).first()
+    
     # Size Variation    
 
     variation = Variation.objects.filter(product=product)
@@ -89,7 +93,7 @@ def productDetails(request , id):
 
     context={
         'product':product , 'photos':photos , 'review':review , 'size':size , 'size_variation':size_variation,
-            'variants':variants
+            'variants':variants , 'wishlist':wishlist
     }
 
     return render(request , 'productDetails.html' , context)
@@ -369,6 +373,55 @@ def orderdetails(request , id):
 
     return render(request , 'orderdetails.html', {'orderdetail': orderdetail , 'number':orderno})
 
-def wishlist(requrst):
 
-    return render(request, 'wishlist.html' ,{})
+class updateWishlist(View):
+
+    def  get(self, request):
+        productid=request.GET.get('id', None)
+
+        product= Product.objects.get(id= productid)
+
+        wish= Wishlist.objects.filter(user=request.user , products=product).first()
+        
+        if wish is not None:
+            wish.save()
+
+
+        else:
+
+            wishlist= Wishlist.objects.create(products=product , user= request.user)
+
+            wishlist.save()
+
+        data={
+                    "wishCount":request.user.wishlists.all().count(),
+                }    
+
+
+        return JsonResponse(data)
+
+class removeWishlist(View):
+
+    def get(self, request):
+    
+        productid=request.GET.get('id', None)
+
+        product= Product.objects.get(id= productid)
+
+        wish= Wishlist.objects.filter(user=request.user , products=product).first()
+
+        if wish is not None:
+            wish.delete()
+
+        data={
+            'deleted': True,
+            "wishCount":request.user.wishlists.all().count(),
+                    }    
+
+        return JsonResponse(data)
+
+def wishlist(request):
+
+    wishlist= Wishlist.objects.filter(user=request.user)
+
+    return render(request , 'wishlist.html' ,{'wishlist':wishlist})

@@ -90,7 +90,7 @@
 								<div class="button_container">
 									<button type="submit"  name="submit" value="submit" class="button cart_button">Add to Cart</button>
 									
-									<div class="product_fav"><i class="fas fa-heart"></i></div>
+									<div class="product_fav {% if wishlist %} active {% endif %}"><i class="fas fa-heart"></i></div>
 								</div>
 								
 							</form>
@@ -403,6 +403,75 @@ $("form#ReviewForm").submit(function(event) {
 
 
 
+	function initFavs()
+	{
+		// Handle Favorites
+		var fav = $('.product_fav');
+		fav.on('click', function()
+		{
+
+			fav.toggleClass('active');
+			var test =$('.product_fav').hasClass( "active" )
+			
+			if(test == true){
+
+			var id =    $('input[name="product_id"]').val();
+
+			$.ajax({
+				url: '{% url 'wishlist-update' %}',
+            	data: {
+            	    'id': id,
+            	},
+            	dataType: 'json',
+							
+				success: function(data){
+		
+				
+				var wishcount= $(".wish-count") //cart-count is span field in base.html
+				wishcount.text(data.wishCount) //cartCount is jsonResponse in views
+		
+
+				},
+		
+			  error: function(errorData){
+				console.log("error")
+				console.log(errorData)
+			  }
+		
+			  });
+			}
+
+
+		if(test == false){
+
+			var id =    $('input[name="product_id"]').val();
+
+			$.ajax({
+				url: '{% url 'wishlist-remove' %}',
+            	data: {
+            	    'id': id,
+            	},
+            	dataType: 'json',
+							
+				success: function(data){
+		
+				var wishcount= $(".wish-count") //cart-count is span field in base.html
+				wishcount.text(data.wishCount) //cartCount is jsonResponse in views
+		
+				},
+		
+			  error: function(errorData){
+				console.log("error")
+				console.log(errorData)
+			  }
+		
+			  });
+			}
+
+
+
+		});
+	}
 </script>
 
 
