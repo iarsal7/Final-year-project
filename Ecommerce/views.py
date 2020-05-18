@@ -62,10 +62,11 @@ def productDetails(request , id):
     except Product.DoesNotExist: 
         raise Http404('product not found') 
 
+    user= User.objects.filter(username=request.user).first()
 
     #wishlist
-    wishlist= Wishlist.objects.filter(products=product , user=request.user).first()
-    
+    wishlist= Wishlist.objects.filter(products=product , user=user).first()
+     
     # Size Variation    
 
     variation = Variation.objects.filter(product=product)
@@ -79,7 +80,7 @@ def productDetails(request , id):
         variant_id= variant.variant_key
         variants= Variant.objects.filter(variant_key= variant_id).exclude(product=product)
     
-    review_list = Review.objects.filter(product=product , user=request.user , status=True)
+    review_list = Review.objects.filter(product=product , user=user , status=True)
     page = request.GET.get('page', 1)
 
     paginator = Paginator(review_list, 5)
@@ -324,7 +325,8 @@ class review(View):
         return JsonResponse({'status': 'ok'})
         
 def test(request):
-    cart_obj=Cart.objects.filter(user=request.user)
+    user= User.objects.filter(username=request.user).first()
+    cart_obj=Cart.objects.filter(user=user)
     total=0
     for cart_total in cart_obj:
         total+= cart_total.total
@@ -333,7 +335,6 @@ def test(request):
 
     gtotal= total + shipping
 
-    user= User.objects.get(username=request.user)
     context={
         "cart":cart_obj,
         "user":user,
@@ -360,7 +361,8 @@ class loginUser(View):
             return JsonResponse({'status': 'login failed'})
 
 def profile(request):
-    order= Order.objects.filter(user=request.user).order_by('-date', '-time')
+    user= User.objects.filter(username=request.user).first()
+    order= Order.objects.filter(user=user).order_by('-date', '-time')
     
     return render(request , 'userprofile.html' , { 'order': order })
 
@@ -422,6 +424,7 @@ class removeWishlist(View):
 
 def wishlist(request):
 
-    wishlist= Wishlist.objects.filter(user=request.user)
+    user= User.objects.filter(username=request.user).first()
+    wishlist= Wishlist.objects.filter(user=user)
 
     return render(request , 'wishlist.html' ,{'wishlist':wishlist})

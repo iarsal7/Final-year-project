@@ -86,10 +86,17 @@
 								<div class="product_price">Rs {{product.price|floatformat:"0" }}</div>
 
 								
-								
+								<div class="alert alert-success" id="success-alert" style="display:none">
+								  <button type="button" class="close" data-dismiss="alert">x</button>
+								  <strong>Success! </strong> Product have added to your cart.
+								</div>
+
 								<div class="button_container">
+								{% if request.user.is_authenticated %}
 									<button type="submit"  name="submit" value="submit" class="button cart_button">Add to Cart</button>
-									
+								{% else %}
+								<button class="button cart_button" data-toggle="modal" data-target="#loginModal">Add to Cart</button>
+								{% endif %}	
 									<div class="product_fav {% if wishlist %} active {% endif %}"><i class="fas fa-heart"></i></div>
 								</div>
 								
@@ -176,7 +183,7 @@
                      {{product.description}}
                     </div>
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                      Et et consectetur ipsum labore excepteur est proident excepteur ad velit occaecat qui minim occaecat veniam. Fugiat veniam incididunt anim aliqua enim pariatur veniam sunt est aute sit dolor anim. Velit non irure adipisicing aliqua ullamco irure incididunt irure non esse consectetur nostrud minim non minim occaecat. Amet duis do nisi duis veniam non est eiusmod tempor incididunt tempor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis occaecat ex.
+                      {{product.description}}
                     </div>
                    
                     <div class="tab-pane fade show active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
@@ -229,12 +236,7 @@
   													  {% endif %}
   													</ul>
   												{% endif %}
-												{% comment %} <ul class="reviews-pages">
-													<li class="active">1</li>
-													<li><a href="#">2</a></li>
-													<li><a href="#">3</a></li>
-													<li><a href="#"><i class="fa fa-caret-right"></i></a></li>
-												</ul> {% endcomment %}
+												
 											</div>
 										</div>
 										<div class="col-md-6">
@@ -295,9 +297,48 @@
               </div>
         </div>
 
+{% comment %} review ended {% endcomment %}
 
- 
+<div id="overlay">
+	<div class="cv-spinner">
+		<span class="spinner "></span>
+	</div>
+</div>
 
+
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-bottom-0">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-title text-center">
+          <h4>Login</h4>
+        </div>
+        <div class="d-flex flex-column text-center">
+          <form method="POST" id="loginUser" >{% csrf_token %}
+            <div class="form-group">
+              <span class="error text-danger" id="formerror"></span>
+              <input type="text" class="form-control"  placeholder="Your username..." name="modal-user" required>
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control"  placeholder="Your password..." name="modal-password" required>
+            </div>
+            <button type="submit" class="btn btn-info btn-block btn-round">Login</button>
+          </form>
+        </di>
+      </div>
+    </div>
+
+      <div class="modal-footer d-flex justify-content-center">
+        <div class="signup-section">Not a member yet? <a href="#a" class="text-info"> Sign Up</a>.</div>
+      </div>
+  </div>
+</div>
+</div>
 
  
 {% endblock content %}
@@ -327,9 +368,16 @@
         data: formData,
 					
         success: function(data){
+			
+		
 
         var cartcount= $(".cart-count") //cart-count is span field in base.html
         cartcount.text(data.cartCount) //cartCount is jsonResponse in views
+
+		setTimeout(function(){
+         $("#success-alert").fadeTo(2000, 500).slideUp(500, function() {
+      	 $("#success-alert").slideUp(100);
+   		 }); },500);
 
         },
 
@@ -472,6 +520,59 @@ $("form#ReviewForm").submit(function(event) {
 
 		});
 	}
+
+
+$("form#loginUser").submit(function(event) {
+
+    $("#overlay").fadeIn(1600);
+    event.preventDefault();
+    console.log("in modal form")
+    var modeluser = $('input[name="modal-user"]').val().trim();
+    var modelpassword = $('input[name="modal-password"]').val().trim();
+
+     if (modeluser && modelpassword) {
+        $.ajax({
+            url: '{% url 'cartLogin' %}',
+            data: {
+                'username': modeluser,
+                'password': modelpassword,
+            },
+            dataType: 'json',
+            success: function (data) {
+              auth= true;
+              if (data.status=='ok') {
+                setTimeout(function(){
+				        $("#overlay").fadeOut(1600);
+                $('form#loginUser').trigger("reset");
+                $('#loginModal').modal('hide');
+                  },500);
+
+                window.location.href=window.location.href
+              }
+
+              else{
+
+                 $('#formerror').text("username or password incorrect");
+                 return false;
+
+              }
+              }
+
+
+        });
+
+    }
+     else {
+       $('#formerror').text("username or password incorrect");
+        return false;
+    }
+
+
+});
+
+
+
+
 </script>
 
 

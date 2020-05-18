@@ -55,8 +55,14 @@
 							</div> {% endcomment %}
 							<div class="top_bar_user">
 								<div class="user_icon"><i class="fa fa-user" aria-hidden="true"></i></div>
+								
+								{% if request.user.is_authenticated %}
+								<div><a href="{% url 'logout' %}">Sign Out</a></div>
+								{% else %}
 								<div><a href="#">Register</a></div>
-								<div><a href="#">Sign in</a></div>
+								<div><a href="{% url 'login' %}">Sign in</a></div>
+								{% endif %}
+								
 							</div>
 						</div>
 					</div>
@@ -111,7 +117,7 @@
 							<div class="wishlist d-flex flex-row align-items-center justify-content-end">
 								<div class="wishlist_icon"><img src="{% static 'one/images/heart.png' %}" alt=""></div>
 								<div class="wishlist_content">
-									<div class="wishlist_text"><a href="#">Wishlist</a></div>
+									<div class="wishlist_text"><a href="{% url 'wishlist' %}">Wishlist</a></div>
 									<div class="wishlist_count"><span class="wish-count">{{request.user.wishlists.all.count}}</span></div>
 								</div>
 							</div>
