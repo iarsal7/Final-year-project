@@ -115,9 +115,8 @@
                         <img style="height: 100px; width: 100%;" class="pic-2" src="{{ product.image.url}}">
                     </a>
                     <ul class="social">
-                        <li><a href="#" data-tip="Quick View"><i class="fa fa-eye"></i></a></li>
-                        <li><a href="#" data-tip="Add to Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
-                        <li><a href="#" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>
+                        <li><a href="{% url 'productDetails' product.id %}" data-tip="Quick View"><i class="fa fa-eye"></i></a></li>
+                        <li><a href="{% url 'productDetails' product.id %}" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>
                     </ul>
                     {% comment %} <span class="product-new-label">New</span>
                     <span class="product-discount-label">-10%</span> {% endcomment %}
@@ -125,11 +124,11 @@
                 <div style="width: 100%; height: 100%;" class="product-content">
                     <h3 class="title" style="
                     height: 70px;
-                    width: 130px;"><a href="#">{{product.title}}</a></h3>
+                    width: 130px;"><a>{{product.title}}</a></h3>
                     <div class="price">
                         {{product.price}}
                     </div>
-                    <a style="display: none;" class="add-to-cart" href="">ADD TO CART</a>
+                    <a style="display: none;" class="add-to-cart" href="{% url 'productDetails' product.id %}">ADD TO CART</a>
                 </div>
             </div>
         </div>
