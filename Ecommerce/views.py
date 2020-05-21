@@ -11,6 +11,10 @@ from decimal import Decimal
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import pandas as pd
+from django.db.models import Case, When
+
+
 
 def home(request):
     
@@ -91,6 +95,8 @@ def productDetails(request , id):
         review = paginator.page(1)
     except EmptyPage:
         review= paginator.page(paginator.num_pages)
+    
+    get_recommendations(product.id)
 
     context={
         'product':product , 'photos':photos , 'review':review , 'size':size , 'size_variation':size_variation,
@@ -325,22 +331,12 @@ class review(View):
         return JsonResponse({'status': 'ok'})
         
 def test(request):
-    user= User.objects.filter(username=request.user).first()
-    cart_obj=Cart.objects.filter(user=user)
-    total=0
-    for cart_total in cart_obj:
-        total+= cart_total.total
-    total= int(total)
-    shipping=120
 
-    gtotal= total + shipping
-
+    
+    
+   
     context={
-        "cart":cart_obj,
-        "user":user,
-        "total":total,
-        "shipping":shipping,
-        "Gtotal":gtotal
+       
     }
 
     return render(request , 'test.html' ,context)
@@ -429,23 +425,16 @@ def wishlist(request):
 
     return render(request , 'wishlist.html' ,{'wishlist':wishlist})
 
-def get_recommendations(id):    
-    orders = pd.read_csv("data/OrderProduct.csv")
-    
-    orders_for_product = orders[orders.product_id == id].order_id.unique();
-    
-    relevant_orders = orders[orders.order_id.isin(orders_for_product)]
-    
-    accompanying_products_by_order = relevant_orders[relevant_orders.product_id != id]
-    num_instance_by_accompanying_product = accompanying_products_by_order.groupby("product_id")["product_id"].count().reset_index(name="instances")
-    
+def get_recommendations(productid):    
+    orders = pd.DataFrame(list(OrderDetail.objects.filter().values('orderid__number' , 'products__id')))
+    orders_for_product = orders[orders.products__id == productid].orderid__number.unique()
+    relevant_orders = orders[orders.orderid__number.isin(orders_for_product)]
+    accompanying_products_by_order = relevant_orders[relevant_orders.products__id != productid]
+    num_instance_by_accompanying_product = accompanying_products_by_order.groupby("products__id")["products__id"].count().reset_index(name="instances")
     num_orders_for_product = orders_for_product.size
     product_instances = pd.DataFrame(num_instance_by_accompanying_product)
     product_instances["frequency"] = product_instances["instances"]/num_orders_for_product
-    
     recommended_products = pd.DataFrame(product_instances.sort_values("frequency", ascending=False).head(3))
-    
-    products = pd.read_csv("data/Product.csv")
-    recommended_products = pd.merge(recommended_products, products, on="product_id")
-    
-    return recommended_products.to_json(orient="table")
+    product = recommended_products['products__id'].values.tolist()
+    queryset = Product.objects.filter(pk__in=product)
+    print(queryset)

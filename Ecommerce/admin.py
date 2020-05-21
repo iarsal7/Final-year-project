@@ -18,7 +18,7 @@ admin.site.register(User ,MyUserAdmin)
 admin.site.register(Category)
 admin.site.register(Subcategory)
 
-admin.site.register(Tag)
+
 admin.site.register(Cart)
 admin.site.register(Wishlist)
 
@@ -29,11 +29,16 @@ class ProductImageAdmin(admin.StackedInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    inlines = [ProductImageAdmin]
-    list_display = ['title' ,'description']
+    inlines = [ProductImageAdmin,]
+    search_fields = ('id','title' )
+    list_display = ['id','title' ,'description']
     
     class Meta:
        model = Product
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    autocomplete_fields = ["product"]    
 
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
@@ -75,3 +80,4 @@ class ReviewAdmin(admin.ModelAdmin):
 @admin.register(Variant)
 class VariantAdmin(admin.ModelAdmin):
     list_display = ['variant_key' , 'product_key' , 'product']
+

@@ -130,7 +130,7 @@
 								 {% for var in variants  %}
 									
                                     <div class="col-md-3">
-                                        <a href="#">
+                                        <a href="{% url 'productDetails' var.product.id %}">
                                             <img class="center" src="{{ var.product.image.url}}" alt="Image" style="max-width:100%;">
 											<h4>{{var.product.title}}</h4>
                                         </a>
@@ -145,7 +145,7 @@
                                 <div class="row">
 								 {% for var in variants  %}
                                     <div class="col-md-3">
-                                        <a href="#">
+                                        <a href="{% url 'productDetails' var.product.id %}">
                                            <img class="center" src="{{ var.product.image.url}}" alt="Image" style=" max-width:100%;">
 										   <h4>{{var.product.title}}</h4>
                                         </a>
