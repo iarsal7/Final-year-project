@@ -425,16 +425,27 @@ def wishlist(request):
 
     return render(request , 'wishlist.html' ,{'wishlist':wishlist})
 
-def get_recommendations(productid):    
+def get_recommendations(productid):
+    product_list=[]
+    product=Product.objects.get(id=productid)
+    variant = Variant.objects.filter(product= product).first()
+    if variant is not None:
+        variant_id= variant.variant_key
+        variants= Variant.objects.filter(variant_key= variant_id).exclude(product=product)
+        
+        for obj in variants:
+            product_list.append(obj.product.id)
+
+    product_list.append(productid)
     orders = pd.DataFrame(list(OrderDetail.objects.filter().values('orderid__number' , 'products__id')))
-    orders_for_product = orders[orders.products__id == productid].orderid__number.unique()
+    orders_for_product = orders[orders.products__id.isin(product_list)].orderid__number.unique()
     relevant_orders = orders[orders.orderid__number.isin(orders_for_product)]
-    accompanying_products_by_order = relevant_orders[relevant_orders.products__id != productid]
+    accompanying_products_by_order = relevant_orders[~relevant_orders.products__id.isin(product_list)]
     num_instance_by_accompanying_product = accompanying_products_by_order.groupby("products__id")["products__id"].count().reset_index(name="instances")
     num_orders_for_product = orders_for_product.size
     product_instances = pd.DataFrame(num_instance_by_accompanying_product)
     product_instances["frequency"] = product_instances["instances"]/num_orders_for_product
-    recommended_products = pd.DataFrame(product_instances.sort_values("frequency", ascending=False).head(3))
+    recommended_products = pd.DataFrame(product_instances.sort_values("frequency", ascending=False).head(5))
     product = recommended_products['products__id'].values.tolist()
     queryset = Product.objects.filter(pk__in=product)
     print(queryset)
