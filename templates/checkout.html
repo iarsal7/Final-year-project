@@ -58,9 +58,11 @@
           </ul>
 
             <form method="post" id="placeOrder">{% csrf_token %}
+            {% if cart %}
             <div class="input-group-btn">
             <button class="btn-round btn-info ml-auto button cart_button_checkout mt-4 " style="background:#0e8ce4 ; width: 100%;" type="submit">Place Order</button>
             </div>
+            {% endif %}
             </form>
         </div>
 

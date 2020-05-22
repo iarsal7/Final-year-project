@@ -147,6 +147,7 @@ class OrderDetail(models.Model):
     productname=models.CharField(max_length=120)
     quantity= models.IntegerField(null=True , blank=True)
     total = models.DecimalField(decimal_places=2 , max_digits=100 ,null=True ,blank=True)
+    note= models.TextField(blank=True , null=True)
 
     def __str__(self):
         return str(self.orderid)

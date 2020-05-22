@@ -9,6 +9,16 @@
 <link rel="stylesheet" type="text/css" href="{% static 'one/styles/product_responsive.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'review/css/style.css' %}">
 
+<style>
+   .modal-full {
+    min-width: 80%;
+    margin-left: 80;
+}
+
+.modal-full .modal-content {
+    min-height: 100vh;
+}
+</style>
 
 {% endblock stylesheet %}
 
@@ -86,22 +96,26 @@
 								<div class="product_price">Rs {{product.price|floatformat:"0" }}</div>
 
 								
-								<div class="alert alert-success" id="success-alert" style="display:none">
+								{% comment %} <div class="alert alert-success" id="success-alert" style="display:none">
 								  <button type="button" class="close" data-dismiss="alert">x</button>
 								  <strong>Success! </strong> Product have added to your cart.
-								</div>
-
-								<div class="button_container">
+								</div> {% endcomment %}
 								{% if request.user.is_authenticated %}
-									<button type="submit"  name="submit" value="submit" class="button cart_button">Add to Cart</button>
-								{% else %}
-								<button class="button cart_button" data-toggle="modal" data-target="#loginModal">Add to Cart</button>
-								{% endif %}	
+								<div class="button_container">
+								
+									<button type="submit"  name="submit" value="submit" class="button cart_button"  data-toggle="modal" data-target="#productModal">Add to Cart</button>
+								
+								
 									<div class="product_fav {% if wishlist %} active {% endif %}"><i class="fas fa-heart"></i></div>
 								</div>
-								
+								{% endif %}	
 							</form>
 						</div>
+						{% if  request.user.is_authenticated == False %}
+						<div class="order_info d-flex flex-row">
+						<button class="button cart_button" data-toggle="modal" data-target="#loginModal">Add to Cart</button>
+						</div>
+						{% endif %}
 					</div>
 				</div>
 
@@ -113,7 +127,7 @@
 
 <div style="margin-top: -60px;" class="container mb-5">
 				<h2 style="text-align: center;">OTHER VARIANTS</h2>
-            <div class="row blog">
+            <div class="row blog mt-5">
                 <div class="col-md-12">
                     <div id="blogCarousel" class="carousel slide" data-ride="carousel">
 
@@ -131,8 +145,8 @@
 									
                                     <div class="col-md-3">
                                         <a href="{% url 'productDetails' var.product.id %}">
-                                            <img class="center" src="{{ var.product.image.url}}" alt="Image" style="max-width:100%;">
-											<h4>{{var.product.title}}</h4>
+                                            <img class="center" src="{{ var.product.image.url}}" alt="Image" style="height:120px; max-width:100%;">
+											<h4 class="mt-4">{{var.product.title}}</h4>
                                         </a>
                                     </div>
                                     {% endfor %}
@@ -146,8 +160,8 @@
 								 {% for var in variants  %}
                                     <div class="col-md-3">
                                         <a href="{% url 'productDetails' var.product.id %}">
-                                           <img class="center" src="{{ var.product.image.url}}" alt="Image" style=" max-width:100%;">
-										   <h4>{{var.product.title}}</h4>
+                                           <img class="center" src="{{ var.product.image.url}}" alt="Image" style="height:120px; max-width:100%;">
+										   <h4 class="mt-4">{{var.product.title}}</h4>
                                         </a>
                                     </div>
 									 {% endfor %}
@@ -299,6 +313,7 @@
 
 {% comment %} review ended {% endcomment %}
 
+
 <div id="overlay">
 	<div class="cv-spinner">
 		<span class="spinner "></span>
@@ -340,7 +355,53 @@
 </div>
 </div>
 
- 
+<div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-full" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Recommended Products</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body p-4" id="result">
+			<div class="alert alert-success" id="success-alert" style="display:none">
+								  <button type="button" class="close" data-dismiss="alert">x</button>
+								  <strong>Success! </strong> Product have added to your cart.
+								</div>
+                <div class="row">
+        {% for product in recommendation.all  %}
+        <div class="col-md-2 col-sm-6">
+            <div class="product-grid4">
+                <div class="product-image4">
+                    <a href="#">
+                        <img style="width: 100px; height: 100px;" class="pic-1" src="{{ product.image.url}}">
+                        <img style="height: 100px; width: 100%;" class="pic-2" src="{{ product.image.url}}">
+                    </a>
+                    <ul class="social">
+                        <li><a href="{% url 'productDetails' product.id %}" data-tip="Quick View"><i class="fa fa-eye"></i></a></li>
+                        <li><a href="{% url 'productDetails' product.id %}" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>
+                    </ul>
+                </div>
+                <div style="width: 100%; height: 100%;" class="product-content">
+                    <h3 class="title" style="height: 90px;"><a>{{product.title|truncatechars:57}}</a></h3>
+                    <div class="price">
+                        {{product.price}}
+                    </div>
+                    <a style="display: none;" class="add-to-cart" href="{% url 'productDetails' product.id %}">ADD TO CART</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+            </div>
+            <div class="modal-footer">
+               
+        </div>
+    </div>
+</div> 
+</div>
+
 {% endblock content %}
 {% block javascript %}
 <script src="{% static 'one/plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
@@ -349,11 +410,11 @@
 <script>
 	
     $(document).ready(function(){
-
+		
     var productForm = $(".form-product-ajax") //add to cart
 	
 	productForm.submit(function(event){　
-		debugger;
+
 		event.preventDefault();
 
 		document.getElementById("size_mark").value = $('#selected_color').text();
@@ -375,9 +436,11 @@
         cartcount.text(data.cartCount) //cartCount is jsonResponse in views
 
 		setTimeout(function(){
-         $("#success-alert").fadeTo(2000, 500).slideUp(500, function() {
-      	 $("#success-alert").slideUp(100);
-   		 }); },500);
+         $("#success-alert").fadeTo(4000, 500).slideUp(500, function() {
+      	 $("#success-alert").slideUp(200);
+   		 }); },200);
+
+
 
         },
 
@@ -386,8 +449,15 @@
         console.log(errorData)
       }
 
-      })
+      }) //first ajax call ends
 
+            setTimeout(function(){ 
+			$('#productModal').modal(); 
+				
+				}, 10000);
+        
+		
+	  
         })
 
 }) 
@@ -569,6 +639,19 @@ $("form#loginUser").submit(function(event) {
 
 
 });
+
+
+    $(document).ready(function(){
+  $(".product-grid4").mouseover(function(){
+      var grid = $(this);
+      grid.find(".add-to-cart").css("display", "block");
+  });
+  $(".product-grid4").mouseout(function(){
+    
+    var grid = $(this);
+      grid.find(".add-to-cart").css("display", "none");
+  });
+})
 
 
 

@@ -70,7 +70,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 @admin.register(OrderDetail)
 class OrderDetailAdmin(admin.ModelAdmin):
-    list_display = ['orderid' , 'productname','quantity','total']
+    list_display = ['orderid' , 'productname', 'note', 'quantity','total']
 
 
 @admin.register(Review)

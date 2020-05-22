@@ -96,11 +96,11 @@ def productDetails(request , id):
     except EmptyPage:
         review= paginator.page(paginator.num_pages)
     
-    get_recommendations(product.id)
+    queryset = get_recommendations(product.id)
 
     context={
         'product':product , 'photos':photos , 'review':review , 'size':size , 'size_variation':size_variation,
-            'variants':variants , 'wishlist':wishlist
+            'variants':variants , 'wishlist':wishlist , 'recommendation': queryset
     }
 
     return render(request , 'productDetails.html' , context)
@@ -157,7 +157,10 @@ def cart(request):
         cart= Cart.objects.filter(user=request.user , products=product, note=size).first()
         if cart is not None:
             cart.note=size
+            qnty= cart.quantity + int(quantity)
+            total= qnty * product.price
             cart.quantity += int(quantity)
+            cart.total=total
             cart.save()
         else:
             cart_obj= Cart.objects.create(user= request.user)
@@ -302,6 +305,7 @@ class order(View):
             order_detail.productname= obj.products.title
             order_detail.quantity=obj.quantity
             order_detail.total=obj.total
+            order_detail.note=obj.note        
             order_detail.save()
 
         cart_obj.delete()
@@ -449,3 +453,5 @@ def get_recommendations(productid):
     product = recommended_products['products__id'].values.tolist()
     queryset = Product.objects.filter(pk__in=product)
     print(queryset)
+
+    return queryset

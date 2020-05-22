@@ -126,7 +126,6 @@ margin-top:0px;
     display: block !important;
 }
 
-
 .modal-confirm {
   color: #636363;
   width: 325px;
@@ -197,8 +196,7 @@ margin-top:0px;
 .modal-confirm .btn:hover, .modal-confirm .btn:focus {
   background: #0e8ce4;
   outline: none;
-}
-
+} 
 
 h3.h3{text-align:center;margin:1em;text-transform:capitalize;font-size:1.7em;}
 
@@ -312,8 +310,6 @@ nav > div a.nav-item.nav-link:focus
 .star-rating input[type=radio]:checked ~ label {
   color: #f2b600
 }
-
-
 
 
 

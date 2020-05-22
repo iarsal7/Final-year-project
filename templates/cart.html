@@ -42,6 +42,7 @@
          						     <td class="cartTotal cartData" style="text-align:right" class="align-items-center" id="product-total" name="total" ><span> {{obj.total|floatformat:"0" }} </span> <button class="btn btn-sm btn-info ml-1 btn-danger" value="{{obj.note}}" onClick="deleteCart({{obj.products.id}}, {{obj.note}} )"><i class="fa fa-trash-alt"></i> </button> </td>
          					      {% comment %} <td><button class="btn btn-sm btn-info" style="background:#0e8ce4" onClick="deleteCart({{obj.products.id}})"><i class="fa fa-trash-alt"></i> </button> </td> {% endcomment %}
          						     </tr>
+			
          						 {% endfor %}
         					</table>
 							
