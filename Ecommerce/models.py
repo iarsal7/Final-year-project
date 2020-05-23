@@ -6,7 +6,7 @@ from django.dispatch import receiver
 from Ecommerce.utils import unique_order_id_generator
 
 class User(AbstractUser):
-    address= models.TextField(blank=True)
+    address= models.CharField(max_length=250, blank=True)
     phone = models.CharField(max_length=11 , blank=True)
 
 

@@ -55,13 +55,14 @@
 								<div class="order_total_amount" id="gtotal">Rs {{Gtotal|floatformat:"0" }}</div>
 							</div>
 						</div>
-
+						{% if obj %}
 						<div class="cart_buttons">
 							
 							<form action='{% url 'checkout' %}'>	
 							<button type="submit" class="btn btn-lg btn-success ml-5 py-2 px-4">Checkout</button>
 							</form>
 						</div>
+						{% endif %}
 					</div>
 				</div>
 			</div>

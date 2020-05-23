@@ -1,15 +1,135 @@
 {% extends 'test.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
+
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="{% static 'one/plugins/OwlCarousel2-2.2.1/owl.carousel.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one/plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one/plugins/OwlCarousel2-2.2.1/animate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one/plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one/styles/shop_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one/styles/shop_responsive.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'login/css/style.css' %}">
+
+
+{% endblock stylesheet %}
+
+
 {% block content %}
-  <form method="post" novalidate>
-  {% csrf_token %}
-  <div class="row justify-content-center">
-      <div class="col-6">
-  {{ form|crispy}}
+<div class="container">
+ <div class="row">
+            <div class="col col-12 col-sm-12">
+                <div class="signin-content">
+                    <div class="signin-image">
+                        <figure><img style="height:330px" src="{% static 'login/images/2.png' %}" alt="sing up image"></figure>
+                        <a href="#" class="signup-image-link">Create an account</a>
+                    </div>
 
-   <input class="btn btn-success" type="submit" name="Login">
-  </div>
-  </div>
-  </form>
-
+                    <div class="signin-form">
+                        <h2 class="form-title mt-1">Login</h2>
+                        <form method="POST" class="register-form" id="login-form">{% csrf_token %}
+                            <div class="form-group">
+							<span class="error text-danger" id="formerror"></span>
+                                <label for="your_name"><i class="fas fa-user"></i></label>
+                                <input type="text" name="your_name" id="your_name" placeholder="Username"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="your_pass"><i class="fas fa-lock"></i></label>
+                                <input type="password" name="your_pass" id="your_pass" placeholder="Password"/>
+                            </div>
+                            {% comment %} <div class="form-group">
+                                <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
+                                <label style="margin-left: 12px;" for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
+                            </div> {% endcomment %}
+                            <div class="form-group form-button mt-2">
+								<!-- <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/> -->
+								<button style="margin-top: 16px;" class="btn btn-primary btn-lg">Log in</button>
+                            </div>
+                        </form>
+                        <div class="social-login">
+                            <span class="social-label">Or login with</span>
+                            <ul class="socials">
+                                
+								<li style="margin: 10px;list-style: none;font-size: 24px;transition:.5s;"><a href="#"><i style="color:#3b5998;" class="fab fa-facebook"></i></a></li>
+                                <li style="margin: 10px;list-style: none;font-size: 24px;transition:.5s;"><a href="#"><i style="color:#00aced;" class="fab fa-twitter"></i></a></li>
+                                <li style="margin: 10px;list-style: none;font-size: 24px;transition:.5s;"><a href="#"><i style="color:#dd4b39;" class="fab fa-google-plus-g"></i></a></li>
+                                <li style="margin: 10px;list-style: none;font-size: 24px;transition:.5s;"><a href="#"><i style="color:#007bb6;" class="fab fa-linkedin-in"></i></a></li>
+								<li style="margin: 10px;list-style: none;font-size: 24px;transition:.5s;"><a href="#"><i  style="color:#bc2a8d;"class="fab fa-instagram"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                </div>
+   </div>
+   </div>     
 {% endblock content %}
+
+
+{% block javascript %}
+
+<script src="{% static 'login/js/main.js' %}"></script>
+
+<script src="{% static 'login/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'one/plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+<script src="{% static 'one/plugins/Isotope/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'one/plugins/jquery-ui-1.12.1.custom/jquery-ui.js' %}"></script>
+<script src="{% static 'one/plugins/parallax-js-master/parallax.min.js' %}"></script>
+<script src="{% static 'one/js/shop_custom.js' %}"></script>
+
+<script>
+$("form#login-form").submit(function(event) {
+
+$("#overlay").fadeIn(1600);
+event.preventDefault();
+console.log("in modal form")
+var modeluser = $('input[name="your_name"]').val();
+var modelpassword = $('input[name="your_pass"]').val();
+
+ if (modeluser && modelpassword) {
+	$.ajax({
+		url: '{% url 'cartLogin' %}',
+		data: {
+			'username': modeluser,
+			'password': modelpassword,
+		},
+		dataType: 'json',
+		success: function (data) {
+		  
+		  if (data.status=='ok') {
+			setTimeout(function(){
+					$("#overlay").fadeOut(1600);
+			$('form#loginUser').trigger("reset");
+			$('#loginModal').modal('hide');
+			  },500);
+
+			
+		  }
+
+		  else{
+
+			 $('#formerror').text("username or password incorrect");
+			 return false;
+
+		  }
+		  }
+
+
+	});
+
+}
+ else {
+   $('#formerror').text("username or password incorrect");
+	return false;
+}
+
+
+});
+
+
+
+</script>
+
+
+{% endblock javascript%}
