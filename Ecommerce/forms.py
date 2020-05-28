@@ -11,10 +11,16 @@ from .models import User , Review
 
 
 class MyUserCreationForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.Meta.required:
+            self.fields[field].required = True
 
     class Meta(UserCreationForm):
         model = User
         fields = ('first_name' , 'last_name','username', 'email', 'address', 'password1', 'password2')
+        required = (('first_name' , 'last_name','username', 'email', 'address', 'password1', 'password2'))
 
 class MyUserChangeForm(UserChangeForm):
 

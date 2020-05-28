@@ -7,6 +7,21 @@
 <link rel="stylesheet" type="text/css" href="{% static 'one/plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'one/styles/shop_styles.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'one/styles/shop_responsive.css' %}">
+<style>
+
+#header {
+  position: relative;
+  min-height: 100px;
+}
+
+#header-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+</style>
+
 {% endblock stylesheet %}
 
 {% block content %}
@@ -49,23 +64,24 @@
 				  <div class="row no-gutters">	
     				<div class="col-sm-6">
     			        <div style="min-height: 250px;" class="card">
-    			        	<div class="card-body">
+    			        	<div style="height:300px;" class="card-body">
     			        	  <h5 class="card-title">Personel Profile</h5>
-							  <p class="card-text">{{request.user.get_full_name}}</p>
-							  <p class="card-text">{{request.user.email}}</p>
-							  <p class="card-text">{{request.user.phone}}</p>
-    			        	  <a href="#" class="card-link">Edit</a>
-    			        	</div>
+							  <p class="card-text" id="model-name">{{request.user.get_full_name}}</p>
+							  <p class="card-text" id="model-email" >{{request.user.email}}</p>
+							  <p class="card-text" id="model-phone">{{request.user.phone}}</p>
+							  <div id="header">
+							 <div id="header-content"> <button style="" class="btn btn-primary mt-3" onClick="editUser()" data-toggle="modal" data-target="#addressModal">Edit</button></div>
+							  </div>
+							</div>
     			        </div>
     			    </div>
     			    <div class="col-sm-6">
     			        <div style="min-height: 250px;" class="card">
-    			        	<div class="card-body">
+    			        	<div style="height:300px;" class="card-body">
 							  <h5 class="card-title">Address</h5>
 							  <p class="card-text">Default Shipping Address</p>
-							  <p class="card-text">{{request.user.get_full_name}}</p>
-    			        	  <p class="card-text">{{request.user.address|linebreaks}}</p>
-    			        	  <a href="#" class="card-link">Edit</a>
+							  <p class="card-text" id="model-name1">{{request.user.get_full_name}}</p>
+    			        	  <p class="card-text" id="model-address">{{request.user.address}}</p>
     			        	</div>
     			        </div>
     			    </div>
@@ -114,6 +130,71 @@
 
 
 
+
+<div id="overlay">
+	<div class="cv-spinner">
+		<span class="spinner "></span>
+	</div>
+</div>
+
+<div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <div class="col-md-12">
+          {% comment %} <h4 class="mb-3">Billing address</h4> {% endcomment %}
+          <form method="POST" id="updateUser">{% csrf_token %}
+            <div class="row">
+              <div class="col-md-6 mb-3 form-group">
+                <label for="firstName">First name</label>
+                <input type="text" class="form-control" id="firstname" name="model-firstName" required>
+              </div>
+              <div class="col-md-6 mb-3 form-group">
+                <label for="lastName">Last name</label>
+                <input type="text" class="form-control" id="lastname" name="model-lastName"  required>
+                
+              </div>
+            </div>
+
+            <div class="mb-3 form-group">
+              <label for="phone">Phone</label>
+              <input type="text" class="form-control" id="phone" name="model-phone" required>
+              
+            </div>
+
+            <div class="mb-3 form-group">
+              <label for="email">Email </label>
+              <input type="email" class="form-control" id="email" name="model-email" required>
+              
+            </div>
+
+            <div class="mb-3 form-group">
+              <label for="address">Address</label>
+              <textarea rows="5" class="form-control" id="address" name="model-address" required></textarea>
+    
+            </div>
+
+            
+             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             <button type="submit" class="btn btn-primary">Save changes</button>
+            
+
+          </form>
+          
+	    </div>
+        
+       </div>   {% comment %}modal body div ending {% endcomment %}
+      
+    </div>
+  </div>
+</div>
+
 {% endblock content %}
 {% block javascript %}
 
@@ -124,6 +205,83 @@
 <script src="{% static 'one/js/shop_custom.js' %}"></script>
 
 <script>
+
+function editUser() {
+
+  let firstname= document.getElementById("model-name").innerText.split(' ')[0];
+  let lastname = document.getElementById("model-name").innerText.split(' ')[1];
+  let phone= document.getElementById("model-phone").innerText;
+  let email= document.getElementById("model-email").innerText;
+  let address= document.getElementById("model-address").innerText;
+  
+
+    $('#firstname').val(firstname);
+    $('#lastname').val(lastname);
+    $('#phone').val(phone);
+    $('#email').val(email);
+    $('#address').val(address);
+  }
+
+
+
+$("form#updateUser").submit(function(event) {
+  
+    event.preventDefault();
+     $("#overlay").fadeIn(1600);　
+ 
+    var fname = $('input[name="model-firstName"]').val();
+    var lname = $('input[name="model-lastName"]').val();
+    var phone = $('input[name="model-phone"]').val();
+    var email = $('input[name="model-email"]').val();
+    var address = $('textarea[name="model-address"]').val();
+
+     if (fname && lname && phone && email && address) {
+        $.ajax({
+            url: '{% url 'updateUser' %}',
+            data: {
+                'fname': fname,
+                'lname': lname,
+                'phone': phone,
+                'email': email,
+                'address': address,
+            },
+            dataType: 'json',
+
+            success: function (data) {
+           setTimeout(function(){
+				           $("#overlay").fadeOut(1600);},500);
+      
+              if (data.status=='updated') {
+                $('form#updateUser').trigger("reset");
+                $('#addressModal').modal('hide');
+
+                setTimeout(function(){
+                $('#model-address').text(address);
+                $('#model-phone').text(phone);
+                $('#model-email').text(email);
+                var fullname = fname.concat(" ", lname);
+                $('#model-name').text(fullname);
+				$('#model-name1').text(fullname);
+                    },2000);
+
+              }
+
+              else{
+     
+                   }  
+
+              }
+            
+             
+        });
+
+    }
+     else {
+       
+    }
+
+   
+});
 
 
 </script>

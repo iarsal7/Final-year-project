@@ -23,7 +23,7 @@
                 <div class="signin-content">
                     <div class="signin-image">
                         <figure><img style="height:330px" src="{% static 'login/images/2.png' %}" alt="sing up image"></figure>
-                        <a href="#" class="signup-image-link">Create an account</a>
+                        <a href="{% url 'signup' %}" class="signup-image-link">Create an account</a>
                     </div>
 
                     <div class="signin-form">
@@ -98,12 +98,8 @@ var modelpassword = $('input[name="your_pass"]').val();
 		success: function (data) {
 		  
 		  if (data.status=='ok') {
-			setTimeout(function(){
-					$("#overlay").fadeOut(1600);
-			$('form#loginUser').trigger("reset");
-			$('#loginModal').modal('hide');
-			  },500);
-
+		
+            window.location.href='/'
 			
 		  }
 

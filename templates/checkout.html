@@ -16,9 +16,9 @@
             <li class="list-group-item d-flex justify-content-between lh-condensed">
               <div>
                 <h6 class="my-0" id="model-name">{{request.user.first_name}} {{request.user.last_name}}</h6>
-                <small class="text" id="model-address">{{user.address}}</small>
+                <p class="text mt-3" id="model-address">{{user.address}}</p>
               </div>
-              <button class="btn btn-link" type="submit" data-toggle="modal" data-target="#addressModal"><i class="fas fa-edit"></i></button>
+              <button class="btn btn-link" type="submit" onClick="editUser()" data-toggle="modal" data-target="#addressModal"><i class="fas fa-edit"></i></button>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
               <div>
@@ -127,30 +127,30 @@
             <div class="row">
               <div class="col-md-6 mb-3 form-group">
                 <label for="firstName">First name</label>
-                <input type="text" class="form-control" name="model-firstName" placeholder=""  required>
+                <input type="text" class="form-control" id="firstname" name="model-firstName" placeholder=""  required>
               </div>
               <div class="col-md-6 mb-3 form-group">
                 <label for="lastName">Last name</label>
-                <input type="text" class="form-control" name="model-lastName"  placeholder=""  required>
+                <input type="text" class="form-control" id="lastname" name="model-lastName"  placeholder=""  required>
                 
               </div>
             </div>
 
             <div class="mb-3 form-group">
               <label for="phone">Phone</label>
-              <input type="text" class="form-control" name="model-phone" placeholder="03401234567" required>
+              <input type="text" class="form-control" id="phone" name="model-phone" placeholder="03401234567" required>
               
             </div>
 
             <div class="mb-3 form-group">
               <label for="email">Email </label>
-              <input type="email" class="form-control" name="model-email" placeholder="you@example.com">
+              <input type="email" class="form-control" id="email" name="model-email" placeholder="you@example.com">
               
             </div>
 
             <div class="mb-3 form-group">
               <label for="address">Address</label>
-              <input type="text" class="form-control" name="model-address" placeholder="1234 Main St" required>
+              <textarea rows="5" class="form-control" id="address" name="model-address" placeholder="1234 Main St" required></textarea>
               
             </div>
 
@@ -174,17 +174,34 @@
 
 {% block javascript %}
 <script>
+function editUser() {
+
+  let firstname= document.getElementById("model-name").innerText.split(' ')[0];
+  let lastname = document.getElementById("model-name").innerText.split(' ')[1];
+  let phone= document.getElementById("model-phone").innerText;
+  let email= document.getElementById("model-email").innerText;
+  let address= document.getElementById("model-address").innerText;
+  
+
+    $('#firstname').val(firstname);
+    $('#lastname').val(lastname);
+    $('#phone').val(phone);
+    $('#email').val(email);
+    $('#address').val(address);
+  }
+
+
 
 $("form#updateUser").submit(function(event) {
   
     event.preventDefault();
      $("#overlay").fadeIn(1600);　
-    console.log("in modal form")
+ 
     var fname = $('input[name="model-firstName"]').val();
     var lname = $('input[name="model-lastName"]').val();
     var phone = $('input[name="model-phone"]').val();
     var email = $('input[name="model-email"]').val();
-    var address = $('input[name="model-address"]').val();
+    var address = $('textarea[name="model-address"]').val();
 
      if (fname && lname && phone && email && address) {
         $.ajax({
