@@ -109,7 +109,7 @@
 								<tbody>
 									{% for obj in order.all  %}
 								  <tr>
-									<th><a href="{% url 'user-detail' obj.id %}">{{obj.number}}</a></th>
+									<th><a href="{% url 'user-detail' obj.number %}">{{obj.number}}</a></th>
 									<td>{{obj.status}}</td>
 									<td>{{obj.date}}</td>
 									<td>{{obj.time}}</td>
@@ -198,11 +198,11 @@
 {% endblock content %}
 {% block javascript %}
 
-<script src="{% static 'one/plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
-<script src="{% static 'one/plugins/Isotope/isotope.pkgd.min.js' %}"></script>
-<script src="{% static 'one/plugins/jquery-ui-1.12.1.custom/jquery-ui.js' %}"></script>
+{% comment %} <script src="{% static 'one/plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script> {% endcomment %}
+{% comment %} <script src="{% static 'one/plugins/Isotope/isotope.pkgd.min.js' %}"></script> {% endcomment %}
+{% comment %} <script src="{% static 'one/plugins/jquery-ui-1.12.1.custom/jquery-ui.js' %}"></script> {% endcomment %}
 <script src="{% static 'one/plugins/parallax-js-master/parallax.min.js' %}"></script>
-<script src="{% static 'one/js/shop_custom.js' %}"></script>
+{% comment %} <script src="{% static 'one/js/shop_custom.js' %}"></script> {% endcomment %}
 
 <script>
 

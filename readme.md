@@ -2,4 +2,4 @@
 Django ecommerce
 
 pip freeze > requirements.txt
-pip install -r requirements.tx
+pip install -r requirements.txt

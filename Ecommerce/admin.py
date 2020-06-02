@@ -15,8 +15,8 @@ class MyUserAdmin(UserAdmin):
     ) 
 
 admin.site.register(User ,MyUserAdmin)
-admin.site.register(Category)
-admin.site.register(Subcategory)
+# admin.site.register(Category)
+# admin.site.register(Subcategory)
 
 
 admin.site.register(Cart)
@@ -60,6 +60,22 @@ class VariationAdmin(admin.ModelAdmin):
 class ItemVariationAdmin(admin.ModelAdmin):
     list_display=['variation' , 'value']
 
+
+class SubCategoryAdmin(admin.StackedInline):
+    model = Subcategory
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    inlines = [SubCategoryAdmin]
+    list_display=['name' ,]
+    class Meta:
+       model = Category
+
+
+@admin.register(Subcategory)
+class SubCategoryAdmin(admin.ModelAdmin):
+    list_display=['name' ,]
 
 
 

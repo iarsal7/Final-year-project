@@ -367,13 +367,10 @@ def profile(request):
     return render(request , 'userprofile.html' , { 'order': order })
 
 def orderdetails(request , id):
-
-    orderdetail= OrderDetail.objects.filter(id=id)
-    orderno= orderdetail.first().orderid
-    orderdetail= OrderDetail.objects.filter(orderid=orderno)
-    print(orderno)
-
-    return render(request , 'orderdetails.html', {'orderdetail': orderdetail , 'number':orderno})
+    
+    orderdetail= OrderDetail.objects.filter(orderid__number=id)
+    
+    return render(request , 'orderdetails.html', {'orderdetail': orderdetail , 'number':id})
 
 
 class updateWishlist(View):
