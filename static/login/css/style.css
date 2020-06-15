@@ -1,4 +1,4 @@
-/* @extend display-flex; */
+@extend display-flex;
 display-flex, .display-flex, .display-flex-center, .signup-content, .signin-content, .social-login, .socials {
   display: flex;
   display: -webkit-flex; }
@@ -414,5 +414,3 @@ label.valid {
   .social-label {
     margin-right: 0px;
     margin-bottom: 10px; } }
-
-/*# sourceMappingURL=style.css.map */

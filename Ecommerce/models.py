@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save , pre_save , m2m_changed
 from django.dispatch import receiver
 from Ecommerce.utils import unique_order_id_generator
+from django_random_queryset import RandomManager
 
 class User(AbstractUser):
     address= models.CharField(max_length=250, blank=True)
@@ -43,6 +44,8 @@ class Product(models.Model):
     price=models.DecimalField(decimal_places=2 , max_digits=20)
     image=models.ImageField(upload_to=upload_image_to)
     featured=models.BooleanField(default=False)
+    rating= models.DecimalField(decimal_places=2 , max_digits=20 ,null=True, blank=True)
+    objects = RandomManager()
 
     def __str__(self):
         return str(self.id) + " " + self.title
@@ -85,7 +88,7 @@ class ItemVariation(models.Model):
 
 
 class Review(models.Model):
-    status=models.BooleanField(default=False)
+    status=models.BooleanField(default=True)
     product = models.ForeignKey(Product , on_delete=models.CASCADE , related_name='reviews')
     user= models.ForeignKey(User , on_delete=models.CASCADE , related_name='reviews')
     subject= models.CharField(max_length=50)

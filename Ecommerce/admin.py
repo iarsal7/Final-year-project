@@ -3,6 +3,7 @@ from .models import Category , Product ,Tag, Cart, Order, OrderDetail ,User , Re
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin 
 from .models import User
+from django.utils.html import format_html
 # from .forms import MyUserCreationForm, MyUserChangeForm
 
 class MyUserAdmin(UserAdmin):
@@ -29,9 +30,15 @@ class ProductImageAdmin(admin.StackedInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
+    def image_tag(self, obj):
+        return format_html('<img style="width:50px;" src="{}" />'.format(obj.image.url))
+
+    image_tag.short_description = 'Image'
+
     inlines = [ProductImageAdmin,]
     search_fields = ('id','title' )
-    list_display = ['id','title' ,'description']
+    list_display = ['id','title' ,'featured','image_tag']
+    list_filter = ("featured",)
     
     class Meta:
        model = Product

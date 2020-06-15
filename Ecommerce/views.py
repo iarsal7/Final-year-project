@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponseRedirect , JsonResponse
 from django.views.generic import ListView,View,CreateView
 from .forms import  SearchForm ,MyUserCreationForm
-from .models import Product , Cart , Order ,OrderDetail ,User,Review , ProductImage , Review , Variation , ItemVariation , Variant, Wishlist
+from .models import Product , Category, Cart , Order ,OrderDetail ,User,Review , ProductImage , Review , Variation , ItemVariation , Variant, Wishlist , Subcategory
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -13,35 +13,43 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import pandas as pd
 from django.db.models import Case, When
-
+import random
 
 
 def home(request):
+
+    realme= Subcategory.objects.get(name='Realme')
+    products= Product.objects.filter(category=realme)      
     
-    products = Product.objects.all()
+    #Featured
+    featured= Product.objects.filter(featured=True)
+
+    queryset = Product.objects.all()
     
+    
+    sale=queryset.random(16)  # pass amount to get more records
+
+
+    rated= Product.objects.all().order_by('rating')[:16]  
+
+    new= Product.objects.all().order_by('-id')[:20]
+
+    category= Category.objects.get(name='Laptops')
+    laptops= Product.objects.filter(category__category= category)
+
+    vid=  Category.objects.filter( Q(name='DSLR Canon Cameras') | Q(name='DSLR Nikon Cameras') | Q(name='Audio/Video Cameras')  )
+    
+  
+    video= Product.objects.filter(category__category__in = vid).distinct()
+    
+    iphone= Product.objects.get(id=23)
+
     context={
 
-        "products":products
-    }
-    return render(request, 'home.html',context)
+        "deal":products, "featured":featured, "sale":sale , "rated":rated , "new":new , "video":video , "laptops":laptops , "iphone":iphone
 
-# def signup(request):
-#     if request.method == 'POST':
-#         form = SignUpForm(request.POST or None)
-#         Customer_Form = CustomerForm(request.POST or None)
-#         if form.is_valid() and Customer_Form.is_valid():
-#             user = form.save()
-#             customer= Customer_Form.save(commit=False)
-#             customer.user=user
-#             customer.save()
-#             login(request, user)
-#             return redirect('home')
-#     else:
-#         form = SignUpForm()
-#         Customer_Form = CustomerForm()
-        
-#     return render(request, 'signup.html', {'form': form , 'Cform' : Customer_Form})
+           }
+    return render(request, 'home.html',context)
 
 class SignUpView(CreateView):
     form_class = MyUserCreationForm
@@ -97,7 +105,7 @@ def productDetails(request , id):
         review= paginator.page(paginator.num_pages)
     
     queryset = get_recommendations(product.id)
-
+    
     context={
         'product':product , 'photos':photos , 'review':review , 'size':size , 'size_variation':size_variation,
             'variants':variants , 'wishlist':wishlist , 'recommendation': queryset
@@ -331,14 +339,22 @@ class review(View):
         review_obj.comment=comment
         review_obj.rating= rating
         review_obj.save()
+        total = 0
+        for obj in product.reviews.all():
+            total += obj.rating
+        
+        count= product.reviews.all().count()
+        total = total/count
+
+        product.rating= total
+        product.save()
+
         messages.success(request, 'Form submission successful')
         return JsonResponse({'status': 'ok'})
-        
+
+
 def test(request):
 
-    
-    
-   
     context={
        
     }
@@ -452,3 +468,18 @@ def get_recommendations(productid):
     print(queryset)
 
     return queryset
+
+
+def shop(request ,pk):
+    
+    x= pk.replace('-', ' ')
+    category= Subcategory.objects.get(name=x)
+    products= Product.objects.filter(category=category)
+    return render(request , 'shop.html' , {'products':products , 'category':x})
+
+def smartphones(request , pk):
+
+    x= pk.replace('-', ' ')
+    category= Category.objects.get(name= x)
+    products= Product.objects.filter(category__category= category)
+    return render(request , 'smartphones.html' , {'products':products , 'category':category})

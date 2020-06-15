@@ -34,8 +34,8 @@ $(document).ready(function()
 	setHeader();
 
 	initCustomDropdown();
-	initPageMenu();
-	initViewedSlider();
+	// initPageMenu();
+	// initViewedSlider();
 	initBrandsSlider();
 	initQuantity();
 	initColor();

@@ -95,13 +95,12 @@
     			        	</div>
 						<ul class="list-group list-group-flush">
 							<li class="list-group-item">
-							<table class="table">
+							<table id="order" class="table table-striped">
 								<thead>
 								  <tr>
 									<th scope="col">Order #</th>
 									<th scope="col">Status</th>
-									<th scope="col">Date</th>
-									<th scope="col">Time</th>
+									<th scope="col">Date & Time</th>
 									<th scope="col">Items</th>
 									<th scope="col">Total</th>
 								  </tr>
@@ -111,8 +110,7 @@
 								  <tr>
 									<th><a href="{% url 'user-detail' obj.number %}">{{obj.number}}</a></th>
 									<td>{{obj.status}}</td>
-									<td>{{obj.date}}</td>
-									<td>{{obj.time}}</td>
+									<td>{{obj.date}} {{obj.time}}</td>
 									<td>{{obj.orderDetails.all.count}}</td>
 									<td>Rs {{obj.total|floatformat:0}}</td>
 								  </tr>
@@ -205,6 +203,11 @@
 {% comment %} <script src="{% static 'one/js/shop_custom.js' %}"></script> {% endcomment %}
 
 <script>
+$(document).ready(function() {
+    $('#order').DataTable();
+} );
+
+
 
 function editUser() {
 

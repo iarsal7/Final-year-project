@@ -1,0 +1,170 @@
+{% extends 'test.html' %}
+{% load static %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="{% static 'one/plugins/OwlCarousel2-2.2.1/owl.carousel.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one/plugins/OwlCarousel2-2.2.1/owl.theme.default.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one/plugins/OwlCarousel2-2.2.1/animate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one/plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one/styles/shop_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one/styles/shop_responsive.css' %}">
+{% endblock stylesheet %}
+
+{% block content %}
+
+<div class="home">
+		<div class="home_background parallax-window" data-parallax="scroll" data-image-src="{% static 'one/images/shop_background.jpg' %}"></div>
+		<div class="home_overlay"></div>
+		<div class="home_content d-flex flex-column align-items-center justify-content-center">
+			<h2 class="home_title">{{category}}</h2>
+		</div>
+	</div> 
+
+	<div class="shop">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3">
+					<!-- Shop Sidebar -->
+					<div class="shop_sidebar">
+						<div class="sidebar_section">
+							<div class="sidebar_title">Categories</div>
+							<ul class="sidebar_categories">
+								<li><a href="#">Computers & Laptops</a></li>
+								<li><a href="#">Cameras & Photos</a></li>
+								<li><a href="#">Hardware</a></li>
+								<li><a href="#">Smartphones & Tablets</a></li>
+								<li><a href="#">TV & Audio</a></li>
+								<li><a href="#">Gadgets</a></li>
+								<li><a href="#">Car Electronics</a></li>
+								<li><a href="#">Video Games & Consoles</a></li>
+								<li><a href="#">Accessories</a></li>
+							</ul>
+						</div>
+						<div class="sidebar_section filter_by_section">
+							<div class="sidebar_title">Filter By</div>
+							<div class="sidebar_subtitle">Price</div>
+							<div class="filter_price">
+								<div id="slider-range" class="slider_range"></div>
+								<p>Range: </p>
+								<p><input type="text" id="amount" class="amount" readonly style="border:0; font-weight:bold;"></p>
+							</div>
+						</div>
+						<div class="sidebar_section">
+							<div class="sidebar_subtitle color_subtitle">Color</div>
+							<ul class="colors_list">
+								<li class="color"><a href="#" style="background: #b19c83;"></a></li>
+								<li class="color"><a href="#" style="background: #000000;"></a></li>
+								<li class="color"><a href="#" style="background: #999999;"></a></li>
+								<li class="color"><a href="#" style="background: #0e8ce4;"></a></li>
+								<li class="color"><a href="#" style="background: #df3b3b;"></a></li>
+								<li class="color"><a href="#" style="background: #ffffff; border: solid 1px #e1e1e1;"></a></li>
+							</ul>
+						</div>
+						<div class="sidebar_section">
+							<div class="sidebar_subtitle brands_subtitle">Brands</div>
+							<ul class="brands_list">
+								<li class="brand"><a href="#">Apple</a></li>
+								<li class="brand"><a href="#">Beoplay</a></li>
+								<li class="brand"><a href="#">Google</a></li>
+								<li class="brand"><a href="#">Meizu</a></li>
+								<li class="brand"><a href="#">OnePlus</a></li>
+								<li class="brand"><a href="#">Samsung</a></li>
+								<li class="brand"><a href="#">Sony</a></li>
+								<li class="brand"><a href="#">Xiaomi</a></li>
+							</ul>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="col-lg-9">
+					
+					<!-- Shop Content -->
+
+					<div class="shop_content">
+						<div class="shop_bar clearfix">
+							<div class="shop_product_count"><span>{{products.all.count}}</span> products found</div>
+							<div class="shop_sorting">
+								<span>Sort by:</span>
+								<ul>
+									<li>
+										<span class="sorting_text">highest rated<i class="fas fa-chevron-down"></span></i>
+										<ul>
+											<li class="shop_sorting_button" data-isotope-option='{ "sortBy": "original-order" }'>highest rated</li>
+											<li class="shop_sorting_button" data-isotope-option='{ "sortBy": "name" }'>name</li>
+											<li class="shop_sorting_button"data-isotope-option='{ "sortBy": "price" }'>price</li>
+										</ul>
+									</li>
+								</ul>
+							</div>
+						</div>
+                    </div>
+
+	<!-- Shop --> 
+    <br><br>
+<div class="container">
+    <div class="row">
+        {% for product in products  %}
+        <div class="col-md-3 col-sm-6">
+            <div class="product-grid4">
+                <div class="product-image4">
+                    <a href="#">
+                        <img style="width: 100px; height: 100px;" class="pic-1" src="{{ product.image.url}}">
+                        <img style="height: 100px; width: 100%;" class="pic-2" src="{{ product.image.url}}">
+                    </a>
+                    <ul class="social">
+                        <li><a href="{% url 'productDetails' product.id %}" data-tip="Quick View"><i class="fa fa-eye"></i></a></li>
+                        <li><a href="{% url 'productDetails' product.id %}" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>
+                    </ul>
+                    {% comment %} <span class="product-new-label">New</span>
+                    <span class="product-discount-label">-10%</span> {% endcomment %}
+                </div>
+                <div style="width: 100%; height: 100%;" class="product-content">
+                    <h3 class="title" style="
+                    height: 70px;
+                    width: 130px;"><a>{{product.title|truncatechars:57}}</a></h3>
+                    <div class="price">
+                        {{product.price}}
+                    </div>
+                    <a style="display: none;" class="add-to-cart" href="{% url 'productDetails' product.id %}">ADD TO CART</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+</div>
+</div>
+</div>
+</div>
+{% endblock content %}
+{% block javascript %}
+
+<script src="{% static 'one/plugins/OwlCarousel2-2.2.1/owl.carousel.js' %}"></script>
+<script src="{% static 'one/plugins/Isotope/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'one/plugins/jquery-ui-1.12.1.custom/jquery-ui.js' %}"></script>
+<script src="{% static 'one/plugins/parallax-js-master/parallax.min.js' %}"></script>
+<script src="{% static 'one/js/shop_custom.js' %}"></script>
+
+<script>
+
+
+    $(document).ready(function(){
+  $(".product-grid4").mouseover(function(){
+      var grid = $(this);
+      grid.find(".add-to-cart").css("display", "block");
+  });
+  $(".product-grid4").mouseout(function(){
+    
+    var grid = $(this);
+      grid.find(".add-to-cart").css("display", "none");
+  });
+})
+
+
+
+</script>
+
+{% endblock javascript %}
+
