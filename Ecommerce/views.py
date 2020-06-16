@@ -44,9 +44,21 @@ def home(request):
     
     iphone= Product.objects.get(id=23)
 
+    recommended= Product.objects.all().random(18)
+
+
+    review= Review.objects.all().order_by('-date', '-time')[:10]
+
+    
+    frag= Category.objects.get(name='Fragrances')
+    fragrances = Product.objects.filter(category__category= frag)
+
+
+
     context={
 
-        "deal":products, "featured":featured, "sale":sale , "rated":rated , "new":new , "video":video , "laptops":laptops , "iphone":iphone
+        "deal":products, "featured":featured, "sale":sale , "rated":rated , "new":new , "video":video , "laptops":laptops , "iphone":iphone ,
+        "recommended":recommended, "review":review , "fragrances":fragrances
 
            }
     return render(request, 'home.html',context)
