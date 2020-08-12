@@ -1130,7 +1130,7 @@
 										<div class="bestsellers_content">
 											<div class="bestsellers_category"><a>{{products.category}}</a></div>
 											<div style="height:50px;" class="bestsellers_name"><a href="{% url 'productDetails' products.id %}">{{products.title|truncatechars:30}}</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
+											{% comment %} <div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div> {% endcomment %}
 											<div class="bestsellers_price discount">{{products.price|floatformat:0}}<span></span></div>
 										</div>
 									</div>
@@ -1159,7 +1159,7 @@
 										<div class="bestsellers_content">
 											<div class="bestsellers_category"><a>{{products.category}}</a></div>
 											<div style="height:50px;" class="bestsellers_name"><a href="{% url 'productDetails' products.id %}">{{products.title|truncatechars:30}}</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
+											{% comment %} <div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div> {% endcomment %}
 											<div class="bestsellers_price discount">{{products.price|floatformat:0}}<span></span></div>
 										</div>
 									</div>
@@ -1188,7 +1188,7 @@
 										<div class="bestsellers_content">
 											<div class="bestsellers_category"><a>{{products.category}}</a></div>
 											<div style="height:50px;" class="bestsellers_name"><a href="{% url 'productDetails' products.id %}">{{products.title|truncatechars:30}}</a></div>
-											<div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div>
+											{% comment %} <div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div> {% endcomment %}
 											<div class="bestsellers_price discount">{{products.price|floatformat:0}}<span></span></div>
 										</div>
 									</div>
