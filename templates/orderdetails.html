@@ -22,51 +22,29 @@
 	<div style="background-color:#F7F7F7" class="shop">
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-2">
-					<!-- Shop Sidebar -->
-					<div class="shop_sidebar">
-						<div class="sidebar_section">
-							<div class="sidebar_title">Categories</div>
-							<ul  class="sidebar_categories">
-								<li><a href="#">Computers & Laptops</a></li>
-								<li><a style="color: black;" href="#">Cameras & Photos</a></li>
-								<li><a href="#">Hardware</a></li>
-								<li><a href="#">Smartphones & Tablets</a></li>
-								<li><a href="#">TV & Audio</a></li>
-								<li><a href="#">Gadgets</a></li>
-								<li><a href="#">Car Electronics</a></li>
-								<li><a href="#">Video Games & Consoles</a></li>
-								<li><a href="#">Accessories</a></li>
-							</ul>
-						</div>
-						
-					</div>
-
-				</div>
-
-				
-				<div class="col-sm-10">
+				<div class="col-sm-12">
 				  <div class="row no-gutters">	
     				<div class="col-sm-12">
 					<div style="min-height: 250px;" class="card">
     			        	<div style="max-height: 30px;" class="card-body">
 							  <h5 class="card-title">Order# {{number}}</h5>
+							
     			        	</div>
+							
 						<ul class="list-group list-group-flush">
 							<li class="list-group-item">
 							<table class="table">
 								<thead>
 								  <tr>
-									<th scope="col"></th>
-									<th scope="col"></th>
-									<th scope="col"></th>
-									<th scope="col"></th>
+									<th scope="col">Image</th>
+									<th scope="col">Name</th>
+									<th scope="col">Quantity</th>
+									<th scope="col">Price</th>
 								  </tr>
 								</thead>
 								<tbody>
 									{% for obj in orderdetail.all  %}
 								  <tr>
-									<th><a href="{% url 'user-detail' obj.id %}">{{obj.number}}</a></th>
 									<td><img src="{{obj.products.image.url}}" heght="75" width="75"></td>
 									<td>{{obj.products.title}}</td>
 									<td>{{obj.quantity}}</td>
@@ -100,7 +78,6 @@
 <script src="{% static 'one/js/shop_custom.js' %}"></script>
 
 <script>
-
 
 </script>
 

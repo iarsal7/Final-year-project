@@ -36,31 +36,8 @@
 
 	<div style="background-color:#F7F7F7" class="shop">
 		<div class="container">
-			<div class="row">
-				<div class="col-sm-2">
-					<!-- Shop Sidebar -->
-					<div class="shop_sidebar">
-						<div class="sidebar_section">
-							<div class="sidebar_title">Categories</div>
-							<ul  class="sidebar_categories">
-								<li><a href="#">Computers & Laptops</a></li>
-								<li><a style="color: black;" href="#">Cameras & Photos</a></li>
-								<li><a href="#">Hardware</a></li>
-								<li><a href="#">Smartphones & Tablets</a></li>
-								<li><a href="#">TV & Audio</a></li>
-								<li><a href="#">Gadgets</a></li>
-								<li><a href="#">Car Electronics</a></li>
-								<li><a href="#">Video Games & Consoles</a></li>
-								<li><a href="#">Accessories</a></li>
-							</ul>
-						</div>
-						
-					</div>
-
-				</div>
-
-				
-				<div class="col-sm-10">
+			<div class="row">	
+				<div class="col-sm-12">
 				  <div class="row no-gutters">	
     				<div class="col-sm-6">
     			        <div style="min-height: 250px;" class="card">
@@ -97,7 +74,7 @@
 							<li class="list-group-item">
 							<table id="order" class="table table-striped">
 								<thead>
-								  <tr>
+								  <tr style="text-align:center">
 									<th scope="col">Order #</th>
 									<th scope="col">Status</th>
 									<th scope="col">Date & Time</th>
@@ -107,12 +84,19 @@
 								</thead>
 								<tbody>
 									{% for obj in order.all  %}
-								  <tr>
+								  <tr style="text-align:center">
 									<th><a href="{% url 'user-detail' obj.number %}">{{obj.number}}</a></th>
 									<td>{{obj.status}}</td>
 									<td>{{obj.date}} {{obj.time}}</td>
 									<td>{{obj.orderDetails.all.count}}</td>
-									<td>Rs {{obj.total|floatformat:0}}</td>
+									<td>Rs {{obj.total|floatformat:0}}
+                  {% if obj.status == 'created' or obj.status == 'processing'  %}                  
+                    <div>
+                      <button class="my_button btn btn-sm btn-info ml-1 btn-danger"  onClick="deleteOrder('{{obj.number}}')"><i class="fa fa-trash-alt"></i> </button>
+                    </div>
+                  {% endif %}
+
+                  </td>
 								  </tr>
 								  {% endfor %}
 								</tbody>
@@ -285,6 +269,57 @@ $("form#updateUser").submit(function(event) {
 
    
 });
+
+//Delete Order Function 
+
+function deleteOrder(id) {
+	
+  bootbox.confirm({
+    message: "Remove Order?",
+    buttons: {
+        confirm: {
+            label: 'Yes',
+            className: 'btn-info'
+        },
+        cancel: {
+            label: 'No',
+            className: 'btn-danger'
+        }
+    },
+    callback: function (result) {
+        if(result){
+          
+			$.ajax({
+				url: '{% url 'orderDelete' %}',
+            	data: {
+            	    'id': id,
+            	},
+            	dataType: 'json',
+							
+				success: function(data){
+
+				if (data.deleted) {
+                 
+            window.location.href= window.location.href
+               }
+				
+				
+		
+				},
+		
+			  error: function(errorData){
+				console.log("error")
+				console.log(errorData)
+			  }
+		
+			  });
+
+        }
+
+    }
+  });
+
+}
 
 
 </script>

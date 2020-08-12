@@ -119,6 +119,7 @@ class Cart(models.Model):
 
 order_choices=(            
     ('created','Created'),
+    ('processing', 'Processing'),
     ('shipped','Shipped'),
     ('refunded','Refunded')
 )

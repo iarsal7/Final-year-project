@@ -39,26 +39,6 @@
 								<li><a href="#">Accessories</a></li>
 							</ul>
 						</div>
-						<div class="sidebar_section filter_by_section">
-							<div class="sidebar_title">Filter By</div>
-							<div class="sidebar_subtitle">Price</div>
-							<div class="filter_price">
-								<div id="slider-range" class="slider_range"></div>
-								<p>Range: </p>
-								<p><input type="text" id="amount" class="amount" readonly style="border:0; font-weight:bold;"></p>
-							</div>
-						</div>
-						<div class="sidebar_section">
-							<div class="sidebar_subtitle color_subtitle">Color</div>
-							<ul class="colors_list">
-								<li class="color"><a href="#" style="background: #b19c83;"></a></li>
-								<li class="color"><a href="#" style="background: #000000;"></a></li>
-								<li class="color"><a href="#" style="background: #999999;"></a></li>
-								<li class="color"><a href="#" style="background: #0e8ce4;"></a></li>
-								<li class="color"><a href="#" style="background: #df3b3b;"></a></li>
-								<li class="color"><a href="#" style="background: #ffffff; border: solid 1px #e1e1e1;"></a></li>
-							</ul>
-						</div>
 						<div class="sidebar_section">
 							<div class="sidebar_subtitle brands_subtitle">Brands</div>
 							<ul class="brands_list">
@@ -85,16 +65,13 @@
 							<div class="shop_product_count"><span>{{products.all.count}}</span> products found</div>
 							<div class="shop_sorting">
 								<span>Sort by:</span>
-								<ul>
-									<li>
-										<span class="sorting_text">highest rated<i class="fas fa-chevron-down"></span></i>
-										<ul>
-											<li class="shop_sorting_button" data-isotope-option='{ "sortBy": "original-order" }'>highest rated</li>
-											<li class="shop_sorting_button" data-isotope-option='{ "sortBy": "name" }'>name</li>
-											<li class="shop_sorting_button"data-isotope-option='{ "sortBy": "price" }'>price</li>
-										</ul>
-									</li>
-								</ul>
+								
+									<select class="price-sorting type-regular" name="price-sorting">
+    									<option selected disabled>Default</option>
+    									<option value="l2h">Low to high</option>
+    									<option value="h2l">High to low</option>
+										</select>
+								
 							</div>
 						</div>
                     </div>
@@ -102,9 +79,9 @@
 	<!-- Shop --> 
     <br><br>
 <div class="container">
-    <div class="row">
+    <div class="row products-grid">
         {% for product in products  %}
-        <div class="col-md-3 col-sm-6">
+        <div class="product col-md-3 col-sm-6" data-store="{{product.title}}" data-price="{{product.price | floatformat:"0" | cut:","}}" target="_blank">
             <div class="product-grid4">
                 <div class="product-image4">
                     <a href="#">
@@ -125,7 +102,7 @@
                     <div class="price">
                         {{product.price}}
                     </div>
-                    <a style="display: none;" class="add-to-cart" href="{% url 'productDetails' product.id %}">ADD TO CART</a>
+                    {% comment %} <a style="display: none;" class="add-to-cart" href="{% url 'productDetails' product.id %}">ADD TO CART</a> {% endcomment %}
                 </div>
             </div>
         </div>
@@ -138,6 +115,7 @@
 </div>
 </div>
 </div>
+
 {% endblock content %}
 {% block javascript %}
 
@@ -149,7 +127,36 @@
 
 <script>
 
+$(document).on("change", ".price-sorting", function() {
 
+    var sortingMethod = $(this).val();
+
+    if(sortingMethod == 'l2h')
+    {
+        sortProductsPriceAscending();
+    }
+    else if(sortingMethod == 'h2l')
+    {
+        sortProductsPriceDescending();
+    }
+
+});
+
+function sortProductsPriceAscending()
+{
+    var products = $('.product');
+    products.sort(function(a, b){ return $(a).data("price")-$(b).data("price")});
+    $(".products-grid").html(products);
+
+}
+
+function sortProductsPriceDescending()
+{
+    var products = $('.product');
+    products.sort(function(a, b){ return $(b).data("price") - $(a).data("price")});
+    $(".products-grid").html(products);
+
+}
     $(document).ready(function(){
   $(".product-grid4").mouseover(function(){
       var grid = $(this);

@@ -37,6 +37,7 @@ urlpatterns = [
     path('wishlist', views.wishlist , name='wishlist'),
     path('Shop/<slug:pk>' , views.shop , name='shop'),
     path('Category/<slug:pk>' , views.smartphones , name='smartphones'),
+    path('ajax/order/delete' , views.orderdelete.as_view() , name='orderDelete'),
     
 
 

@@ -495,3 +495,19 @@ def smartphones(request , pk):
     category= Category.objects.get(name= x)
     products= Product.objects.filter(category__category= category)
     return render(request , 'smartphones.html' , {'products':products , 'category':category})
+
+class orderdelete(View):
+
+    def  get(self, request):
+        orderid=request.GET.get('id', None)
+
+        order= Order.objects.get(number= orderid)
+        print(order)
+        order.delete()
+
+        data={
+                    'deleted': True,
+                }    
+
+
+        return JsonResponse(data)
