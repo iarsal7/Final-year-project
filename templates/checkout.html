@@ -67,7 +67,7 @@
             <form method="post" id="placeOrder">{% csrf_token %}
             {% if cart %}
             <div class="input-group-btn">
-            <button class="btn-round btn-info ml-auto button cart_button_checkout mt-4 " style="background:#0e8ce4 ; width: 100%;" type="submit">Place Order</button>
+            <button class="btn-round btn-info ml-auto button cart_button_checkout mt-4 " style="background:#0e8ce4 ; width: 100%;" type="submit" data-toggle="modal" data-target="#successModal" data-backdrop="static" data-keyboard="false">Place Order</button>
             </div>
             {% endif %}
             </form>
@@ -176,11 +176,39 @@
   </div>
 </div>
 
+{% comment %} Order Placed Modal {% endcomment %}
+
+<div id="successModal" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box">
+					<i class="fas fa-check fa-4x"></i>
+				</div>
+        
+				<h4 class="modal-title">Awesome!</h4>	
+			</div>
+			<div class="modal-body">
+				<p class="text-center">Your order has been placed. <br>Thank You.</p>
+			</div>
+			<div class="modal-footer">
+				<button id="success" type="submit" class="btn btn-success btn-block" data-dismiss="modal">OK</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 {% endblock content %}
 
 {% block javascript %}
 <script>
+
+function redirect(){
+    window.location.href = "{% url 'login' %}";
+  }
+  
+
 function editUser() {
 
   let firstname= document.getElementById("model-name").innerText.split(' ')[0];
@@ -276,7 +304,7 @@ $("form#placeOrder").submit(function(event) {
               if (data.status=='ok') {
                 
 
-                window.location.href='checkout/success'
+                // window.location.href='checkout/success'
 
               }
 
@@ -291,6 +319,10 @@ $("form#placeOrder").submit(function(event) {
    
 });
 
+$('#success').click(function() {
+  window.location.href = "{% url 'home' %}";
+    return false;
+});
 
 </script>
 {% endblock javascript %}

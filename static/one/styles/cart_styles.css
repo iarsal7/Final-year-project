@@ -293,9 +293,9 @@ section
 
 .top_bar
 {	
-	margin-top: -13px;
+
 	width: 100%;
-	height: 40px;
+	height: 56px;
 	background: #fafafa;
 	border-bottom: solid 1px rgba(0,0,0,0.05);
 	z-index: 2;
@@ -510,8 +510,7 @@ section
 *********************************/
 
 .header_main
-{	margin-top:-24px;
-	margin-bottom:-24px;
+{	
 	z-index: 1;
 }
 .header.scrolled .header_main

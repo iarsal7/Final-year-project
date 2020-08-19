@@ -203,7 +203,7 @@ $(document).ready(function()
 					{
 						item.on('click', function(evt)
 						{
-							evt.preventDefault();
+						
 							evt.stopPropagation();
 							var subItem = item.find('> ul');
 						    if(subItem.hasClass('active'))

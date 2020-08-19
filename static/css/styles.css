@@ -201,7 +201,7 @@ margin-top:0px;
 h3.h3{text-align:center;margin:1em;text-transform:capitalize;font-size:1.7em;}
 
 
-/********************* Shopping Demo-4 **********************/
+/********************* Shopping **********************/
 .product-grid4,.product-grid4 .product-image4{position:relative}
 .product-grid4{font-family:Poppins,sans-serif;text-align:center;border-radius:5px;overflow:hidden;z-index:1;transition:all .3s ease 0s}
 .product-grid4:hover{box-shadow:0 0 10px rgba(0,0,0,.2)}
@@ -225,7 +225,7 @@ h3.h3{text-align:center;margin:1em;text-transform:capitalize;font-size:1.7em;}
 .product-grid4 .product-discount-label,.product-grid4 .product-new-label{color:#fff;background-color:#0e8ce4;font-size:13px;font-weight:800;text-transform:uppercase;line-height:45px;height:45px;width:45px;border-radius:50%;position:absolute;left:10px;top:15px;transition:all .3s}
 .product-grid4 .product-discount-label{left:auto;right:10px;background-color:#d7292a}
 .product-grid4:hover .product-new-label{opacity:0}
-.product-grid4 .product-content{padding:25px}
+.product-grid4 .product-content{padding:15px}
 .product-grid4 .title{font-size:15px;font-weight:400;text-transform:capitalize;margin:0 0 7px;transition:all .3s ease 0s}
 .product-grid4 .title a{color:#222}
 .product-grid4 .title a:hover{color:#0e8ce4}

@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'one/plugins/jquery-ui-1.12.1.custom/jquery-ui.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'one/styles/shop_styles.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'one/styles/shop_responsive.css' %}">
+
 {% endblock stylesheet %}
 
 {% block content %}
@@ -17,49 +18,16 @@
 		<div class="home_content d-flex flex-column align-items-center justify-content-center">
 			<h2 class="home_title">{{category}}</h2>
 		</div>
-	</div> 
+</div> 
+
 
 	<div class="shop">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-3">
-					<!-- Shop Sidebar -->
-					<div class="shop_sidebar">
-						<div class="sidebar_section">
-							<div class="sidebar_title">Categories</div>
-							<ul class="sidebar_categories">
-								<li><a href="#">Computers & Laptops</a></li>
-								<li><a href="#">Cameras & Photos</a></li>
-								<li><a href="#">Hardware</a></li>
-								<li><a href="#">Smartphones & Tablets</a></li>
-								<li><a href="#">TV & Audio</a></li>
-								<li><a href="#">Gadgets</a></li>
-								<li><a href="#">Car Electronics</a></li>
-								<li><a href="#">Video Games & Consoles</a></li>
-								<li><a href="#">Accessories</a></li>
-							</ul>
-						</div>
-						<div class="sidebar_section">
-							<div class="sidebar_subtitle brands_subtitle">Brands</div>
-							<ul class="brands_list">
-								<li class="brand"><a href="#">Apple</a></li>
-								<li class="brand"><a href="#">Beoplay</a></li>
-								<li class="brand"><a href="#">Google</a></li>
-								<li class="brand"><a href="#">Meizu</a></li>
-								<li class="brand"><a href="#">OnePlus</a></li>
-								<li class="brand"><a href="#">Samsung</a></li>
-								<li class="brand"><a href="#">Sony</a></li>
-								<li class="brand"><a href="#">Xiaomi</a></li>
-							</ul>
-						</div>
-					</div>
-
-				</div>
-
-				<div class="col-lg-9">
+				
+				<div class="col-12 col-sm-12">
 					
 					<!-- Shop Content -->
-
 					<div class="shop_content">
 						<div class="shop_bar clearfix">
 							<div class="shop_product_count"><span>{{products.all.count}}</span> products found</div>
@@ -70,18 +38,23 @@
     									<option selected disabled>Default</option>
     									<option value="l2h">Low to high</option>
     									<option value="h2l">High to low</option>
-										</select>
+									</select>
 								
 							</div>
 						</div>
                     </div>
 
+                </div>
+            </div>
+        </div>
+    </div>
+
 	<!-- Shop --> 
-    <br><br>
-<div class="container">
+    
+<div class="container mb-5">
     <div class="row products-grid">
         {% for product in products  %}
-        <div class="product col-md-3 col-sm-6" data-store="{{product.title}}" data-price="{{product.price | floatformat:"0" | cut:","}}" target="_blank">
+        <div class="product col-6 col-sm-2" data-store="{{product.title}}" data-price="{{product.price | floatformat:"0" | cut:","}}" target="_blank">
             <div class="product-grid4">
                 <div class="product-image4">
                     <a href="#">
@@ -97,8 +70,7 @@
                 </div>
                 <div style="width: 100%; height: 100%;" class="product-content">
                     <h3 class="title" style="
-                    height: 70px;
-                    width: 130px;"><a>{{product.title|truncatechars:57}}</a></h3>
+                    height: 70px; text-align: center;"><a>{{product.title|truncatechars:57}}</a></h3>
                     <div class="price">
                         {{product.price}}
                     </div>
@@ -110,12 +82,6 @@
     </div>
 </div>
 
-
-</div>
-</div>
-</div>
-</div>
-
 {% endblock content %}
 {% block javascript %}
 
@@ -123,7 +89,7 @@
 <script src="{% static 'one/plugins/Isotope/isotope.pkgd.min.js' %}"></script>
 <script src="{% static 'one/plugins/jquery-ui-1.12.1.custom/jquery-ui.js' %}"></script>
 <script src="{% static 'one/plugins/parallax-js-master/parallax.min.js' %}"></script>
-<script src="{% static 'one/js/shop_custom.js' %}"></script>
+{% comment %} <script src="{% static 'one/js/shop_custom.js' %}"></script>  {% endcomment %}
 
 <script>
 
@@ -157,7 +123,8 @@ function sortProductsPriceDescending()
     $(".products-grid").html(products);
 
 }
-    $(document).ready(function(){
+
+$(document).ready(function(){
   $(".product-grid4").mouseover(function(){
       var grid = $(this);
       grid.find(".add-to-cart").css("display", "block");
