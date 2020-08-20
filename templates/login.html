@@ -23,11 +23,11 @@
                 <div class="signin-content">
                     <div class="signin-image">
                         <figure><img style="height:330px" src="{% static 'login/images/2.png' %}" alt="sing up image"></figure>
-                        <a href="{% url 'signup' %}" class="signup-image-link">Create an account</a>
+                        <a href="{% url 'signup' %}" class="signup-image-link"><b>Create an Account</b></a>
                     </div>
 
                     <div class="signin-form">
-                        <h2 class="form-title mt-1">Login</h2>
+                        <h2 class="form-title mt-1">Sign In</h2>
                         <form method="POST" class="register-form" id="login-form">{% csrf_token %}
                             <div class="form-group">
 							<span class="error text-danger" id="formerror"></span>
@@ -38,15 +38,15 @@
                                 <label for="your_pass"><i class="fas fa-lock"></i></label>
                                 <input type="password" name="your_pass" id="your_pass" placeholder="Password"/>
                             </div>
-                            {% comment %} <div class="form-group">
-                                <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
-                                <label style="margin-left: 12px;" for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
-                            </div> {% endcomment %}
+                           
                             <div class="form-group form-button mt-2">
-								<!-- <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/> -->
-								<button style="margin-top: 16px;" class="btn btn-primary btn-lg">Log in</button>
+								
+								<button style="margin-top: 16px;" class="btn btn-primary btn-lg">SIGN IN</button>
                             </div>
                         </form>
+                    	
+							<div class="mt-4"><a href="{% url 'password_reset' %}">Forgot Password?</a></div>
+                    
                         <div class="social-login">
                             <span class="social-label">Or login with</span>
                             <ul class="socials">

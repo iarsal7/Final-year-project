@@ -1,15 +1,15 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from Ecommerce import views
 from django.contrib.auth import views as authviews
 
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
-    # path('signup/', views.signup ,name='signup'),
     path('signup/', views.SignUpView.as_view(), name='signup'),
     path('signup/login/', authviews.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', authviews.LogoutView.as_view(), name='logout'),
@@ -35,9 +35,11 @@ urlpatterns = [
     path('Shop/<slug:pk>' , views.shop , name='shop'),
     path('Category/<slug:pk>' , views.smartphones , name='smartphones'),
     path('ajax/order/delete' , views.orderdelete.as_view() , name='orderDelete'),
+    path('reset_password/', authviews.PasswordResetView.as_view(template_name="password/password_reset.html"), name="password_reset"),
+    path('reset_password_sent/', authviews.PasswordResetDoneView.as_view(template_name="password/password_reset_done.html"), name="password_reset_done"),
+    path('reset/<uidb64>/<token>/', authviews.PasswordResetConfirmView.as_view(template_name="password/password_reset_confirm.html"), name="password_reset_confirm"),
+    path('reset_password_complete', authviews.PasswordResetCompleteView.as_view(template_name="password/password_reset_complete.html"), name="password_reset_complete"),
     
-
-
     
 
 ]
