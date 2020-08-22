@@ -289,7 +289,7 @@
 											
 												<div class="form-group">
 												 <span class="error text-danger" id="reviewerror"></span>
-												 <h4 style="font-weight: 500;" class="text-success" id="reviewsuccess"></h1>
+												 <h4 style="font-weight: 500;" class="text-success" id="reviewsuccess"></h4>
 												
 													<input class="input form-control" type="text" id="inputSubject" name="inputSubject" placeholder="Subject" />
 												</div>
@@ -526,7 +526,8 @@ $("form#ReviewForm").submit(function(event) {
       
               if (data.status=='ok') {
                 $('form#ReviewForm').trigger("reset");
-               
+
+               $('#reviewerror').text("");
 			   $('#reviewsuccess').text("Your review has been sent for approval");
               }
 

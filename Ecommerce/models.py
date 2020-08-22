@@ -6,6 +6,7 @@ from django.dispatch import receiver
 from Ecommerce.utils import unique_order_id_generator
 from django_random_queryset import RandomManager
 
+
 class User(AbstractUser):
     address= models.CharField(max_length=250, blank=True)
     phone = models.CharField(max_length=11 , blank=True)
@@ -161,3 +162,16 @@ class OrderDetail(models.Model):
 class Wishlist(models.Model):
     products= models.ForeignKey(Product, on_delete=models.CASCADE , related_name='wishlists')
     user=models.ForeignKey(User, on_delete=models.CASCADE, related_name='wishlists')
+
+
+class Contact(models.Model):
+    name= models.CharField(max_length=150)
+    email= models.CharField(max_length=150,)
+    phone= models.CharField(max_length=150)
+    message= models.TextField(blank=True, null=True)
+    date= models.DateField(auto_now_add=True, auto_now=False)
+    time=models.TimeField(auto_now_add=True , auto_now=False)
+
+    def __str__(self):
+        return self.name
+    

@@ -374,7 +374,7 @@
 									<li ><a  href="{% url 'home' %}">Home<i class="fas fa-chevron-down"></i></a></li>
 									
 									<li><a href="blog.html">About Us<i class="fas fa-chevron-down"></i></a></li>
-									<li><a  href="contact.html">Contact<i class="fas fa-chevron-down"></i></a></li>
+									<li><a href="{% url 'contact' %}">Contact<i class="fas fa-chevron-down"></i></a></li>
 								</ul>
 							</div>
 
@@ -425,11 +425,11 @@
 								{% endif %}
 
 								<li class="page_menu_item">
-									<a href="#">Home<i class="fa fa-angle-down"></i></a>
+									<a href="{% url 'home' %}">Home<i class="fa fa-angle-down"></i></a>
 								</li>
 								
 								<li class="page_menu_item"><a href="">About Us<i class="fa fa-angle-down"></i></a></li>
-								<li class="page_menu_item"><a href="">contact<i class="fa fa-angle-down"></i></a></li>
+								<li class="page_menu_item"><a href="{% url 'contact' %}">contact<i class="fa fa-angle-down"></i></a></li>
 							</ul>
 							
 							{% if request.user.is_authenticated == False %}

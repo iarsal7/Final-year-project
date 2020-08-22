@@ -67,10 +67,15 @@
             <form method="post" id="placeOrder">{% csrf_token %}
             {% if cart %}
             <div class="input-group-btn">
+            {% if  login %}
             <button class="btn-round btn-info ml-auto button cart_button_checkout mt-4 " style="background:#0e8ce4 ; width: 100%;" type="submit" data-toggle="modal" data-target="#successModal" data-backdrop="static" data-keyboard="false">Place Order</button>
+            {% endif %}
             </div>
             {% endif %}
             </form>
+            {% if login == False %}
+            <button class="btn-round btn-info ml-auto button cart_button_checkout mt-4 " style="background:#0e8ce4 ; width: 100%;" type="submit" onClick="loginUser()" data-toggle="modal" data-target="#loginModal">Place Order</button>
+            {% endif %}
         </div>
 
             
@@ -145,19 +150,19 @@
 
             <div class="mb-3 form-group">
               <label for="phone">Phone</label>
-              <input type="text" class="form-control" id="phone" name="model-phone" placeholder="03401234567" required>
+              <input type="text" class="form-control" id="phone" name="model-phone" placeholder="Enter your Phone" required>
               
             </div>
 
             <div class="mb-3 form-group">
               <label for="email">Email </label>
-              <input type="email" class="form-control" id="email" name="model-email" placeholder="you@example.com">
+              <input type="email" class="form-control" id="email" name="model-email" placeholder="Enter valid Email">
               
             </div>
 
             <div class="mb-3 form-group">
               <label for="address">Address</label>
-              <textarea rows="5" class="form-control" id="address" name="model-address" placeholder="1234 Main St" required></textarea>
+              <textarea rows="5" class="form-control" id="address" name="model-address" placeholder="Enter valid Address" required></textarea>
               
             </div>
 
@@ -198,6 +203,67 @@
 	</div>
 </div>
 
+
+{% comment %} Login Modal for Social oAuth {% endcomment %}
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Billing Address</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <div class="col-md-12">
+          {% comment %} <h4 class="mb-3">Billing address</h4> {% endcomment %}
+          <form method="POST" id="loginUser">{% csrf_token %}
+            <div class="row">
+              <div class="col-md-6 mb-3 form-group">
+                <label for="firstName">First name</label>
+                <input type="text" class="form-control" id="Lfirstname" name="login-firstName" placeholder=""  required>
+              </div>
+              <div class="col-md-6 mb-3 form-group">
+                <label for="lastName">Last name</label>
+                <input type="text" class="form-control" id="Llastname" name="login-lastName"  placeholder=""  required>
+                
+              </div>
+            </div>
+
+            <div class="mb-3 form-group">
+              <label for="phone">Phone</label>
+              <input type="text" class="form-control" id="Lphone" name="login-phone" placeholder="Enter your Phone" required>
+              
+            </div>
+
+            <div class="mb-3 form-group">
+              <label for="email">Email </label>
+              <input type="email" class="form-control" id="Lemail" name="login-email" placeholder="Enter valid Email">
+              
+            </div>
+
+            <div class="mb-3 form-group">
+              <label for="address">Address</label>
+              <textarea rows="5" class="form-control" id="Laddress" name="login-address" placeholder="Enter valid Address" required></textarea>
+              
+            </div>
+
+            
+             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             <button type="submit" class="btn btn-primary">Save changes</button>
+            
+
+          </form>
+          
+	    </div>
+        
+       </div>   {% comment %}modal body div ending {% endcomment %}
+      
+    </div>
+  </div>
+</div>
+
+{% comment %} Login Modal for Social oAuth {% endcomment %}
 
 {% endblock content %}
 
@@ -286,7 +352,81 @@ $("form#updateUser").submit(function(event) {
 });
 
 
+function loginUser() {
 
+  let firstname= document.getElementById("model-name").innerText.split(' ')[0];
+  let lastname = document.getElementById("model-name").innerText.split(' ')[1];
+  let phone= document.getElementById("model-phone").innerText;
+  let email= document.getElementById("model-email").innerText;
+  let address= document.getElementById("model-address").innerText;
+  
+
+    $('#Lfirstname').val(firstname);
+    $('#Llastname').val(lastname);
+    $('#Lphone').val(phone);
+    $('#Lemail').val(email);
+    $('#Laddress').val(address);
+  }
+
+
+$("form#loginUser").submit(function(event) {
+  
+    event.preventDefault();
+     $("#overlay").fadeIn(1600);　
+ 
+    var fname = $('input[name="login-firstName"]').val();
+    var lname = $('input[name="login-lastName"]').val();
+    var phone = $('input[name="login-phone"]').val();
+    var email = $('input[name="login-email"]').val();
+    var address = $('textarea[name="login-address"]').val();
+
+     if (fname && lname && phone && email && address) {
+        $.ajax({
+            url: '{% url 'updateUser' %}',
+            data: {
+                'fname': fname,
+                'lname': lname,
+                'phone': phone,
+                'email': email,
+                'address': address,
+            },
+            dataType: 'json',
+
+            success: function (data) {
+           setTimeout(function(){
+				           $("#overlay").fadeOut(1600);},500);
+      
+              if (data.status=='updated') {
+                $('form#loginUser').trigger("reset");
+                $('#addressModal').modal('hide');
+
+                setTimeout(function(){
+                $('#model-address').text(address);
+                $('#model-phone').text(phone);
+                $('#model-email').text(email);
+                var fullname = fname.concat(" ", lname);
+                $('#model-name').text(fullname);
+                    },2000);
+
+                window.location.href=window.location.href
+              }
+
+              else{
+     
+                   }  
+
+              }
+            
+             
+        });
+
+    }
+     else {
+       
+    }
+
+   
+});
 
 
 $("form#placeOrder").submit(function(event) {

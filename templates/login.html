@@ -51,11 +51,10 @@
                             <span class="social-label">Or login with</span>
                             <ul class="socials">
                                 
-								<li style="margin: 10px;list-style: none;font-size: 24px;transition:.5s;"><a href="#"><i style="color:#3b5998;" class="fab fa-facebook"></i></a></li>
-                                <li style="margin: 10px;list-style: none;font-size: 24px;transition:.5s;"><a href="#"><i style="color:#00aced;" class="fab fa-twitter"></i></a></li>
-                                <li style="margin: 10px;list-style: none;font-size: 24px;transition:.5s;"><a href="#"><i style="color:#dd4b39;" class="fab fa-google-plus-g"></i></a></li>
-                                <li style="margin: 10px;list-style: none;font-size: 24px;transition:.5s;"><a href="#"><i style="color:#007bb6;" class="fab fa-linkedin-in"></i></a></li>
-								<li style="margin: 10px;list-style: none;font-size: 24px;transition:.5s;"><a href="#"><i  style="color:#bc2a8d;"class="fab fa-instagram"></i></a></li>
+								<li style="margin: 10px;list-style: none;font-size: 24px;transition:.5s;"><a href="{% url 'social:begin' 'facebook' %}"><i style="color:#3b5998;" class="fab fa-facebook"></i></a></li>
+                                <li style="margin: 10px;list-style: none;font-size: 24px;transition:.5s;"><a href="{% url 'social:begin' 'github' %}"><i style="color:#00aced;" class="fab fa-twitter"></i></a></li>
+                                <li style="margin: 10px;list-style: none;font-size: 24px;transition:.5s;"><a href="{% url 'social:begin' 'github' %}"><i style="color: #211F1F;" class="fab fa-github"></i></a></li>
+								
                             </ul>
                         </div>
                     </div>

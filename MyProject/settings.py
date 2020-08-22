@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'Ecommerce',
     'crispy_forms',
     'django_extensions',
+    'social_django', 
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -53,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware', 
+    
 ]
 
 ROOT_URLCONF = 'MyProject.urls'
@@ -70,10 +73,23 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'social_django.context_processors.backends',  
+                'social_django.context_processors.login_redirect', 
             ],
         },
     },
 ]
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email'] 
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {       
+  'fields': 'id, name, email'
+}
+SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [                
+    ('name', 'name'),
+    ('email', 'email'),
+]
+SOCIAL_AUTH_IS_FULL_EMAIL = True                    #For adding social email in Users
 
 WSGI_APPLICATION = 'MyProject.wsgi.application'
 
@@ -156,3 +172,23 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'arsal.iqbal79@gmail.com'
 EMAIL_HOST_PASSWORD = 'ronaldocr7'
+
+
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.instagram.InstagramOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.github.GithubOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+
+    
+]
+
+#Social Login Keys
+SOCIAL_AUTH_FACEBOOK_KEY = '1607431416084056'      # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = 'fbe9d5f31b0bf4a4d45bcc2b4784832c'  # App Secret
+
+SOCIAL_AUTH_GITHUB_KEY = '72f2821f8b47381ee352'
+SOCIAL_AUTH_GITHUB_SECRET = '5270ef6f53834f4876b971c50b111aae873b502e'
+

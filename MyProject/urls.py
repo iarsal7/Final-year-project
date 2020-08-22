@@ -6,7 +6,6 @@ from Ecommerce import views
 from django.contrib.auth import views as authviews
 
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
@@ -32,6 +31,8 @@ urlpatterns = [
     path('ajax/wishlist' , views.updateWishlist.as_view(), name='wishlist-update'),
     path('ajax/wishlist/product/remove' , views.removeWishlist.as_view(), name='wishlist-remove'),
     path('wishlist', views.wishlist , name='wishlist'),
+    path('contact/' , views.contact , name='contact'),
+    path('ajax/contact' , views.contact_ajax.as_view(), name='ajaxContact'),
     path('Shop/<slug:pk>' , views.shop , name='shop'),
     path('Category/<slug:pk>' , views.smartphones , name='smartphones'),
     path('ajax/order/delete' , views.orderdelete.as_view() , name='orderDelete'),
@@ -39,7 +40,7 @@ urlpatterns = [
     path('reset_password_sent/', authviews.PasswordResetDoneView.as_view(template_name="password/password_reset_done.html"), name="password_reset_done"),
     path('reset/<uidb64>/<token>/', authviews.PasswordResetConfirmView.as_view(template_name="password/password_reset_confirm.html"), name="password_reset_confirm"),
     path('reset_password_complete', authviews.PasswordResetCompleteView.as_view(template_name="password/password_reset_complete.html"), name="password_reset_complete"),
-    
+    path('oauth/', include('social_django.urls', namespace='social'))
     
 
 ]

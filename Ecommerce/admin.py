@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category , Product ,Tag, Cart, Order, OrderDetail ,User , Review, Variant , ProductImage, Subcategory , Variation , ItemVariation , Wishlist
+from .models import Category , Product ,Tag, Cart, Order, OrderDetail ,User , Review, Variant , ProductImage, Subcategory , Variation , ItemVariation , Wishlist, Contact
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin 
 from .models import User
@@ -7,8 +7,7 @@ from django.utils.html import format_html
 # from .forms import MyUserCreationForm, MyUserChangeForm
 
 class MyUserAdmin(UserAdmin):
-    # add_form = MyUserCreationForm
-    # form = MyUserChangeForm
+
     model = User
     list_display = ['username','email', 'first_name','last_name', 'is_staff']
     fieldsets = UserAdmin.fieldsets + (
@@ -17,7 +16,6 @@ class MyUserAdmin(UserAdmin):
 
 admin.site.register(User ,MyUserAdmin)
 # admin.site.register(Category)
-# admin.site.register(Subcategory)
 
 
 admin.site.register(Cart)
@@ -85,15 +83,19 @@ class SubCategoryAdmin(admin.ModelAdmin):
     list_display=['name' ,]
 
 
+class OrderDetailAdmin(admin.StackedInline):
+    model = OrderDetail
+   
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     search_fields = ('number','user__username' )
+    inlines=[OrderDetailAdmin]
     list_display = ['number' , 'user','user_address','date','time','shippingtotal','total' ,'status']
 
-@admin.register(OrderDetail)
-class OrderDetailAdmin(admin.ModelAdmin):
-    list_display = ['orderid' , 'productname', 'note', 'quantity','total']
+# @admin.register(OrderDetail)
+# class OrderDetailAdmin(admin.ModelAdmin):
+#     list_display = ['orderid' , 'productname', 'note', 'quantity','total']
 
 
 @admin.register(Review)
@@ -104,3 +106,6 @@ class ReviewAdmin(admin.ModelAdmin):
 class VariantAdmin(admin.ModelAdmin):
     list_display = ['variant_key' , 'product_key' , 'product']
 
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display=['name' , 'email' , 'phone', 'message', 'date', 'time']
