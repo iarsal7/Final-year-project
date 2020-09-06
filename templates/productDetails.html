@@ -18,6 +18,8 @@
 .modal-full .modal-content {
     min-height: 100vh;
 }
+
+
 </style>
 
 {% endblock stylesheet %}
@@ -27,12 +29,12 @@
 
 <!-- Single Product -->
 
-	<div class="single_product">
+	<div class="single_product" style="padding-bottom:0px;">
 		<div class="container">
 			<div class="row">
 
 				<!-- Images -->
-				<div class="col-lg-2 order-lg-1 order-2">
+				<div class="col-lg-2 order-lg-2 order-2">
 					 
 					<ul class="image_list">
 					{% for p in photos %}
@@ -46,7 +48,7 @@
 				</div>
 
 				<!-- Selected Image -->
-				<div class="col-lg-5 order-lg-2 order-1">
+				<div class="col-lg-5 order-lg-1 order-1">
 					<div class="image_selected"><img src="{{ product.image.url}}" alt=""></div>
 				</div>
 
@@ -57,6 +59,54 @@
 						<div class="product_name">{{product.title}}</div>
 						<div class="rating_r rating_r_4 product_rating"><i></i><i></i><i></i><i></i><i></i></div>
 						<div class="product_text"><p>{{product.description}}</p></div>
+						
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+{% comment %} New Row for variants and add to cart {% endcomment %}
+
+
+<div class="single_product" style="padding-top:0px;">
+<div class="container">
+	<div class="row">
+		
+		<div class="col-sm-8 col-12 order-2 order-lg-1" style="margin-top:40px;">
+			<h3 style="padding:20px; " class="">Other Variants</h3>
+		    <div class="row d-flex justify-content-center mb-4">
+				{% for var in variants  %}
+				<div class="col-sm-3 col-6">
+					<div class="product-grid4">
+						<div class="product-image4">
+							<a href="{% url 'productDetails' var.product.id %}">
+								<img style="width: 100px; height: 100px;" class="pic-1" src="{{ var.product.image.url}}">
+								<img style="height: 100px; width: 100%;" class="pic-2" src="{{ var.product.image.url}}">
+							</a>
+							<ul class="social">
+								<li><a href="{% url 'productDetails' var.product.id %}" data-tip="Quick View"><i class="fa fa-eye"></i></a></li>
+								<li><a href="{% url 'productDetails' var.product.id %}" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>
+							</ul>
+							
+						</div>
+						<div style="width: 100%; height: 100%;" class="product-content">
+							<h3 class="title" style="
+							height: 70px; text-align: center;"><a>{{var.product.title|truncatechars:57}}</a></h3>
+							<div class="price">
+								{{var.product.price}}
+							</div>
+							{% comment %} <a style="display: none;" class="add-to-cart" href="{% url 'productDetails' product.id %}">ADD TO CART</a> {% endcomment %}
+						</div>
+					</div>
+				</div>	
+				{% endfor %}
+			</div>				
+		</div>
+
+		<div class="col-sm-4 col-12 order-1 order-lg-2">
+			<div class="product_description">
 						<div class="order_info d-flex flex-row">
 							<form method="POST" action='{% url 'cart' %}' class="form form-product-ajax"> {% csrf_token %}
 								<input type="hidden"  name="product_id" value="{{product.id}}" >
@@ -89,17 +139,18 @@
 											</ul>
 										</li>
 									</ul>
-								{% endif %}							
+									{% endif %}							
 								</div>
 									
 								<input type="hidden" name="size_mark" id="size_mark" value="">
 								<div class="product_price">Rs {{product.price|floatformat:"0" }}</div>
 
 								
-								{% comment %} <div class="alert alert-success" id="success-alert" style="display:none">
+								<div class="alert alert-success" id="success-alert" style="display:none">
 								  <button type="button" class="close" data-dismiss="alert">x</button>
-								  <strong>Success! </strong> Product have added to your cart.
-								</div> {% endcomment %}
+								  <strong>Success! </strong> Item successfully added to your cart.
+								</div>
+								
 								{% if request.user.is_authenticated %}
 								<div class="button_container">
 								
@@ -111,25 +162,24 @@
 								{% endif %}	
 							</form>
 						</div>
-						{% if  request.user.is_authenticated == False %}
-						<div class="order_info d-flex flex-row">
-						<button class="button cart_button" data-toggle="modal" data-target="#loginModal">Add to Cart</button>
-						</div>
-						{% endif %}
+							{% if  request.user.is_authenticated == False %}
+							<div class="order_info d-flex flex-row">
+								<button class="button cart_button" data-toggle="modal" data-target="#loginModal">Add to Cart</button>
+							</div>
+							{% endif %}
 					</div>
-				</div>
-
-			</div>
 		</div>
 	</div>
+</div>
+</div>
 
-{% if variants %}
+
 	<div style="margin-top: -90px;"  class="viewed mb-5">
 		<div class="container">
 			<div class="row">
 				<div class="col">
 					<div class="viewed_title_container">
-						<h3 class="viewed_title">Other Variants</h3>
+						<h3 class="viewed_title">Recommended Items</h3>
 						
 					</div>
 
@@ -150,14 +200,14 @@
 
                             <div class="carousel-item active">
                                 <div class="row d-flex justify-content-center mb-4">
-								 {% for var in variants  %}
+								 {% for product in recommendation.all  %}
 									<div class="col-md-3 owl-item">
 								<div class="viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
-								 <a href="{% url 'productDetails' var.product.id %}">
-									<div class="viewed_image"><img style="height:120px;" src="{{ var.product.image.url}}" alt=""></div>
+								 <a href="{% url 'productDetails' product.id %}">
+									<div class="viewed_image"><img style="height:120px;" src="{{product.image.url}}" alt=""></div>
 									<div class="viewed_content text-center">
-										<div class="viewed_price">{{var.product.price|floatformat:"0"}}<span></span></div>
-										<div class="viewed_name"><a href="{% url 'productDetails' var.product.id %}">{{var.product.title}}</a></div>
+										<div class="viewed_name"><a href="{% url 'productDetails' product.id %}">{{product.title}}</a></div>
+										<div class="viewed_price">Rs {{product.price|floatformat:"0"}}</div>
 									</div>
 
 								 </a>	
@@ -172,14 +222,14 @@
 
                             <div class="carousel-item">
                                 <div class="row d-flex justify-content-center mb-4">
-								 {% for var in variants  %}
+								 {% for product in recommendation.all  %}
 									<div class="col-md-3 owl-item">
 								<div class="viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
-								 <a href="{% url 'productDetails' var.product.id %}">
-									<div class="viewed_image"><img style="height:120px;" src="{{ var.product.image.url}}" alt=""></div>
+								 <a href="{% url 'productDetails' product.id %}">
+									<div class="viewed_image"><img style="height:120px;" src="{{ product.image.url}}" alt=""></div>
 									<div class="viewed_content text-center">
-										<div class="viewed_price">{{var.product.price|floatformat:"0"}}<span></span></div>
-										<div class="viewed_name"><a href="{% url 'productDetails' var.product.id %}">{{var.product.title}}</a></div>
+										<div class="viewed_name"><a href="{% url 'productDetails' product.id %}">{{product.title}}</a></div>
+										<div class="viewed_price">Rs {{product.price|floatformat:"0"}}</div>
 									</div>
 								 </a>
 								</div>
@@ -206,8 +256,6 @@
 		</div>
 	</div>
 
-
-{% endif %}
 
  	
 <div class="container mb-5">
@@ -388,52 +436,6 @@
 </div>
 </div>
 
-<div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-full" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Recommended Products</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body p-4" id="result">
-			<div class="alert alert-success" id="success-alert" style="display:none">
-								  <button type="button" class="close" data-dismiss="alert">x</button>
-								  <strong>Success! </strong> Product have added to your cart.
-								</div>
-                <div class="row">
-        {% for product in recommendation.all  %}
-        <div class="col-md-2 col-sm-6">
-            <div class="product-grid4">
-                <div class="product-image4">
-                    <a href="#">
-                        <img style="width: 100px; height: 100px;" class="pic-1" src="{{ product.image.url}}">
-                        <img style="height: 100px; width: 100%;" class="pic-2" src="{{ product.image.url}}">
-                    </a>
-                    <ul class="social">
-                        <li><a href="{% url 'productDetails' product.id %}" data-tip="Quick View"><i class="fa fa-eye"></i></a></li>
-                        <li><a href="{% url 'productDetails' product.id %}" data-tip="Add to Cart"><i class="fa fa-shopping-cart"></i></a></li>
-                    </ul>
-                </div>
-                <div style="width: 100%; height: 100%;" class="product-content">
-                    <h3 class="title" style="height: 90px;"><a>{{product.title|truncatechars:57}}</a></h3>
-                    <div class="price">
-                        {{product.price}}
-                    </div>
-                    <a style="display: none;" class="add-to-cart" href="{% url 'productDetails' product.id %}">ADD TO CART</a>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-            </div>
-            <div class="modal-footer">
-               
-        </div>
-    </div>
-</div> 
-</div>
 
 {% endblock content %}
 {% block javascript %}
@@ -484,12 +486,7 @@
       }
 
       }) //first ajax call ends
-
-            setTimeout(function(){ 
-			$('#productModal').modal(); 
-				
-				}, 10000);
-        
+		
 		
 	  
         })

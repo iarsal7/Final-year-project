@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
 <title>Ecommerce Home</title>
+<link rel="shortcut icon" href="{% static 'img/icon.png' %}" />
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="description" content="OneTech shop project">
@@ -35,7 +36,7 @@
 				<div class="row">
 					<div class="col d-flex flex-row">
 						<div class="top_bar_contact_item"><div class="top_bar_icon"><i class="fas fa-phone"></i></div>+92 345 123 4567</div>
-						<div class="top_bar_contact_item"><div class="top_bar_icon"><i class="fa fa-envelope" aria-hidden="true"></i></div><a href="mailto:support@asaanshopping.com">support@asaanshopping.com</a></div>
+						<div class="top_bar_contact_item"><div class="top_bar_icon"><i class="fa fa-envelope" aria-hidden="true"></i></div><a href="mailto:value_shop@outlook.com">value_shop@outlook.com</a></div>
 						<div class="top_bar_content ml-auto">
 							<div class="top_bar_user">
 								<div class="user_icon"><i class="fa fa-user" aria-hidden="true"></i></div>
@@ -65,7 +66,7 @@
 					<!-- Logo -->
 					<div class="col-lg-2 col-sm-3 col-3 order-1">
 						<div class="logo_container">
-							<div class="logo"><a href="{% url 'home' %}"><img src="{% static 'img/logo.png' %}" alt="logo"></a></div>
+							<div class="logo"><a href="{% url 'home' %}"><img style="width:200px; height:110px;"  src="{% static 'img/logo1.png' %}" alt="logo"></a></div>
 						</div>
 					</div>
 
@@ -436,7 +437,7 @@
 							{% endif %}
 							<div class="menu_contact">
 								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="{% static 'one/images/phone_white.png' %}"  alt=""></div>+92 345 123 4567</div>
-								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="{% static 'one/images/mail_white.png' %}"  alt=""></div><a href="mailto:support@asaanshopping.com">support@asaanshopping.com</a></div>
+								<div class="menu_contact_item"><div class="menu_contact_icon"><img src="{% static 'one/images/mail_white.png' %}"  alt=""></div><a href="mailto:value_shop@outlook.com">value_shop@outlook.com</a></div>
 							</div>
 						</div>
 					</div>
@@ -458,7 +459,7 @@
   </ol>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img style="height: 450px" class="d-block w-100" src="{% static 'img/TB116P1o8r0gK0jSZFnXXbRRXXa.jpg_1200x1200Q100.jpg_.jpg' %}"  alt="First slide">
+      <img style="height: 450px" class="d-block w-100" src="{% static 'img/b1.jpg' %}"  alt="First slide">
     </div>
     <div class="carousel-item">
       <img style="height: 450px" class="d-block w-100" src="{% static 'img/ASUS-WinterHoliday_Banner.jpg' %}"  alt="Second slide">
@@ -1084,11 +1085,13 @@
 											<div class="bestsellers_price discount">{{products.price|floatformat:0}}<span></span></div>
 										</div>
 									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
-									<ul class="bestsellers_marks">
-										{% comment %} <li class="bestsellers_mark bestsellers_discount">-25%</li> {% endcomment %}
+									{% comment %} <div class="bestsellers_fav active"><i class="fas fa-heart"></i></div> {% endcomment %}
+									
+									{% comment %} <ul class="bestsellers_marks">
+										<li class="bestsellers_mark bestsellers_discount">-25%</li>
 										<li class="bestsellers_mark bestsellers_new">new</li>
 									</ul>
+							 {% endcomment %}
 								</div>
 								{% endfor %}
 
@@ -1113,7 +1116,7 @@
 											<div class="bestsellers_price discount">{{products.price|floatformat:0}}<span></span></div>
 										</div>
 									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
+									{% comment %} <div class="bestsellers_fav active"><i class="fas fa-heart"></i></div> {% endcomment %}
 									<ul class="bestsellers_marks">
 										{% comment %} <li class="bestsellers_mark bestsellers_discount">-25%</li> {% endcomment %}
 										<li class="bestsellers_mark bestsellers_new">new</li>
@@ -1142,7 +1145,7 @@
 											<div class="bestsellers_price discount">{{products.price|floatformat:0}}<span></span></div>
 										</div>
 									</div>
-									<div class="bestsellers_fav active"><i class="fas fa-heart"></i></div>
+									{% comment %} <div class="bestsellers_fav active"><i class="fas fa-heart"></i></div> {% endcomment %}
 									<ul class="bestsellers_marks">
 										{% comment %} <li class="bestsellers_mark bestsellers_discount">-25%</li> {% endcomment %}
 										<li class="bestsellers_mark bestsellers_new">new</li>
@@ -1321,8 +1324,8 @@
 				<div class="row">
 					<div class="col-lg-3 col-md-6 col-sm-6 mt-2 mb-4">
 						<h5 class="mb-4 font-weight-bold">ABOUT US</h5>
-						<p class="mb-4" style="text-align: justify;">Asaan Shopping is a well known Ecommerce website. We provide authentic prdoucts at reasonable prices at your door step.
-						 Asaan Shopping aims at customers to provide best products and deals. Asaan Shopping listens to Customer queries and Customer feedback is of high value for us. Visit us to get best deals.</p>
+						<p class="mb-4" style="text-align: justify;">Value Shop is a well known Ecommerce website. We provide authentic prdoucts at reasonable prices at your door step.
+						 Value Shop aims at customers to provide best products and deals. Value Shop listens to Customer queries and Customer feedback is of high value for us. Visit us to get best deals.</p>
 						
 					</div>
 
@@ -1343,7 +1346,7 @@
 									<div class="col-1"><i class="far fa-envelope"></i></div>
 									<div class="col-10">
 										<h6 class="font-weight-bold mb-0">Have any Questions?</h6>
-										<p><a href="#">Support@asaanshopping.com</a></p>
+										<p><a href="mailto:value_shop@outlook.com">value_shop@outlook.com</a></p>
 									</div>
 								</div>
 							</li>
@@ -1361,61 +1364,25 @@
 
 
 					<div class="col-lg-3 col-md-6 col-sm-6 mt-2 mb-4">
-						<h5 class="mb-4 font-weight-bold">FRESH TWEETS</h5>
-						<ul class="f-address">
-							<li>
-								<div class="row">
-									<div class="col-1"><i class="fab fa-twitter"></i></div>
-									<div class="col-10">
-										<p class="mb-0"><a href="#">@userthemesrel </a> HTML Version Out Now</p>
-										<label>10 Mins Ago</label>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="row">
-									<div class="col-1"><i class="fab fa-twitter"></i></div>
-									<div class="col-10">
-										<p class="mb-0"><a href="#">@userthemesrel </a> HTML Version Out Now</p>
-										<label>10 Mins Ago</label>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="row">
-									<div class="col-1"><i class="fab fa-twitter"></i></div>
-									<div class="col-10">
-										<p class="mb-0"><a href="#">@userthemesrel </a> HTML Version Out Now</p>
-										<label>10 Mins Ago</label>
-									</div>
-								</div>
-							</li>
-						</ul>
-					</div>
-
-					<div class="col-lg-3 col-md-6 col-sm-6 mt-2 mb-4">
 						<h5 class="mb-4 font-weight-bold">LATEST UPDATES</h5>
 						<ul class="recent-post">
 							<li>
-								<label class="mr-3">28 <br><span>APR</span></label>
-								<span>Rendomised words which dont look eveable.</span>
+								<label class="mr-3">28 <br><span>AUG</span></label>
+								<span>We are providing every item at reasonable prices.</span>
 							</li>
 							<li>
-								<label class="mr-3">29 <br><span>APR</span></label>
-								<span>Rendomised words which dont look eveable.</span>
+								<label class="mr-3">29 <br><span>AUG</span></label>
+								<span>Value shop values your privacy.</span>
 							</li>
 							<li>
-								<label class="mr-3">30 <br><span>APR</span></label>
-								<span>Rendomised words which dont look eveable.</span>
+								<label class="mr-3">30 <br><span>AUG</span></label>
+								<span>Value shop is working 24x7 to provide best services.</span>
 							</li>
 						</ul>
 					</div>
 					<div class="col-lg-3 col-md-6 col-sm-6 mt-2 mb-4">
 						<h5 class="mb-4 font-weight-bold">CONNECT WITH US</h5>
-						<div class="input-group">
-						  	<input type="text" class="form-control" placeholder="Your Email Address">
-						  	<span class="input-group-addon" id="basic-addon2"><i class="fas fa-check"></i></span>
-						</div>
+						
 						<ul class="social-pet mt-4">
 							<li><a href="#" title="facebook"><i class="fab fa-facebook-f"></i></a></li>
 							<li><a href="#" title="twitter"><i class="fab fa-twitter"></i></a></li>
@@ -1433,7 +1400,7 @@
 				<div class="row">
 					<div class="col-md-12 ">
 						<div class="text-center text-white">
-							&copy; 2020 Asaan Shopping. All Rights Reserved.
+							&copy; 2020 Value Shop. All Rights Reserved.
 						</div>
 					</div>
 				</div>

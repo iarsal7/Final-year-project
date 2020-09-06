@@ -57,7 +57,7 @@
         <div class="product col-6 col-sm-2" data-store="{{product.title}}" data-price="{{product.price | floatformat:"0" | cut:","}}" target="_blank">
             <div class="product-grid4">
                 <div class="product-image4">
-                    <a href="#">
+                    <a href="{% url 'productDetails' product.id %}">
                         <img style="width: 100px; height: 100px;" class="pic-1" src="{{ product.image.url}}">
                         <img style="height: 100px; width: 100%;" class="pic-2" src="{{ product.image.url}}">
                     </a>
