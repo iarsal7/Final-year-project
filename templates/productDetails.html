@@ -75,7 +75,9 @@
 	<div class="row">
 		
 		<div class="col-sm-8 col-12 order-2 order-lg-1" style="margin-top:40px;">
+			{% if  variants %}
 			<h3 style="padding:20px; " class="">Other Variants</h3>
+			{% endif %}
 		    <div class="row d-flex justify-content-center mb-4">
 				{% for var in variants  %}
 				<div class="col-sm-3 col-6">
@@ -115,7 +117,7 @@
 									<!-- Product Quantity -->
 									<div style="background-color: #0e8ce4;" class=" product_quantity clearfix" >
 										<span style="font-size: 18px; font-weight: 400; line-height: 48px; color: #FFFFFF;" >Quantity: </span>
-										<input type="text" style="font-size: 18px; font-weight: 400; line-height: 48px; background-color:#0e8ce4 ; color: #FFFFFF;"  id="quantity_input"  pattern="[0-9]*" name="quantity" value="1">
+										<input type="text" style="font-size: 18px; font-weight: 400; line-height: 48px; background-color:#0e8ce4 ; color: #FFFFFF;"  id="quantity_input"  pattern="[0-9]*" name="quantity" value="1" readonly>
 										<div class="button quantity_buttons ml-0" style="background-color: 0e8ce4;">
 											<div id="quantity_inc_button" class="quantity_inc quantity_control "><i style="color: #FFFFFF;" class="fas fa-chevron-up"></i></div>
 											<div id="quantity_dec_button" class="quantity_dec quantity_control"> <i style="color: #FFFFFF;" class="fas fa-chevron-down"></i></div>
@@ -173,7 +175,7 @@
 </div>
 </div>
 
-
+{% if recommendation %}
 	<div style="margin-top: -90px;"  class="viewed mb-5">
 		<div class="container">
 			<div class="row">
@@ -249,13 +251,13 @@
                 </div>
             </div>
 							
-						<!--end-->
+				<!--end-->
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
+{% endif %}		
 
  	
 <div class="container mb-5">
@@ -280,13 +282,13 @@
                      
 							<div class="row">
 							
-										<div class="col-md-6">
+										<div class="col-md-6" style="padding-left:30px;">
 											<div class="product-reviews">
 											{% for obj in review  %}
 												<div class="single-review">
 													<div class="review-heading">
-														<div><i class="fa fa-user" aria-hidden="true"></i> {{obj.user.username}}</div>
-														<div style="" class="align-items-end"><i class="fas fa-clock "></i> {{obj.date}} / {{obj.time}}</div>
+														<div><i style="color:#e74c3c" class="fa fa-user" aria-hidden="true"></i> {{obj.user.username}}</div>
+														<div style="" class="align-items-end"><i style="color:#e74c3c" class="fas fa-clock "></i> {{obj.date}} / {{obj.time}}</div>
 														<div style="float:right" class="review-rating pull-right">
 														
 															<i style="color: #f2b600" class="fa{% if obj.rating < 1 %}r{% endif %} fa-star"></i>
@@ -299,7 +301,7 @@
 														</div>
 													</div>
 													<div class="review-body">
-													<p> <b>{{obj.subject}}</b></p>
+													<p style="color:#e74c3c"> <b>{{obj.subject}}</b></p>
 														<p class="col-12">{{obj.comment}}</p>
 													</div>
 											
