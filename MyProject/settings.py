@@ -23,9 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '*z-ypxw^5+!ute)jopa0-(9d!ic1o&sjlp#p35!8wu60_l+hvi'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  #False
-
-ALLOWED_HOSTS = []  #ALLOWED_HOSTS =  ['localhost', '127.0.0.1']
+DEBUG = False  #False
+ALLOWED_HOSTS =  ['valueshop.herokuapp.com','localhost', '127.0.0.1']
 
 
 # Application definition
@@ -48,6 +47,7 @@ USE_THOUSAND_SEPARATOR = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -144,6 +144,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'Ecommerce.User'
 
