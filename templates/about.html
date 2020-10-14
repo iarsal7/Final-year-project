@@ -1,0 +1,26 @@
+{% extends 'test.html' %}
+{% load static %}
+
+{% block stylesheet %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'one/styles/contact_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one/styles/shop_styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'one/styles/shop_responsive.css' %}">
+
+
+
+{% endblock stylesheet %}
+
+{% block content %}
+<div style="background-color:#eff6fa;" class="shop">
+
+    <div class="container contact-form">
+                
+             <p>   Value Shop is a well known Ecommerce website. We provide authentic prdoucts at reasonable prices at your door step.
+						 Value Shop aims at customers to provide best products and deals. Value Shop listens to Customer queries and Customer feedback is of high value for us. Visit us to get best deals.</p>
+
+    </div>
+
+
+</div>
+{% endblock content %}
