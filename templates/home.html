@@ -462,10 +462,10 @@
       <img style="height: 450px" class="d-block w-100" src="{% static 'img/b1.jpg' %}"  alt="First slide">
     </div>
     <div class="carousel-item">
-      <img style="height: 450px" class="d-block w-100" src="{% static 'img/ASUS-WinterHoliday_Banner.jpg' %}"  alt="Second slide">
+      <img style="height: 450px" class="d-block w-100" src="{% static 'img/b2.jpg' %}"  alt="Second slide">
     </div>
     <div class="carousel-item">
-      <img style="height: 450px" class="d-block w-100 " src="{% static 'img/Banner_1-01-min.png' %}" alt="Third slide">
+      <img style="height: 450px" class="d-block w-100 " src="{% static 'img/b3.jpg' %}" alt="Third slide">
     </div>
   </div>
   <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -1051,7 +1051,7 @@
 	</div>
 
 	<!-- Best Sellers -->
-
+	{% if cookies %}
 	<div class="best_sellers">
 		<div class="container">
 			<div class="row">
@@ -1061,8 +1061,6 @@
 							<div class="new_arrivals_title">Recommended Items</div>
 							<ul class="clearfix">
 								<li class="active">Top Items</li>
-								<li>Audio & Video</li>
-								<li>Laptops & Computers</li>
 							</ul>
 							<div class="tabs_line"><span></span></div>
 						</div>
@@ -1073,7 +1071,7 @@
 
 							<div class="bestsellers_slider slider">
 
-								{% for products in recommended  %}
+								{% for products in cookies  %}
 								<!-- Best Sellers Item -->
 								<div class="bestsellers_item discount">
 									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
@@ -1097,64 +1095,6 @@
 
 							</div>
 						</div>
-
-						<div class="bestsellers_panel panel">
-
-							<!-- Best Sellers Slider -->
-
-							<div class="bestsellers_slider slider">
-
-								{% for products in video  %}
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><a href="{% url 'productDetails' products.id %}"><img style="width:115px; height:115px;" src="{{ products.image.url}}" alt=""></a></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a>{{products.category}}</a></div>
-											<div style="height:50px;" class="bestsellers_name"><a href="{% url 'productDetails' products.id %}">{{products.title|truncatechars:30}}</a></div>
-											{% comment %} <div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div> {% endcomment %}
-											<div class="bestsellers_price discount">{{products.price|floatformat:0}}<span></span></div>
-										</div>
-									</div>
-									{% comment %} <div class="bestsellers_fav active"><i class="fas fa-heart"></i></div> {% endcomment %}
-									<ul class="bestsellers_marks">
-										{% comment %} <li class="bestsellers_mark bestsellers_discount">-25%</li> {% endcomment %}
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-								{% endfor %}
-
-							</div>
-						</div>
-
-						<div class="bestsellers_panel panel">
-
-							<!-- Best Sellers Slider -->
-
-							<div class="bestsellers_slider slider">
-
-								{% for products in laptops %}
-								<!-- Best Sellers Item -->
-								<div class="bestsellers_item discount">
-									<div class="bestsellers_item_container d-flex flex-row align-items-center justify-content-start">
-										<div class="bestsellers_image"><a href="{% url 'productDetails' products.id %}"><img style="width:115px; height:115px;" src="{{ products.image.url}}" alt=""></a></div>
-										<div class="bestsellers_content">
-											<div class="bestsellers_category"><a>{{products.category}}</a></div>
-											<div style="height:50px;" class="bestsellers_name"><a href="{% url 'productDetails' products.id %}">{{products.title|truncatechars:30}}</a></div>
-											{% comment %} <div class="rating_r rating_r_4 bestsellers_rating"><i></i><i></i><i></i><i></i><i></i></div> {% endcomment %}
-											<div class="bestsellers_price discount">{{products.price|floatformat:0}}<span></span></div>
-										</div>
-									</div>
-									{% comment %} <div class="bestsellers_fav active"><i class="fas fa-heart"></i></div> {% endcomment %}
-									<ul class="bestsellers_marks">
-										{% comment %} <li class="bestsellers_mark bestsellers_discount">-25%</li> {% endcomment %}
-										<li class="bestsellers_mark bestsellers_new">new</li>
-									</ul>
-								</div>
-								{% endfor %}
-
-							</div>
-						</div>
 					</div>
 						
 				</div>
@@ -1162,7 +1102,7 @@
 		</div>
 	</div>
 
-
+	{% endif %}
 	<!-- Reviews -->
 
 	<div class="reviews">

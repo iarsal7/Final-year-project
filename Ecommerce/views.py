@@ -14,10 +14,43 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import pandas as pd
 from django.db.models import Case, When
 import random
-
+import pickle
+from itertools import chain
 
 def home(request):
+    #Recommended Items Section Start
+    listOfRecommendedIds=[]
+    listofIds=[]
+    listofSubCategories=[]
+    listofProducts=[]
+    if request.COOKIES.get('productIds') is not None:
+        value = str(request.COOKIES.get('productIds'))
+        valueUpdated= value.replace("[" , "").replace("]" , "").replace("," , " ")
+        listOfRecommendedIds = [int(i) for i in valueUpdated.split()]
     
+
+    for i in listOfRecommendedIds: 
+        if i not in listofIds: 
+            listofIds.append(i) 
+
+    for j in listofIds:
+        product= Product.objects.get(id=j)
+        sub= product.category
+        subCategoryObj= Subcategory.objects.get(name=sub)
+        if subCategoryObj.name not in listofSubCategories:
+            listofSubCategories.append(subCategoryObj.name)
+    
+    random.shuffle(listofSubCategories)
+    
+    for k in listofSubCategories:
+        k= (Product.objects.filter(category= Subcategory.objects.get(name=k)).distinct()).random(3) 
+        my_list=list(chain(k))
+
+        for l in my_list:
+            listofProducts.append(l)
+    
+    #Recommended Items Section End
+
     realme= Subcategory.objects.get(name='Realme')
     products= Product.objects.filter(category=realme)      
     
@@ -44,21 +77,18 @@ def home(request):
     
     iphone= Product.objects.get(id=23)
 
-    recommended= Product.objects.all().random(18)
-
-
     review= Review.objects.all().order_by('-date', '-time')[:10]
 
     
     frag= Category.objects.get(name='Fragrances')
     fragrances = Product.objects.filter(category__category= frag)
 
-
+   
 
     context={
 
         "deal":products, "featured":featured, "sale":sale , "rated":rated , "new":new , "video":video , "laptops":laptops , "iphone":iphone ,
-        "recommended":recommended, "review":review , "fragrances":fragrances
+         "review":review , "fragrances":fragrances, "cookies":listofProducts
 
            }
     return render(request, 'home.html',context)
@@ -119,12 +149,25 @@ def productDetails(request , id):
     
     queryset = get_recommendations(product.id)
     
+    
     context={
         'product':product , 'photos':photos , 'review':review , 'size':size , 'size_variation':size_variation,
             'variants':variants , 'wishlist':wishlist , 'recommendation': queryset
     }
+    listOfRecommendedIds=[]
+    if request.COOKIES.get('productIds') is not None:
+        value = str(request.COOKIES.get('productIds'))
+        valueUpdated= value.replace("[" , "").replace("]" , "").replace("," , " ")
+        listOfRecommendedIds = [int(i) for i in valueUpdated.split()]
+        
+        listOfRecommendedIds.append(id)
 
-    return render(request , 'productDetails.html' , context)
+    else:
+        listOfRecommendedIds.append(id)
+
+    response= render(request , 'productDetails.html' , context)
+    response.set_cookie(key='productIds', value=listOfRecommendedIds)
+    return response
 
 def featuredList(request):
 
@@ -545,3 +588,6 @@ class contact_ajax(View):
         messages.success(request, 'Form submission successful')
         return JsonResponse({'status': 'ok'})
 
+def about(request):
+
+    return render(request , 'about.html')
